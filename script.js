@@ -113,16 +113,29 @@ projectFilters.forEach((button) => button.addEventListener('click', () => {
 }));
 
 const bindGlobalPointerLight = () => {
-  const root = document.documentElement;
+  const glowLayer = document.body;
+  let pointerFrame = 0;
+  let pointerX = 0;
+  let pointerY = 0;
   const updatePointerLight = (event) => {
     if (event.pointerType && event.pointerType !== 'mouse') return;
-    root.style.setProperty('--pointer-x', `${event.clientX}px`);
-    root.style.setProperty('--pointer-y', `${event.clientY}px`);
+    pointerX = event.clientX;
+    pointerY = event.clientY;
     document.body.classList.add('has-global-light');
+    if (pointerFrame) return;
+    pointerFrame = window.requestAnimationFrame(() => {
+      pointerFrame = 0;
+      glowLayer.style.setProperty('--pointer-x', `${pointerX}px`);
+      glowLayer.style.setProperty('--pointer-y', `${pointerY}px`);
+    });
   };
 
   window.addEventListener('pointermove', updatePointerLight, { passive: true });
-  window.addEventListener('pointerleave', () => document.body.classList.remove('has-global-light'));
+  window.addEventListener('pointerleave', () => {
+    if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+    pointerFrame = 0;
+    document.body.classList.remove('has-global-light');
+  });
 };
 
 renderSchedule();
