@@ -1,0 +1,85 @@
+/* Hallmark · tokens · Midnight / atmospheric · NUTN CSIE 116 / 116 級成果展 · Geist + IBM Plex Sans */
+
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("https://cdn.jsdelivr.net/fontsource/fonts/geist:vf@5.3.0/latin-wght-normal.woff2") format("woff2-variations");
+}
+:root {
+  --color-void: oklch(12% 0.018 260);
+  --color-ink: oklch(96% 0.012 255);
+  --color-muted: oklch(72% 0.018 255);
+  --color-faint: oklch(63% 0.025 255);
+  --color-panel: oklch(17% 0.022 258);
+  --color-panel-strong: oklch(22% 0.028 258);
+  --color-line: oklch(100% 0.005 255 / 0.14);
+  --color-line-strong: oklch(100% 0.005 255 / 0.24);
+  --color-accent: oklch(69% 0.18 272);
+  --color-accent-strong: oklch(78% 0.16 272);
+  --color-accent-ink: oklch(15% 0.02 272);
+  --color-accent-soft: oklch(69% 0.18 272 / 0.16);
+  --color-focus: oklch(88% 0.12 272);
+  --color-meta-panel: var(--color-panel);
+  --color-meta-border: var(--color-line-strong);
+  --color-meta-ink: var(--color-ink);
+  --color-meta-code: var(--color-ghost);
+  --color-glass-panel: oklch(20% 0.025 258 / 0.68);
+  --color-glass-line: oklch(100% 0.005 255 / 0.25);
+  --color-glass-highlight: oklch(100% 0.005 255 / 0.1);
+  --color-glass-shadow: oklch(5% 0.018 260 / 0.35);
+  --color-global-glow: oklch(78% 0.09 245 / 0.1);
+  --color-success: oklch(79% 0.12 160);
+  --color-bloom-secondary: var(--color-accent);
+  --color-grid: oklch(100% 0.005 255 / 0.018);
+  --color-grid-mid: oklch(100% 0.005 255 / 0.06);
+  --color-grid-strong: oklch(100% 0.005 255 / 0.08);
+  --color-ghost: oklch(100% 0.005 255 / 0.06);
+  --color-shadow: oklch(10% 0.005 260 / 0.25);
+  --color-shadow-strong: oklch(10% 0.005 260 / 0.3);
+  --color-header: oklch(12% 0.018 260 / 0.78);
+  --color-header-scrolled: oklch(17% 0.022 258 / 0.92);
+  --color-project-a-start: oklch(20% 0.05 270);
+  --color-project-a-end: oklch(12% 0.022 260);
+  --color-project-b-start: oklch(17% 0.04 272);
+  --color-project-c-start: oklch(17% 0.04 245);
+  --color-project-c-end: oklch(11% 0.018 260);
+  --color-project-violet: var(--color-accent-soft);
+  --color-border-ghost: oklch(100% 0.005 255 / 0.13);
+  --color-line-shadow: oklch(100% 0.005 255 / 0.12);
+
+  --font-display: "Geist Variable", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Sans", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 5rem;
+  --space-4xl: 8rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(2rem, 4vw, 3.4rem);
+  --text-display: clamp(4.25rem, 14vw, 12rem);
+
+  --radius-sm: 0.6rem;
+  --radius-md: 1rem;
+  --radius-pill: 999px;
+  --rule-thin: 1px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.64, 0, 0.78, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 260ms;
+  --dur-slow: 700ms;
+}

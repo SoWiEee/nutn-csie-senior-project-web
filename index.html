@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f111b" />
+    <meta name="description" content="NUTN CSIE 116｜國立臺南大學資訊工程學系 116 級畢業專題成果展。" />
+    <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="回到首頁">
+        <span class="brand__mark">NUTN CSIE 116</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="menu-toggle__label">選單</span>
+        <span class="menu-toggle__icon" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="主要分頁">
+        <div class="site-nav-tabs" role="tablist" aria-label="主要分頁">
+          <button class="view-tab is-active" id="view-home-tab" type="button" role="tab" aria-selected="true" aria-controls="view-home" data-view="home">首頁</button>
+          <button class="view-tab" id="view-schedule-tab" type="button" role="tab" aria-selected="false" aria-controls="view-schedule" data-view="schedule">時程表</button>
+          <button class="view-tab" id="view-projects-tab" type="button" role="tab" aria-selected="false" aria-controls="view-projects" data-view="projects">專題一覽</button>
+        </div>
+        <a class="nav-cta" href="#view-schedule" data-view="schedule">查看時程 <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="view-panel is-active" id="view-home" data-view-panel="home" role="tabpanel" aria-labelledby="view-home-tab">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__grid" aria-hidden="true"></div>
+        <div class="hero__bloom hero__bloom--one" aria-hidden="true"></div>
+        <div class="hero__bloom hero__bloom--two" aria-hidden="true"></div>
+        <div class="hero__content shell">
+          <p class="eyebrow">NUTN CSIE 116 / PROJECT SHOW</p>
+          <h1 id="hero-title">國立臺南大學 資訊工程學系<br /><span>116 級畢業專題成果展</span></h1>
+          <div class="hero__lower">
+            <p class="hero__lede">介紹</p>
+            <div class="hero__note">
+              <p>資訊技術是構築未來社會的關鍵基石。國立台南大學資訊工程學系第 116 級畢業生，將透過 17 組充滿熱忱的專題作品，具體呈現他們在大學階段的紮實積累與豐碩成果。</p>
+              <p>本次專題展緊扣產業趨勢與學術脈動，劃分為「智慧感知與訊號分析組」與「智慧推論與決策系統組」兩大領域。</p>
+              <p>展覽中的每一項成果，都體現了學生們如何將課堂所學的理論基礎，轉化為具體的創新解決方案。這不僅是他們四年學習歷程的總結，更是其展現技術應用、團隊協作與創新思維的寬廣舞台。</p>
+              <p>我們誠摯邀請各界先進與嘉賓蒞臨指導，親身感受 116 級學子們的研發能量與專業實力，並給予他們最寶貴的回饋與鼓勵。</p>
+            </div>
+            <div class="hero__meta" aria-label="展覽資訊">
+              <div class="hero__meta-card hero__meta-card--date">
+                <strong>日期</strong>
+                <p>2025-12-13</p>
+                <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
+              </div>
+              <div class="hero__meta-card hero__meta-card--venue">
+                <strong>地點</strong>
+                <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
+                <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero__actions">
+            <button class="button" type="button" data-view="schedule">查看單日議程 <span aria-hidden="true">↗</span></button>
+            <button class="text-button" type="button" data-view="projects">瀏覽 17 組專題 <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+        <div class="hero__edge-label" aria-hidden="true">SCROLL TO EXPLORE <span>↓</span></div>
+      </section>
+
+      <section class="home-venue section" aria-labelledby="home-venue-title">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">VENUE / LAST YEAR DATA</p>
+              <h2 id="home-venue-title">展場資訊</h2>
+            </div>
+            <p class="section-head__aside">府城校區・文薈樓地下一樓<br />交通資訊沿用去年公開頁面</p>
+          </div>
+          <div class="venue-grid">
+            <figure class="venue-figure"><img src="https://csie.nutn.edu.tw/site/project/115/image/venue/SchoolAddress.png" alt="國立臺南大學校址示意圖" loading="lazy" /><figcaption>國立臺南大學校址示意圖</figcaption></figure>
+            <figure class="venue-figure"><img src="https://csie.nutn.edu.tw/site/project/115/image/venue/ExhibitionFloorPlan.png" alt="國立臺南大學資訊工程學系畢業專題展平面圖" loading="lazy" /><figcaption>畢業專題展平面圖</figcaption></figure>
+          </div>
+          <a class="venue-map-link" href="https://www.google.com/maps?q=22.9849283,120.2064554" target="_blank" rel="noreferrer">在 Google 地圖開啟 <span aria-hidden="true">↗</span></a>
+          <div class="transport-grid transport-grid--compact" aria-label="交通方式">
+            <article class="transport-item transport-item--card">
+              <span class="transport-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M6 17h12M7 17v2m10-2v2M5 10h14l-1.2-4H6.2L5 10Zm0 0v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6M8 13h.01M16 13h.01" /></svg></span>
+              <div><p>公車</p><span>自「臺南火車站」出發，可搭乘臺南市公車 2 路、5 路、0 左、紅 3 線等路線前往府城校區附近站點，車程約 10–15 分鐘。<br />2 路於「大南門城」站下車，沿南門路左轉樹林街二段，步行約 8–10 分鐘即可抵達文薈樓。<br />5 路、0 左於「體育公園（臺南大學）」站下車；紅 3 於「延平郡王祠（國立臺南大學）」站下車，步行約 8–10 分鐘抵達校門。</span></div>
+            </article>
+            <article class="transport-item transport-item--card">
+              <span class="transport-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M5 16v-4l1.5-4h11L19 12v4M5 16h14M7 16v2m10-2v2M7.5 13h.01M16.5 13h.01M15 5h4" /><path d="M15 3v4h4" /></svg></span>
+              <div><p>汽／機車停車</p><span>校園周邊提供多處付費停車場，建議提早抵達並依現場指示停放車輛。<br />樹林街前門附近：Times 台南樹林開山停車場（樹林街二段 92 號）、CityParking 建業街停車場（建業街 58 號）等，步行約 3–7 分鐘可達校門。<br />五妃街後門附近：俥亭停車場–五妃廟場及五妃街南側／北側停車場，步行約 5–10 分鐘可達校門。<br />校內汽車與機車停車位多以教職員生與申請者為主，一般訪客建議利用周邊停車場與大眾運輸工具。</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+      </section>
+
+      <section class="view-panel" id="view-schedule" data-view-panel="schedule" role="tabpanel" aria-labelledby="view-schedule-tab" hidden>
+      <section class="agenda section" id="agenda" aria-labelledby="agenda-title">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">SCHEDULE / ONE DAY / LAST YEAR DATA</p>
+              <h2 id="agenda-title">時程表</h2>
+            </div>
+            <p class="section-head__aside">去年展覽・單日議程<br />13:00 — 15:25</p>
+          </div>
+
+          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>已載入 116 級 17 組名單；PDF 未列出兩大領域分類，議程先以 9／8 組暫排，確認後更新。</span></div>
+          <div class="filter-bar filter-bar--tracks" role="tablist" aria-label="議程組別切換">
+            <button class="filter-chip filter-chip--track is-active" type="button" role="tab" aria-selected="true" data-schedule-filter="sense"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 4 10 2-5h7" /></svg></span><span class="filter-chip__label">智慧感知與訊號分析組</span></button>
+            <button class="filter-chip filter-chip--track" type="button" role="tab" aria-selected="false" data-schedule-filter="decision"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="m8 11 8-4M8 13l8 4" /></svg></span><span class="filter-chip__label">智慧推論與決策系統組</span></button>
+          </div>
+
+          <div class="agenda-groups" data-schedule-list></div>
+        </div>
+      </section>
+      </section>
+
+      <section class="view-panel" id="view-projects" data-view-panel="projects" role="tabpanel" aria-labelledby="view-projects-tab" hidden>
+      <section class="projects section" id="projects" aria-labelledby="projects-title">
+        <div class="shell">
+          <div class="section-head section-head--projects">
+            <div class="section-head__title">
+              <h2 id="projects-title">專題一覽</h2>
+              <span class="section-head__aside section-head__aside--overview" aria-hidden="true">Overview</span>
+            </div>
+          </div>
+          <div class="filter-bar" role="tablist" aria-label="專題組別篩選">
+            <button class="filter-chip is-active" type="button" role="tab" aria-selected="true" data-project-filter="all">全部 <span>17 組</span></button>
+            <button class="filter-chip" type="button" role="tab" aria-selected="false" data-project-filter="sense">智慧感知與訊號分析組 <span>9 組</span></button>
+            <button class="filter-chip" type="button" role="tab" aria-selected="false" data-project-filter="decision">智慧推論與決策系統組 <span>8 組</span></button>
+          </div>
+          <p class="tag-note">PROJECT TAG SYSTEM ／ 題目先以 dummy text 佔位；只有確認投稿成功的專題會顯示 TANET、ICS、CVGIP 等研討會標籤。</p>
+          <div class="project-grid project-grid--archive" data-project-list></div>
+        </div>
+      </section>
+      </section>
+
+      <section class="location section" id="location" aria-labelledby="location-title" hidden>
+        <div class="shell location__layout">
+          <div class="location__heading">
+            <p class="eyebrow">LOCATION / GETTING THERE</p>
+            <h2 id="location-title">會場資訊</h2>
+            <p class="body-copy">校園動線、交通方式與平面圖會放在這裡。正式場地確認後，可直接替換卡片中的文字。</p>
+            <a class="button button--accent" href="#location">查看示意圖 <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="map-card" aria-label="會場示意圖">
+            <div class="map-card__top"><span>MAP / PREVIEW</span><span>南大・資工系</span></div>
+            <div class="map-diagram" aria-hidden="true">
+              <span class="map-line map-line--one"></span><span class="map-line map-line--two"></span><span class="map-line map-line--three"></span>
+              <span class="map-node map-node--one">A</span><span class="map-node map-node--two">B</span><span class="map-node map-node--three">C</span>
+              <span class="map-label map-label--one">入口待更新</span><span class="map-label map-label--two">展區</span><span class="map-label map-label--three">主會場待更新</span>
+              <div class="map-crosshair"><i></i><i></i></div>
+            </div>
+            <div class="map-card__legend"><span><i class="legend-dot legend-dot--accent"></i>主要動線</span><span><i class="legend-dot"></i>位置待更新</span></div>
+          </div>
+        </div>
+        <div class="shell transport-grid">
+          <div class="transport-item"><span class="transport-item__index">01</span><div><p>公車</p><span>路線資訊待更新</span></div><span class="transport-item__arrow">↗</span></div>
+          <div class="transport-item"><span class="transport-item__index">02</span><div><p>汽／機車停車</p><span>停車資訊待更新</span></div><span class="transport-item__arrow">↗</span></div>
+          <div class="transport-item"><span class="transport-item__index">03</span><div><p>展場平面圖</p><span>圖面資料待更新</span></div><span class="transport-item__arrow">↗</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="footer">
+      <div class="shell">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <p class="footer-brand__mark">NUTN CSIE 116</p>
+            <p class="footer-brand__name">116 級畢業專題成果展</p>
+            <p class="footer-brand__edition">國立臺南大學・資訊工程學系</p>
+          </div>
+          <div class="footer-column">
+            <h3>聯絡我們</h3>
+            <a class="footer-contact" href="mailto:sunshine@mail.nutn.edu.tw">
+              <span class="footer-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3.5 6.5h17v11h-17z" /><path d="m4 7 8 6 8-6" /></svg></span>
+              <span>sunshine@mail.nutn.edu.tw</span>
+            </a>
+          </div>
+          <div class="footer-column">
+            <h3>相關連結</h3>
+            <div class="footer-link-icons">
+              <a class="footer-icon-link" href="https://www.nutn.edu.tw/" target="_blank" rel="noreferrer" aria-label="國立臺南大學" title="國立臺南大學">
+                <span class="footer-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 20h16" /><path d="M6.5 20V8.5L12 5l5.5 3.5V20" /><path d="M9 11h1.5M13.5 11H15M9 14.5h1.5M13.5 14.5H15" /></svg></span>
+              </a>
+              <a class="footer-icon-link" href="https://csie.nutn.edu.tw/" target="_blank" rel="noreferrer" aria-label="南大資工官網" title="南大資工官網">
+                <span class="footer-icon footer-icon--csie" aria-hidden="true">CSIE</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom"><span>© 2025 NUTN CSIE, All Rights Reserved.</span><a href="#top">回到頂端 ↑</a></div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
