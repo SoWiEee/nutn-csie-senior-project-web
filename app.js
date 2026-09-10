@@ -2936,9 +2936,9 @@ void main() {
   };
   var escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
   var tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? " conference-tag--accent" : ""}">${escapeHTML(tag)}</span>`).join("") : "";
-  var timePointMarkup = (time) => {
+  var timePointMarkup = (time, className = "") => {
     const [start] = time.split(" ~ ");
-    return `<time class="schedule-time">${escapeHTML(start)}</time>`;
+    return `<time class="schedule-time${className ? ` ${className}` : ""}">${escapeHTML(start)}</time>`;
   };
   var groupName = (group) => groupMeta[group].title;
   var projectInfoIcons = {
@@ -2951,18 +2951,16 @@ void main() {
     if (!scheduleList) return;
     scheduleList.innerHTML = Object.entries(groupMeta).map(([group, meta]) => {
       const groupProjects = projects.filter((project) => project.group === group);
-      const rows = groupProjects.map((project, index) => `${index === 5 ? `<div class="schedule-item schedule-item--break" role="separator">${timePointMarkup("14:15")}<article class="schedule-card schedule-card--break"><strong>\u4E2D\u5834\u4F11\u606F</strong></article></div>` : ""}
-      <div class="schedule-item">
-        ${timePointMarkup(project.time)}
-        <article class="schedule-card" data-card-light>
-          <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
-            <strong>${escapeHTML(project.title)}</strong>
-            <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>
-          </button>
-        </article>
-      </div>`).join("");
+      const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>\u4E2D\u5834\u4F11\u606F</strong></article>` : ""}
+      ${timePointMarkup(project.time)}
+      <article class="schedule-card" data-liquid-glass="schedule" data-card-light>
+        <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
+          <strong>${escapeHTML(project.title)}</strong>
+          <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>
+        </button>
+      </article>`).join("");
       return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
-      <div class="schedule schedule--dense"><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
+      <div class="schedule schedule--dense" data-liquid-glass-root><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
     </section>`;
     }).join("");
   };
@@ -3116,34 +3114,46 @@ void main() {
       await Promise.all(roots.map(async (root) => {
         const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
         if (!glassElements.length) return;
+        const isScheduleRoot = root.matches(".schedule--dense");
+        const defaults = {
+          blurAmount: 0.2,
+          refraction: 0.84,
+          chromAberration: 0.05,
+          edgeHighlight: 0.1,
+          specular: 0.02,
+          fresnel: 0.88,
+          distortion: 6e-3,
+          opacity: 0.82,
+          saturation: 0.02,
+          tintStrength: 0.025,
+          brightness: -0.06,
+          cornerRadius: 8,
+          zRadius: 22,
+          shadowOpacity: 0.24,
+          shadowSpread: 4,
+          shadowOffsetY: 1,
+          pointerRadius: 175,
+          pointerStrength: 0.92
+        };
         await LiquidGlass2.init({
           root,
           glassElements,
           backgroundImage: backdropImage,
-          defaults: {
-            blurAmount: 0.2,
-            refraction: 0.84,
-            chromAberration: 0.05,
-            edgeHighlight: 0.1,
-            specular: 0.02,
-            fresnel: 0.88,
-            distortion: 6e-3,
-            opacity: 0.82,
-            saturation: 0.02,
-            tintStrength: 0.025,
-            brightness: -0.06,
-            cornerRadius: 8,
-            zRadius: 22,
-            shadowOpacity: 0.24,
-            shadowSpread: 4,
-            shadowOffsetY: 1,
-            pointerRadius: 175,
-            pointerStrength: 0.92
-          }
+          defaults: isScheduleRoot ? {
+            ...defaults,
+            opacity: 0.84,
+            tintStrength: 0.045,
+            brightness: -0.09,
+            zRadius: 20,
+            shadowOpacity: 0.28,
+            shadowSpread: 5
+          } : defaults
         });
         glassElements.forEach((element) => {
-          element.style.setProperty("background-color", "rgba(18, 36, 70, 0.22)", "important");
-          element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
+          const surfaceAlpha = element.dataset.liquidGlass === "schedule" ? "0.34" : "0.22";
+          const highlightAlpha = element.dataset.liquidGlass === "schedule" ? "0.11" : "0.1";
+          element.style.setProperty("background-color", `rgba(18, 36, 70, ${surfaceAlpha})`, "important");
+          element.style.setProperty("background-image", `linear-gradient(135deg, rgba(255, 255, 255, ${highlightAlpha}), transparent 42%)`, "important");
         });
         root.dataset.liquidGlassReady = "true";
       }));
