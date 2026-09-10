@@ -60,7 +60,7 @@ const renderSchedule = () => {
     const rows = groupProjects.map((project, index) => `${index === 5 ? `<div class="schedule-item schedule-item--break" role="separator">${timePointMarkup('14:15')}<article class="schedule-card schedule-card--break"><strong>中場休息</strong></article></div>` : ''}
       <div class="schedule-item">
         ${timePointMarkup(project.time)}
-        <article class="schedule-card">
+        <article class="schedule-card" data-card-light>
           <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
             <strong>${escapeHTML(project.title)}</strong>
             <span class="schedule-card__toggle" aria-hidden="true">↗</span>
@@ -97,7 +97,7 @@ const bindScheduleProjectLinks = () => {
 
 const renderProjects = () => {
   if (!projectList) return;
-  projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}">
+  projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
     <div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}${projectInfoMarkup('advisor', 'ADVISOR', project.advisor)}</div><div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div></div>
     <span class="project-card__arrow" aria-hidden="true">↗</span>
@@ -151,36 +151,121 @@ projectFilters.forEach((button) => button.addEventListener('click', () => {
   document.querySelectorAll('[data-project-group]').forEach((card) => { card.hidden = filter !== 'all' && card.dataset.projectGroup !== filter; });
 }));
 
-const bindGlobalPointerLight = () => {
-  const glowLayer = document.body;
+const bindCardPointerLight = () => {
+  const cardSelector = '[data-card-light]';
+  let activeCard = null;
   let pointerFrame = 0;
-  let pointerX = 0;
-  let pointerY = 0;
-  const updatePointerLight = (event) => {
-    if (event.pointerType && event.pointerType !== 'mouse') return;
-    pointerX = event.clientX;
-    pointerY = event.clientY;
-    document.body.classList.add('has-global-light');
-    if (pointerFrame) return;
-    pointerFrame = window.requestAnimationFrame(() => {
-      pointerFrame = 0;
-      glowLayer.style.setProperty('--pointer-x', `${pointerX}px`);
-      glowLayer.style.setProperty('--pointer-y', `${pointerY}px`);
-    });
+  let pendingPointer = null;
+
+  const clearCard = (card) => {
+    if (!card) return;
+    card.style.setProperty('--card-light-opacity', '0');
   };
 
-  window.addEventListener('pointermove', updatePointerLight, { passive: true });
-  window.addEventListener('pointerleave', () => {
-    if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+  const flushPointer = () => {
     pointerFrame = 0;
-    document.body.classList.remove('has-global-light');
-  });
+    if (!pendingPointer) return;
+    const { card, event } = pendingPointer;
+    pendingPointer = null;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--card-pointer-x', `${event.clientX - rect.left}px`);
+    card.style.setProperty('--card-pointer-y', `${event.clientY - rect.top}px`);
+    card.style.setProperty('--card-light-opacity', '1');
+  };
+
+  document.addEventListener('pointermove', (event) => {
+    if (event.pointerType && event.pointerType !== 'mouse') return;
+    const target = event.target instanceof Element ? event.target.closest(cardSelector) : null;
+    if (!target) {
+      clearCard(activeCard);
+      activeCard = null;
+      return;
+    }
+    if (activeCard && activeCard !== target) clearCard(activeCard);
+    activeCard = target;
+    pendingPointer = { card: target, event };
+    if (!pointerFrame) pointerFrame = window.requestAnimationFrame(flushPointer);
+  }, { passive: true });
+
+  document.addEventListener('pointerout', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const card = event.target.closest(cardSelector);
+    const related = event.relatedTarget instanceof Node ? event.relatedTarget : null;
+    if (card && (!related || !card.contains(related))) {
+      clearCard(card);
+      if (activeCard === card) activeCard = null;
+    }
+  }, { passive: true });
+
+  window.addEventListener('blur', () => {
+    clearCard(activeCard);
+    activeCard = null;
+  }, { passive: true });
+};
+
+const startLiquidGlass = async (LiquidGlass) => {
+  const roots = [...document.querySelectorAll('[data-liquid-glass-root]')];
+  if (!roots.length) return;
+  const backdropImage = document.querySelector('[data-site-backdrop] img');
+  try {
+    if (backdropImage && !backdropImage.complete) {
+      await new Promise((resolve) => {
+        backdropImage.addEventListener('load', resolve, { once: true });
+        backdropImage.addEventListener('error', resolve, { once: true });
+      });
+    }
+    await Promise.all(roots.map(async (root) => {
+      const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
+      if (!glassElements.length) return;
+      await LiquidGlass.init({
+        root,
+        glassElements,
+        backgroundImage: backdropImage,
+        defaults: {
+          blurAmount: 0,
+          refraction: 0.72,
+          chromAberration: 0.03,
+          edgeHighlight: 0.16,
+          specular: 0.06,
+          fresnel: 0.62,
+          distortion: 0.016,
+          opacity: 0.4,
+          saturation: 0.06,
+          tintStrength: 0.06,
+          brightness: -0.02,
+          cornerRadius: 8,
+          zRadius: 14,
+          shadowOpacity: 0.16,
+          shadowSpread: 0,
+          shadowOffsetY: 0,
+          pointerRadius: 180,
+          pointerStrength: 0.82,
+        },
+      });
+      root.dataset.liquidGlassReady = 'true';
+    }));
+    document.documentElement.dataset.liquidGlassReady = 'true';
+  } catch (error) {
+    document.documentElement.dataset.liquidGlassFallback = 'true';
+    console.warn('LiquidGlass enhancement unavailable; keeping the CSS glass fallback.', error);
+  }
+};
+
+const initLiquidGlass = () => {
+  if (window.NutnLiquidGlass) {
+    void startLiquidGlass(window.NutnLiquidGlass);
+    return;
+  }
+  window.addEventListener('nutn-liquidglass-ready', () => {
+    if (window.NutnLiquidGlass) void startLiquidGlass(window.NutnLiquidGlass);
+  }, { once: true });
 };
 
 renderSchedule();
 renderProjects();
 bindScheduleProjectLinks();
-bindGlobalPointerLight();
+bindCardPointerLight();
+void initLiquidGlass();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();
 setView(window.location.hash.slice(1), { updateHash: false });

@@ -14,6 +14,7 @@ body {
   margin: 0;
   min-width: 320px;
   overflow-x: clip;
+  isolation: isolate;
   background: var(--color-void);
   color: var(--color-ink);
   font-family: var(--font-body);
@@ -33,19 +34,30 @@ body::before {
   mask-image: linear-gradient(to bottom, black, transparent 72%);
 }
 
-body::after {
+.site-backdrop {
   position: fixed;
-  z-index: 0;
+  z-index: -2;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
-  content: "";
-  background: radial-gradient(22rem circle at var(--pointer-x, 50vw) var(--pointer-y, 34vh), var(--color-global-glow), transparent 72%);
-  filter: blur(0.8rem);
-  mix-blend-mode: screen;
-  opacity: 0;
+  background: var(--color-void);
 }
 
-body.has-global-light::after { opacity: 1; }
+.site-backdrop::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, oklch(8% 0.02 260 / 0.2), oklch(9% 0.02 260 / 0.58));
+}
+
+.site-backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.64;
+  filter: saturate(0.78) brightness(0.68) contrast(1.08);
+}
 
 ::selection { background: var(--color-accent); color: var(--color-void); }
 
@@ -58,6 +70,52 @@ button { color: inherit; font: inherit; }
 
 button:focus-visible, a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
 button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.55; }
+
+[data-card-light] {
+  --card-pointer-x: 50%;
+  --card-pointer-y: 50%;
+  --card-light-opacity: 0;
+  isolation: isolate;
+}
+
+[data-liquid-glass-root] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-liquid-glass] {
+  z-index: 1;
+}
+
+html[data-liquid-glass-ready] [data-liquid-glass] {
+  background: transparent;
+  overflow: hidden !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-liquid-glass-ready] #view-home [data-liquid-glass] {
+  background: transparent;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+[data-card-light]::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  border-radius: inherit;
+  background: radial-gradient(10rem circle at var(--card-pointer-x) var(--card-pointer-y), oklch(100% 0.005 255 / 0.105), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: var(--card-light-opacity);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+@media (pointer: coarse) {
+  [data-card-light]::after { display: none; }
+}
 
 .skip-link { position: fixed; z-index: 100; top: var(--space-sm); left: var(--space-sm); padding: var(--space-xs) var(--space-sm); transform: translateY(-160%); border-radius: var(--radius-sm); background: var(--color-ink); color: var(--color-void); transition: transform var(--dur-fast) var(--ease-out); }
 .skip-link:focus { transform: translateY(0); }
@@ -581,4 +639,14 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   #view-home .hero__meta-card-code {
     font-size: 5rem;
   }
+}
+
+/* Let the campus photograph remain the single visual ground plane. */
+body #view-home .hero,
+body #view-home .home-venue,
+body #view-schedule .agenda,
+body #view-projects .projects,
+body .location,
+body .site-footer {
+  background: transparent;
 }
