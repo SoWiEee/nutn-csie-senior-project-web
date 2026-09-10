@@ -270,7 +270,7 @@ html[data-liquid-glass-ready] #view-home [data-liquid-glass] {
 .transport-item { display: grid; grid-template-columns: auto 1fr auto; gap: var(--space-md); align-items: start; padding: var(--space-lg) 0; border-top: var(--rule-thin) solid var(--color-line-strong); }
 .transport-item__index { color: var(--color-accent-strong); font-family: var(--font-mono); font-size: var(--text-xs); }.transport-item p { margin: 0; font-weight: 500; }.transport-item div span { color: var(--color-muted); font-size: var(--text-sm); }.transport-item__arrow { color: var(--color-faint); }
 
-.site-footer { padding: clamp(2.75rem, 5vw, 4rem) 0 var(--space-lg); background: var(--color-void); }
+.site-footer { position: relative; padding: clamp(2.75rem, 5vw, 4rem) 0 var(--space-lg); border-top: var(--rule-thin) solid var(--color-line); background: linear-gradient(to bottom, transparent 0%, var(--color-header) 20%, var(--color-header) 100%); -webkit-backdrop-filter: blur(1.25rem) saturate(130%); backdrop-filter: blur(1.25rem) saturate(130%); }
 .footer-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); padding-bottom: var(--space-xl); border-bottom: var(--rule-thin) solid var(--color-line-strong); }
 .footer-brand { min-width: 0; }
 .footer-brand__mark { margin: 0 0 var(--space-md); color: var(--color-ink); font-family: var(--font-display); font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 700; letter-spacing: -0.07em; line-height: 1; }
@@ -343,10 +343,13 @@ html[data-liquid-glass-ready] #view-home [data-liquid-glass] {
 .transport-grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-2xl); }
 .transport-grid--compact .transport-item { padding: var(--space-lg); }
 .transport-item--card { grid-template-columns: auto minmax(0, 1fr); min-width: 0; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); }
-.transport-item__icon { display: grid; width: 2rem; height: 2rem; place-items: center; color: var(--color-accent-strong); }
+.transport-item__content { min-width: 0; }
+.transport-item__icon { display: grid; width: 2rem; height: 2rem; margin-top: 0.35rem; place-items: center; color: var(--color-accent-strong); }
 .transport-item__icon svg { width: 1.6rem; height: 1.6rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
-.transport-item--card p { margin: 0 0 var(--space-xs); font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; }
-.transport-item--card div span { display: block; line-height: 1.7; }
+.transport-item--card > .transport-item__content > p { margin: 0 0 var(--space-md); color: var(--color-ink); font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; line-height: 1.2; }
+.transport-item__details { display: grid; gap: var(--space-sm); }
+.transport-item__details p { position: relative; margin: 0; padding-left: 0.75rem; color: var(--color-muted); font-size: var(--text-lg); line-height: 1.7; }
+.transport-item__details p::before { position: absolute; top: 0.72em; left: -2.15rem; width: 0.42rem; height: 0.42rem; content: ""; border-radius: 50%; background: var(--color-accent-strong); box-shadow: 0 0 0.7rem var(--color-accent-soft); }
 .agenda-notice { display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xl); padding: var(--space-sm) var(--space-md); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel); color: var(--color-muted); font-size: var(--text-sm); }
 .agenda-notice .signal-card__dot { flex: 0 0 auto; margin-top: 0; }
 .filter-bar { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-xl); }
@@ -652,7 +655,10 @@ body #view-home .hero,
 body #view-home .home-venue,
 body #view-schedule .agenda,
 body #view-projects .projects,
-body .location,
-body .site-footer {
+body .location {
   background: transparent;
+}
+
+body .site-footer {
+  background: linear-gradient(to bottom, transparent 0%, var(--color-header) 20%, var(--color-header) 100%);
 }
