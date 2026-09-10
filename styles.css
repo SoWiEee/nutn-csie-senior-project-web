@@ -105,6 +105,10 @@ html[data-liquid-glass-ready] #view-home [data-liquid-glass] {
   backdrop-filter: none !important;
 }
 
+html.is-scrolling [data-liquid-glass] > canvas {
+  opacity: 0 !important;
+}
+
 [data-card-light]::after {
   position: absolute;
   z-index: 2;

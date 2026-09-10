@@ -25,7 +25,7 @@
 - **時程表**：以單日議程呈現兩個組別，可切換「智慧感知與訊號分析組」及「智慧推論與決策系統組」，時間戳採議程開始時間點排列。
 - **專題一覽**：三欄專題卡片、組別篩選、成員與指導老師資訊，以及投稿成功後可顯示的 TANET、ICS、CVGIP 等研討會標籤。
 - **專題詳細資訊**：在時程表或專題卡片上操作後，以 dialog 顯示專題題目、組別、成員、指導老師與投稿標籤。
-- **Liquid Glass**：首頁資訊卡與時程卡片使用本地 vendored 的 WebGL Liquid Glass renderer；若瀏覽器能力不足，會保留 CSS glass fallback。
+- **Liquid Glass**：首頁資訊卡與時程卡片使用本地 vendored 的 WebGL Liquid Glass renderer；捲動中會暫時切換到輕量 CSS glass，停止捲動後再恢復折射細節，以避免 WebGL texture upload 阻塞畫面。
 - **互動與無障礙**：支援網址 hash 分頁、鍵盤操作、跳到主要內容、ARIA tab/dialog 語意、焦點樣式與響應式版面。
 
 ## 快速開始

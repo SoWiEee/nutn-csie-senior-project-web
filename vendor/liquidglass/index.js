@@ -29,6 +29,20 @@ var DEFAULTS = {
 };
 var BLUR_ITERATIONS = 6;
 var SHADOW_PAD = 20;
+var SCROLL_RENDER_BUDGET = 1;
+var SCROLL_IDLE_DELAY = 120;
+var scrollBudgetFrame = -1;
+var scrollBudgetUsed = 0;
+function claimScrollRenderBudget() {
+  const frame = Math.floor(performance.now() / 16.667);
+  if (frame !== scrollBudgetFrame) {
+    scrollBudgetFrame = frame;
+    scrollBudgetUsed = 0;
+  }
+  if (scrollBudgetUsed >= SCROLL_RENDER_BUDGET) return false;
+  scrollBudgetUsed += 1;
+  return true;
+}
 
 // node_modules/html-to-image/es/util.js
 function resolveUrl(url, baseUrl) {
@@ -1825,6 +1839,19 @@ var LiquidGlass = class _LiquidGlass {
      */
     this._globalDirty = true;
     /**
+     * Scroll only changes the viewport position of normal-flow glass.
+     * Keep it separate from _globalDirty so _renderFrame can compare
+     * cached positions and redraw only panels that actually moved.
+     */
+    this._positionDirty = false;
+    this._scrolling = false;
+    this._scrollIdleTimer = 0;
+    /**
+     * Visible panels queued by scroll. Rendering one per frame keeps
+     * multiple glass surfaces from blocking the same scroll frame.
+     */
+    this._scrollDirty = /* @__PURE__ */ new Set();
+    /**
      * Per-element shader-render dirty set. Each entry is a glass
      * element that needs its WebGL pipeline to re-run on the next
      * frame. Drained at the end of _renderFrame.
@@ -1899,7 +1926,15 @@ var LiquidGlass = class _LiquidGlass {
     this._onPointerMove = this._handlePointerMove.bind(this);
     this._onPointerUp = this._handlePointerUp.bind(this);
     this._onScroll = () => {
-      this._globalDirty = true;
+      this._scrolling = true;
+      this._positionDirty = true;
+      document.documentElement.classList.add("is-scrolling");
+      window.clearTimeout(this._scrollIdleTimer);
+      this._scrollIdleTimer = window.setTimeout(() => {
+        this._scrolling = false;
+        this._positionDirty = true;
+        document.documentElement.classList.remove("is-scrolling");
+      }, SCROLL_IDLE_DELAY);
     };
     this._onBlur = () => {
       this._pointer.hasPosition = false;
@@ -1975,6 +2010,7 @@ var LiquidGlass = class _LiquidGlass {
     this.root.style.removeProperty("-webkit-user-select");
     window.removeEventListener("resize", this._onResize);
     window.removeEventListener("scroll", this._onScroll);
+    window.clearTimeout(this._scrollIdleTimer);
     window.removeEventListener("blur", this._onBlur);
     this.root.removeEventListener("pointerdown", this._onPointerDown);
     window.removeEventListener("pointermove", this._onPointerMove);
@@ -2560,6 +2596,11 @@ var LiquidGlass = class _LiquidGlass {
     const dpr = window.devicePixelRatio || 1;
     const rootRect = this.root.getBoundingClientRect();
     const isDragging = this._drag.active;
+    if (this._scrolling) {
+      this._positionDirty = false;
+      this._scrollDirty.clear();
+      return;
+    }
     if (this._userMarkedChanged.size > 0) {
       for (const el of this._userMarkedChanged) {
         this._markGlassesIntersecting(el);
@@ -2570,7 +2611,29 @@ var LiquidGlass = class _LiquidGlass {
       for (const el of this.glassSet) this._glassDirty.add(el);
       this._globalDirty = false;
     }
-    const needsRender = this._glassDirty.size > 0 || this._hasDynamic || isDragging;
+    if (this._positionDirty) {
+      this._positionDirty = false;
+      for (const el of this.glassSet) {
+        const rect = el.getBoundingClientRect();
+        const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
+        if (isViewportVisible) this._scrollDirty.add(el);
+      }
+    }
+    let scrollBudget = SCROLL_RENDER_BUDGET;
+    for (const el of this._scrollDirty) {
+      const rect = el.getBoundingClientRect();
+      const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
+      if (!isViewportVisible) {
+        this._scrollDirty.delete(el);
+        continue;
+      }
+      if (!claimScrollRenderBudget()) break;
+      this._scrollDirty.delete(el);
+      this._glassDirty.add(el);
+      scrollBudget -= 1;
+      if (scrollBudget <= 0) break;
+    }
+    const needsRender = this._glassDirty.size > 0 || this._hasDynamic || isDragging || this._scrollDirty.size > 0;
     if (!needsRender) return;
     const dirtyTargets = new Set(this._glassDirty);
     this._glassDirty.clear();
