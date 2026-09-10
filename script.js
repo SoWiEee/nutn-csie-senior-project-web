@@ -6,6 +6,13 @@ const viewTabs = [...document.querySelectorAll('.view-tab')];
 const viewPanels = [...document.querySelectorAll('[data-view-panel]')];
 const scheduleList = document.querySelector('[data-schedule-list]');
 const projectList = document.querySelector('[data-project-list]');
+const projectDialog = document.querySelector('#project-dialog');
+const projectDialogTitle = document.querySelector('#project-dialog-title');
+const projectDialogGroup = document.querySelector('#project-dialog-group');
+const projectDialogMembers = document.querySelector('#project-dialog-members');
+const projectDialogAdvisor = document.querySelector('#project-dialog-advisor');
+const projectDialogTags = document.querySelector('#project-dialog-tags');
+const projectDialogClose = document.querySelector('[data-project-dialog-close]');
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: 'Dummy Project 01：專題題目待更新', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
@@ -54,15 +61,38 @@ const renderSchedule = () => {
       <div class="schedule-item">
         ${timePointMarkup(project.time)}
         <article class="schedule-card">
-          <div class="schedule-card__tags"><span class="schedule-tag schedule-tag--group">GROUP ${escapeHTML(project.id)}</span>${tagMarkup(project.conferenceTags)}</div>
-          <strong>${escapeHTML(project.title)}</strong>
-          <span>${escapeHTML(project.members)} ／ 指導老師：${escapeHTML(project.advisor)}</span>
+          <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
+            <strong>${escapeHTML(project.title)}</strong>
+            <span class="schedule-card__toggle" aria-hidden="true">↗</span>
+          </button>
         </article>
       </div>`).join('');
     return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
       <div class="schedule schedule--dense"><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
     </section>`;
   }).join('');
+};
+
+const openProjectDialog = (projectId) => {
+  const project = projects.find((item) => item.id === projectId);
+  if (!project || !projectDialog) return;
+  projectDialogTitle.textContent = project.title;
+  projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
+  projectDialogMembers.textContent = project.members;
+  projectDialogAdvisor.textContent = project.advisor;
+  projectDialogTags.innerHTML = tagMarkup(project.conferenceTags) || '<span class="conference-tag conference-tag--pending">投稿標籤待確認</span>';
+  if (typeof projectDialog.showModal === 'function') {
+    projectDialog.showModal();
+  } else {
+    projectDialog.setAttribute('open', '');
+  }
+  projectDialogClose?.focus();
+};
+
+const bindScheduleProjectLinks = () => {
+  scheduleList?.querySelectorAll('[data-schedule-project]').forEach((trigger) => {
+    trigger.addEventListener('click', () => openProjectDialog(trigger.dataset.scheduleProject));
+  });
 };
 
 const renderProjects = () => {
@@ -89,6 +119,15 @@ const setView = (view, { updateHash = true } = {}) => {
 };
 
 const setFilterState = (buttons, activeButton) => buttons.forEach((button) => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); });
+
+const closeProjectDialog = () => {
+  if (!projectDialog) return;
+  if (typeof projectDialog.close === 'function') projectDialog.close();
+  else projectDialog.removeAttribute('open');
+};
+
+projectDialogClose?.addEventListener('click', closeProjectDialog);
+projectDialog?.addEventListener('click', (event) => { if (event.target === projectDialog) closeProjectDialog(); });
 
 const headerState = () => header?.classList.toggle('is-scrolled', window.scrollY > 24);
 menuToggle?.addEventListener('click', () => setMenuState(menuToggle.getAttribute('aria-expanded') !== 'true'));
@@ -140,6 +179,7 @@ const bindGlobalPointerLight = () => {
 
 renderSchedule();
 renderProjects();
+bindScheduleProjectLinks();
 bindGlobalPointerLight();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();

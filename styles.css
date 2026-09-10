@@ -314,13 +314,11 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card { position: relative; min-width: 0; padding: var(--space-lg); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
 .schedule-card::before { position: absolute; top: -1px; left: var(--space-lg); width: 2rem; height: 2px; content: ""; background: var(--color-accent-strong); }
 .schedule-card:hover { border-color: var(--color-accent); background: var(--color-panel); }
-.schedule-card__tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2xs); margin-bottom: var(--space-md); }
-.schedule-card > strong { display: block; max-width: 56ch; font-size: var(--text-md); font-weight: 500; line-height: 1.4; }
-.schedule-card > span { display: block; margin-top: var(--space-xs); color: var(--color-muted); font-size: var(--text-xs); }
-.schedule-row .schedule-card__tags .schedule-tag, .schedule-row .schedule-card__tags .conference-tag { margin-top: 0; font-size: var(--text-xs); }
-.schedule-row .schedule-card__tags .schedule-tag--group { color: var(--color-accent-strong); }
-.schedule-row .schedule-card__tags .conference-tag--accent { color: var(--color-accent-strong); }
-.schedule-row .schedule-card > span { margin-top: var(--space-xs); color: var(--color-muted); font-size: var(--text-xs); }
+.schedule-card__trigger { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-lg); width: 100%; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; transition: transform var(--dur-fast) var(--ease-out); }
+.schedule-card__trigger > strong { display: block; max-width: 56ch; font-size: var(--text-md); font-weight: 500; line-height: 1.4; }
+.schedule-card__trigger:active { transform: scale(0.995); }
+.schedule-card__toggle { display: grid; flex: 0 0 2rem; width: 2rem; height: 2rem; place-items: center; border: var(--rule-thin) solid var(--color-line-strong); border-radius: 50%; background: var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-lg); line-height: 1; transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.schedule-card__trigger:hover .schedule-card__toggle, .schedule-card__trigger:focus-visible .schedule-card__toggle { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent-strong); }
 .conference-tag { display: inline-flex; align-items: center; min-height: 1.6rem; padding: 0 var(--space-xs); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-pill); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.04em; white-space: nowrap; }
 .conference-tag--accent { border-color: var(--color-accent); color: var(--color-accent-strong); }
 .conference-tag--pending { border-style: dashed; color: var(--color-faint); }
@@ -329,6 +327,24 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card--break { padding-block: var(--space-sm); border-style: dashed; background: transparent; color: var(--color-faint); }
 .schedule-card--break::before { display: none; }
 .schedule-card--break strong { font-size: var(--text-sm); font-weight: 500; }
+.project-dialog { width: min(calc(100% - 2rem), 42rem); max-width: none; padding: 0; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.5rem 4rem var(--color-shadow-strong); -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); color: var(--color-ink); opacity: 0; transform: scale(0.97); transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out); }
+.project-dialog[open] { opacity: 1; transform: scale(1); }
+.project-dialog::backdrop { background: oklch(5% 0.02 260 / 0.72); -webkit-backdrop-filter: blur(0.35rem); backdrop-filter: blur(0.35rem); }
+.project-dialog__shell { padding: var(--space-xl); }
+.project-dialog__topline { display: flex; align-items: start; justify-content: space-between; gap: var(--space-md); }
+.project-dialog__topline .eyebrow { margin-bottom: 0; }
+.project-dialog__close { display: grid; width: 2.5rem; height: 2.5rem; padding: 0; place-items: center; border: var(--rule-thin) solid var(--color-line-strong); border-radius: 50%; background: transparent; color: var(--color-muted); cursor: pointer; transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.project-dialog__close:hover, .project-dialog__close:focus-visible { border-color: var(--color-danger); background: var(--color-danger-soft); color: var(--color-danger); }
+.project-dialog__close:active { border-color: var(--color-danger); background: var(--color-danger-soft); color: var(--color-danger); transform: scale(0.96); }
+.project-dialog__close-icon { display: block; font-size: 1.55rem; font-weight: 400; line-height: 1; transform: translateY(-0.04em); }
+.project-dialog__group { margin: var(--space-2xl) 0 var(--space-sm); color: var(--color-accent-strong); font-family: var(--font-mono); font-size: var(--text-sm); }
+.project-dialog h2 { max-width: 34ch; margin: 0; font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -0.06em; line-height: 1.1; }
+.project-dialog__details { display: grid; gap: var(--space-md); margin-top: var(--space-2xl); padding-top: var(--space-lg); border-top: var(--rule-thin) solid var(--color-line-strong); }
+.project-dialog__field { display: grid; grid-template-columns: minmax(7rem, 0.35fr) minmax(0, 1fr); gap: var(--space-md); align-items: start; }
+.project-dialog__field strong { color: var(--color-muted); font-size: var(--text-md); font-weight: 500; line-height: 1.5; }
+.project-dialog__label { color: var(--color-faint); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.08em; }
+.project-dialog__field--tags { align-items: center; }
+.project-dialog__field--tags .tag-row { margin-top: 0; }
 .project-grid--archive { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .project-card--archive { grid-row: auto; }
 .project-card--archive .project-card__visual { height: 12rem; }
@@ -342,13 +358,14 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 
 @media (hover: hover) and (pointer: fine) {
   .footer-column a:hover { transform: translateY(-0.15rem); }
+  .schedule-card__trigger:hover .schedule-card__toggle { transform: translate(0.1rem, -0.1rem); }
 }
 
 @media (min-width: 48.01rem) and (max-width: 64rem) {
   .project-grid--archive { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Shared glass-card treatment — timestamp remains static by design. */
+/* Shared liquid-glass treatment — timestamp remains static by design. */
 .signal-card,
 .project-card,
 .map-card,
@@ -360,10 +377,10 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card:not(.schedule-card--break) {
   position: relative;
   border-color: var(--color-glass-line);
-  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 42%), var(--color-glass-panel);
-  box-shadow: 0 1rem 2.5rem var(--color-glass-shadow), inset 0 1px 0 var(--color-glass-highlight);
-  -webkit-backdrop-filter: blur(1rem) saturate(1.15);
-  backdrop-filter: blur(1rem) saturate(1.15);
+  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+  -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
+  backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
   transition: none;
 }
 
@@ -371,8 +388,23 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card:not(.schedule-card--break):hover {
   transform: none;
   border-color: var(--color-glass-line);
-  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 42%), var(--color-glass-panel);
-  box-shadow: 0 1rem 2.5rem var(--color-glass-shadow), inset 0 1px 0 var(--color-glass-highlight);
+  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+}
+
+@supports not ((backdrop-filter: blur(1px))) {
+  .signal-card,
+  .project-card,
+  .map-card,
+  .venue-figure,
+  .transport-item--card,
+  .agenda-notice,
+  .filter-bar--tracks,
+  .hero__meta-card,
+  .schedule-card:not(.schedule-card--break),
+  .project-dialog {
+    background: var(--color-panel-strong);
+  }
 }
 
 @media (max-width: 48rem) {
@@ -389,9 +421,164 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .schedule-item .schedule-time { width: 4rem; min-height: 2.8rem; padding: var(--space-xs) 0.82rem var(--space-xs) var(--space-xs); font-size: 0.72rem; clip-path: polygon(0 0, calc(100% - 0.65rem) 0, 100% 50%, calc(100% - 0.65rem) 100%, 0 100%); }
   .schedule-card { padding: var(--space-md); }
   .schedule-card::before { left: var(--space-md); }
-  .schedule-card__tags { margin-bottom: var(--space-sm); }
-  .schedule-card > strong { font-size: var(--text-sm); }
-  .schedule-card > span { font-size: 0.72rem; }
+  .schedule-card__trigger > strong { font-size: var(--text-sm); }
+  .project-dialog__shell { padding: var(--space-lg); }.project-dialog__field { grid-template-columns: 1fr; gap: var(--space-2xs); }.project-dialog__details { margin-top: var(--space-xl); }
   .project-grid--archive { grid-template-columns: 1fr; }
   .tag-note { margin-top: calc(var(--space-sm) * -0.5); }
+}
+
+/* Controlled Blue Editorial — homepage only.
+ * Keep the HITCON-inspired midnight canvas, but let one restrained accent plate
+ * carry the visual identity and give the practical information more paper-like
+ * breathing room. Schedule/projects retain their existing visual language.
+ */
+#view-home {
+  --color-accent: oklch(69% 0.18 272);
+  --color-accent-strong: oklch(78% 0.16 272);
+  --color-accent-soft: oklch(69% 0.18 272 / 16%);
+  --color-focus: oklch(88% 0.12 272);
+  --color-meta-panel: var(--color-panel);
+  --color-meta-border: var(--color-line-strong);
+  --color-meta-ink: var(--color-ink);
+  --color-meta-code: var(--color-ghost);
+  --color-glass-panel: oklch(20% 0.025 258 / 68%);
+  --color-glass-line: oklch(100% 0.005 255 / 25%);
+  --color-glass-highlight: oklch(100% 0.005 255 / 10%);
+  --color-glass-shadow: oklch(5% 0.018 260 / 35%);
+}
+
+#view-home .hero {
+  background: var(--color-void);
+}
+
+#view-home .hero__grid {
+  opacity: 0.72;
+  background-image: linear-gradient(90deg, transparent 49.8%, var(--color-grid-strong) 50%, transparent 50.2%), linear-gradient(var(--color-grid-mid) 1px, transparent 1px);
+}
+
+#view-home .hero__bloom {
+  filter: none;
+  border-radius: 0;
+}
+
+#view-home .hero__bloom--one {
+  top: 24%;
+  right: -6rem;
+  width: min(36vw, 28rem);
+  height: 12rem;
+  aspect-ratio: auto;
+  border: var(--rule-thin) solid var(--color-line-strong);
+  background: var(--color-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 8% 100%, 0 100%);
+  opacity: 0.14;
+}
+
+#view-home .hero__bloom--two {
+  display: none;
+}
+
+#view-home .hero h1 {
+  max-width: 21ch;
+  font-weight: 650;
+}
+
+#view-home .hero__lower {
+  grid-template-columns: minmax(6rem, 0.24fr) minmax(0, 1.76fr);
+  gap: var(--space-md);
+}
+
+#view-home .hero__note {
+  max-width: 76ch;
+  color: var(--color-muted);
+}
+
+#view-home .hero__note::before {
+  background: linear-gradient(to bottom, transparent, var(--color-accent-strong) 50%, transparent);
+  opacity: 0.72;
+}
+
+#view-home .hero__meta-card {
+  border-radius: 0.45rem;
+  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+  -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
+  backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
+}
+
+#view-home .hero__meta-card::before,
+#view-home .venue-figure::before {
+  position: absolute;
+  top: -1px;
+  left: var(--space-lg);
+  width: 3rem;
+  height: 2px;
+  content: "";
+  background: var(--color-accent-strong);
+}
+
+#view-home .hero__meta-card > p,
+#view-home .hero__meta-card--date > p,
+#view-home .hero__meta-card--venue > p {
+  color: var(--color-accent-strong);
+}
+
+#view-home .hero__meta-card-code {
+  font-size: 6.6rem;
+}
+
+#view-home .home-venue {
+  border-top: var(--rule-thin) solid var(--color-line);
+  background: var(--color-panel);
+}
+
+#view-home .venue-figure {
+  border-radius: 0.45rem;
+  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+}
+
+#view-home .venue-figure::before {
+  z-index: 1;
+  left: var(--space-md);
+}
+
+#view-home .venue-figure figcaption {
+  border-top: var(--rule-thin) solid var(--color-line);
+  color: var(--color-muted);
+}
+
+#view-home .venue-map-link {
+  color: var(--color-accent-strong);
+}
+
+#view-home .transport-item--card {
+  border-radius: 0.45rem;
+  background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+}
+
+#view-home .transport-item__icon {
+  color: var(--color-accent-strong);
+}
+
+@media (max-width: 48rem) {
+  #view-home .hero__lower {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  #view-home .hero__bloom--one {
+    top: 31%;
+    right: -10rem;
+    width: 22rem;
+    height: 8rem;
+  }
+
+  #view-home .hero__meta-card::before {
+    left: var(--space-md);
+  }
+
+  #view-home .hero__meta-card-code {
+    font-size: 5rem;
+  }
 }

@@ -168,6 +168,22 @@
       </section>
     </main>
 
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title">
+      <div class="project-dialog__shell">
+        <div class="project-dialog__topline">
+          <p class="eyebrow">PROJECT DETAIL / 116</p>
+          <button class="project-dialog__close" type="button" data-project-dialog-close aria-label="關閉專題詳細資訊"><span class="project-dialog__close-icon" aria-hidden="true">×</span></button>
+        </div>
+        <p class="project-dialog__group" id="project-dialog-group"></p>
+        <h2 id="project-dialog-title"></h2>
+        <div class="project-dialog__details">
+          <div class="project-dialog__field"><span class="project-dialog__label">MEMBERS</span><strong id="project-dialog-members"></strong></div>
+          <div class="project-dialog__field"><span class="project-dialog__label">ADVISOR</span><strong id="project-dialog-advisor"></strong></div>
+          <div class="project-dialog__field project-dialog__field--tags"><span class="project-dialog__label">CONFERENCE TAGS</span><div class="tag-row" id="project-dialog-tags" aria-label="研討會投稿標籤"></div></div>
+        </div>
+      </div>
+    </dialog>
+
     <footer class="site-footer" id="footer">
       <div class="shell">
         <div class="footer-grid">
