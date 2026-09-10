@@ -21,6 +21,8 @@ var DEFAULTS = {
   pointerActive: 0,
   pointerRadius: 180,
   pointerStrength: 0.65,
+  pointerVelocityX: 0,
+  pointerVelocityY: 0,
   floating: false,
   button: false,
   bevelMode: 0
@@ -1270,6 +1272,7 @@ uniform vec2 u_pointer;
 uniform float u_pointerActive;
 uniform float u_pointerRadius;
 uniform float u_pointerStrength;
+uniform vec2 u_pointerVelocity;
 
 varying vec2 v_localPx;
 varying vec2 v_screenUV;
@@ -1372,6 +1375,12 @@ void main() {
 	float pointerWave = sin(pointerDistance * 0.08);
 	vec2 pointerFlow = (pointerDirection * pointerWave + pointerTangent * (0.35 * cos(pointerDistance * 0.06)))
 		* pointerInfluence * u_pointerStrength * 16.0;
+	float pointerSpeed = length(u_pointerVelocity);
+	vec2 velocityDirection = u_pointerVelocity / max(pointerSpeed, 0.001);
+	float velocityWave = sin(dot(pointerDelta, velocityDirection) * 0.045 + pointerDistance * 0.035);
+	vec2 velocityFlow = (velocityDirection * velocityWave + pointerTangent * (0.2 * cos(pointerDistance * 0.05)))
+		* pointerInfluence * min(pointerSpeed, 12.0) * u_pointerStrength * 1.8;
+	pointerFlow += velocityFlow;
 	refr += pointerFlow * pxToUV;
 
 	// \u2500\u2500 Micro-distortion noise \u2500\u2500
@@ -1536,7 +1545,8 @@ var GlassRenderer = class {
       "u_pointer",
       "u_pointerActive",
       "u_pointerRadius",
-      "u_pointerStrength"
+      "u_pointerStrength",
+      "u_pointerVelocity"
     ]);
   }
   _initBuffers() {
@@ -1663,6 +1673,7 @@ var GlassRenderer = class {
     gl.uniform1f(this.glassU.u_pointerActive, config.pointerActive);
     gl.uniform1f(this.glassU.u_pointerRadius, config.pointerRadius * dpr);
     gl.uniform1f(this.glassU.u_pointerStrength, config.pointerStrength);
+    gl.uniform2f(this.glassU.u_pointerVelocity, config.pointerVelocityX * dpr, config.pointerVelocityY * dpr);
     this._drawQuad(this.glassP, this.panelBuf);
     gl.disable(gl.BLEND);
   }
@@ -1849,7 +1860,15 @@ var LiquidGlass = class _LiquidGlass {
     this._glassLastSize = /* @__PURE__ */ new Map();
     this._buttonStates = /* @__PURE__ */ new Map();
     this._buttonListeners = /* @__PURE__ */ new Map();
-    this._pointer = { clientX: 0, clientY: 0, hasPosition: false, active: false };
+    this._pointer = {
+      clientX: 0,
+      clientY: 0,
+      lastTime: 0,
+      velocityX: 0,
+      velocityY: 0,
+      hasPosition: false,
+      active: false
+    };
     this._drag = {
       active: false,
       element: null,
@@ -1885,6 +1904,8 @@ var LiquidGlass = class _LiquidGlass {
     this._onBlur = () => {
       this._pointer.hasPosition = false;
       this._pointer.active = false;
+      this._pointer.velocityX = 0;
+      this._pointer.velocityY = 0;
       this._globalDirty = true;
     };
   }
@@ -2439,8 +2460,17 @@ var LiquidGlass = class _LiquidGlass {
   _handlePointerMove(e) {
     if (!e.pointerType || e.pointerType === "mouse") {
       const wasOverGlass = this._pointer.active;
+      const now = performance.now();
+      if (this._pointer.hasPosition && this._pointer.lastTime > 0) {
+        const dt = Math.max(8, now - this._pointer.lastTime);
+        const rawVelocityX = Math.max(-24, Math.min(24, (e.clientX - this._pointer.clientX) * 16 / dt));
+        const rawVelocityY = Math.max(-24, Math.min(24, (e.clientY - this._pointer.clientY) * 16 / dt));
+        this._pointer.velocityX = this._pointer.velocityX * 0.55 + rawVelocityX * 0.45;
+        this._pointer.velocityY = this._pointer.velocityY * 0.55 + rawVelocityY * 0.45;
+      }
       this._pointer.clientX = e.clientX;
       this._pointer.clientY = e.clientY;
+      this._pointer.lastTime = now;
       this._pointer.hasPosition = true;
       const isOverGlass = [...this.glassSet].some((el) => {
         const rect = el.getBoundingClientRect();
@@ -2584,6 +2614,8 @@ var LiquidGlass = class _LiquidGlass {
     config.pointerX = pointerX;
     config.pointerY = pointerY;
     config.pointerActive = pointerActive ? 1 : 0;
+    config.pointerVelocityX = this._pointer.velocityX;
+    config.pointerVelocityY = this._pointer.velocityY;
     const centerX = elRect.left - rootRect.left + elRect.width / 2;
     const centerY = elRect.top - rootRect.top + elRect.height / 2;
     const glassCanvas = this.glassCanvases.get(child);
@@ -2693,6 +2725,14 @@ var LiquidGlass = class _LiquidGlass {
     overlay.addColorStop(1, "rgba(10, 12, 24, 0.58)");
     ctx.globalAlpha = 1;
     ctx.fillStyle = overlay;
+    ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
+    // A restrained cool-blue substrate restores the tone of the original
+    // CSS glass surface while remaining transparent enough for refraction.
+    const tint = ctx.createLinearGradient(0, 0, sampleRect.w, sampleRect.h);
+    tint.addColorStop(0, "rgba(24, 48, 88, 0.16)");
+    tint.addColorStop(0.52, "rgba(18, 32, 66, 0.09)");
+    tint.addColorStop(1, "rgba(8, 18, 40, 0.2)");
+    ctx.fillStyle = tint;
     ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
     ctx.restore();
   }

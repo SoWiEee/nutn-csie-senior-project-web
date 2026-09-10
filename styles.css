@@ -88,14 +88,19 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 }
 
 html[data-liquid-glass-ready] [data-liquid-glass] {
-  background: transparent;
+  /* Keep a quiet blue substrate behind the WebGL surface. The upstream
+   * renderer paints the canvas with transparency, so removing this layer
+   * makes the same glass look pale and flat against a photo. */
+  background-color: rgba(18, 36, 70, 0.22) !important;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%) !important;
   overflow: hidden !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
 html[data-liquid-glass-ready] #view-home [data-liquid-glass] {
-  background: transparent;
+  background-color: rgba(18, 36, 70, 0.22) !important;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }

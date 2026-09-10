@@ -222,14 +222,14 @@ const startLiquidGlass = async (LiquidGlass) => {
         glassElements,
         backgroundImage: backdropImage,
         defaults: {
-          blurAmount: 0,
+          blurAmount: 0.20,
           refraction: 0.72,
           chromAberration: 0.03,
           edgeHighlight: 0.16,
           specular: 0.06,
           fresnel: 0.62,
           distortion: 0.016,
-          opacity: 0.4,
+          opacity: 0.52,
           saturation: 0.06,
           tintStrength: 0.06,
           brightness: -0.02,
@@ -238,9 +238,13 @@ const startLiquidGlass = async (LiquidGlass) => {
           shadowOpacity: 0.16,
           shadowSpread: 0,
           shadowOffsetY: 0,
-          pointerRadius: 180,
-          pointerStrength: 0.82,
+          pointerRadius: 175,
+          pointerStrength: 0.92,
         },
+      });
+      glassElements.forEach((element) => {
+        element.style.setProperty('background-color', 'rgba(18, 36, 70, 0.22)', 'important');
+        element.style.setProperty('background-image', 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)', 'important');
       });
       root.dataset.liquidGlassReady = 'true';
     }));
