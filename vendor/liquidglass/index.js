@@ -29,18 +29,18 @@ var DEFAULTS = {
 };
 var BLUR_ITERATIONS = 6;
 var SHADOW_PAD = 20;
-var SCROLL_RENDER_BUDGET = 1;
+var GLASS_RENDER_BUDGET = 1;
 var SCROLL_IDLE_DELAY = 120;
-var scrollBudgetFrame = -1;
-var scrollBudgetUsed = 0;
-function claimScrollRenderBudget() {
+var glassRenderBudgetFrame = -1;
+var glassRenderBudgetUsed = 0;
+function claimGlassRenderBudget() {
   const frame = Math.floor(performance.now() / 16.667);
-  if (frame !== scrollBudgetFrame) {
-    scrollBudgetFrame = frame;
-    scrollBudgetUsed = 0;
+  if (frame !== glassRenderBudgetFrame) {
+    glassRenderBudgetFrame = frame;
+    glassRenderBudgetUsed = 0;
   }
-  if (scrollBudgetUsed >= SCROLL_RENDER_BUDGET) return false;
-  scrollBudgetUsed += 1;
+  if (glassRenderBudgetUsed >= GLASS_RENDER_BUDGET) return false;
+  glassRenderBudgetUsed += 1;
   return true;
 }
 
@@ -1484,6 +1484,8 @@ var GlassRenderer = class {
     this.fboCache = /* @__PURE__ */ new Map();
     this.activeFBOs = null;
     this.bgTex = null;
+    this.bgTexWidth = 0;
+    this.bgTexHeight = 0;
     this.width = 0;
     this.height = 0;
     this.contextLost = false;
@@ -1520,6 +1522,8 @@ var GlassRenderer = class {
       this.fboCache.clear();
       this.activeFBOs = null;
       this.bgTex = null;
+      this.bgTexWidth = 0;
+      this.bgTexHeight = 0;
     };
     this.canvas.addEventListener("webglcontextlost", this._onContextLost);
     this.canvas.addEventListener("webglcontextrestored", this._onContextRestored);
@@ -1605,7 +1609,12 @@ var GlassRenderer = class {
     }
     gl.bindTexture(gl.TEXTURE_2D, this.bgTex);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.cropCanvas);
+    if (this.bgTexWidth !== W || this.bgTexHeight !== H) {
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, W, H, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      this.bgTexWidth = W;
+      this.bgTexHeight = H;
+    }
+    gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, this.cropCanvas);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -1726,9 +1735,9 @@ var GlassRenderer = class {
     if (w <= 0 || h <= 0) return false;
     this.width = w;
     this.height = h;
-    if (this.canvas.width < w || this.canvas.height < h) {
-      this.canvas.width = Math.max(this.canvas.width, w);
-      this.canvas.height = Math.max(this.canvas.height, h);
+    if (this.canvas.width !== w || this.canvas.height !== h) {
+      this.canvas.width = w;
+      this.canvas.height = h;
     }
     const key = `${w}x${h}`;
     let fboSet = this.fboCache.get(key);
@@ -1812,6 +1821,50 @@ var GlassRenderer = class {
   }
 };
 
+var sharedGlassRenderer = null;
+var sharedGlassRendererUsers = 0;
+function acquireSharedGlassRenderer() {
+  if (!sharedGlassRenderer) sharedGlassRenderer = new GlassRenderer();
+  sharedGlassRendererUsers += 1;
+  return sharedGlassRenderer;
+}
+function releaseSharedGlassRenderer(renderer) {
+  if (renderer !== sharedGlassRenderer) return;
+  sharedGlassRendererUsers = Math.max(0, sharedGlassRendererUsers - 1);
+  if (sharedGlassRendererUsers === 0) {
+    sharedGlassRenderer.destroy();
+    sharedGlassRenderer = null;
+  }
+}
+var sharedBackdropRaster = null;
+function getSharedBackdropRaster(image, dpr) {
+  const width = Math.max(1, Math.round(window.innerWidth * dpr));
+  const height = Math.max(1, Math.round(window.innerHeight * dpr));
+  const key = `${image.currentSrc || image.src}|${image.naturalWidth}x${image.naturalHeight}|${width}x${height}|${dpr}`;
+  if (sharedBackdropRaster?.key === key) return sharedBackdropRaster.canvas;
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  const fitted = LiquidGlass._objectFitRect(
+    image.naturalWidth,
+    image.naturalHeight,
+    width,
+    height,
+    "cover",
+    "50% 50%"
+  );
+  ctx.fillStyle = "rgb(15, 17, 27)";
+  ctx.fillRect(0, 0, width, height);
+  ctx.save();
+  ctx.globalAlpha = 0.64;
+  ctx.filter = "saturate(0.78) brightness(0.68) contrast(1.08)";
+  ctx.drawImage(image, fitted.sx, fitted.sy, fitted.sw, fitted.sh, 0, 0, width, height);
+  ctx.restore();
+  sharedBackdropRaster = { key, canvas };
+  return canvas;
+}
+
 // src/LiquidGlass.ts
 var BUTTON_CLASS = "liquid-glass-button";
 var STYLE_ID = "liquid-glass-button-styles";
@@ -1824,11 +1877,16 @@ var LiquidGlass = class _LiquidGlass {
   // ────────────────────────────────────────────
   // Constructor (prefer LiquidGlass.init)
   // ────────────────────────────────────────────
-  constructor({ root, glassElements, backgroundImage = null, defaults = {} }) {
+  constructor({ root, glassElements, backgroundImage = null, defaults = {}, renderScale = 1, active = true, captureGlassContent = true, prewarmCaptures = true }) {
     /** Current frames-per-second (updated every frame). */
     this.fps = 0;
     this._running = false;
+    this._destroyed = false;
+    this._active = Boolean(active);
     this._rafId = 0;
+    this.renderScale = Math.max(0.5, Math.min(1, Number(renderScale) || 1));
+    this.captureGlassContent = captureGlassContent !== false;
+    this.prewarmCaptures = prewarmCaptures !== false;
     this._hasDynamic = false;
     /**
      * Genuinely-global dirty flag — set by events that legitimately
@@ -1914,7 +1972,7 @@ var LiquidGlass = class _LiquidGlass {
     this.capture.onCacheUpdate = (element) => {
       this._markGlassesIntersecting(element);
     };
-    this.renderer = new GlassRenderer();
+    this.renderer = acquireSharedGlassRenderer();
     this._sceneCanvas = document.createElement("canvas");
     this._sceneCtx = this._sceneCanvas.getContext("2d");
     this.renderer.canvas.addEventListener("webglcontextrestored", () => {
@@ -1926,6 +1984,7 @@ var LiquidGlass = class _LiquidGlass {
     this._onPointerMove = this._handlePointerMove.bind(this);
     this._onPointerUp = this._handlePointerUp.bind(this);
     this._onScroll = () => {
+      if (!this._active) return;
       this._scrolling = true;
       this._positionDirty = true;
       document.documentElement.classList.add("is-scrolling");
@@ -1949,8 +2008,13 @@ var LiquidGlass = class _LiquidGlass {
   // ────────────────────────────────────────────
   static async init(options) {
     const instance = new _LiquidGlass(options);
-    await instance._start();
-    return instance;
+    try {
+      await instance._start();
+      return instance;
+    } catch (error) {
+      instance.destroy();
+      throw error;
+    }
   }
   // ────────────────────────────────────────────
   // Lifecycle
@@ -1963,8 +2027,8 @@ var LiquidGlass = class _LiquidGlass {
     this._sortedChildren = this._getSortedChildren();
     this._handleResize();
     await this.capture.prefetchFontEmbedCSS();
-    await this._captureGlassContent();
-    await this._prewarmStaticCaptures();
+    if (this.captureGlassContent) await this._captureGlassContent();
+    if (this.prewarmCaptures) await this._prewarmStaticCaptures();
     window.addEventListener("resize", this._onResize);
     window.addEventListener("scroll", this._onScroll, { passive: true });
     window.addEventListener("blur", this._onBlur);
@@ -1984,7 +2048,7 @@ var LiquidGlass = class _LiquidGlass {
           continue;
         }
         if (owner) {
-          this._glassContentDirty.add(owner);
+          if (this.captureGlassContent) this._glassContentDirty.add(owner);
           this._markGlassAndDependents(owner);
         }
       }
@@ -2001,9 +2065,33 @@ var LiquidGlass = class _LiquidGlass {
     this._glassContentDirty.clear();
     this._running = true;
     this._globalDirty = true;
+    if (this._active) this._rafId = requestAnimationFrame(() => this._renderLoop());
+  }
+  setActive(active) {
+    const next = Boolean(active);
+    if (this._destroyed || next === this._active) return;
+    this._active = next;
+    if (!this._running) return;
+    if (!next) {
+      cancelAnimationFrame(this._rafId);
+      this._rafId = 0;
+      this._scrolling = false;
+      window.clearTimeout(this._scrollIdleTimer);
+      return;
+    }
+    this._globalDirty = true;
+    this._positionDirty = true;
+    const rect = this.root.getBoundingClientRect();
+    const lastSize = this._activeRootSize;
+    if (!lastSize || Math.abs(lastSize.width - rect.width) > 0.5 || Math.abs(lastSize.height - rect.height) > 0.5) {
+      this._handleResize();
+    }
     this._rafId = requestAnimationFrame(() => this._renderLoop());
   }
   destroy() {
+    if (this._destroyed) return;
+    this._destroyed = true;
+    this._active = false;
     this._running = false;
     cancelAnimationFrame(this._rafId);
     this.root.style.removeProperty("user-select");
@@ -2037,7 +2125,7 @@ var LiquidGlass = class _LiquidGlass {
     this._buttonStates.clear();
     document.getElementById(STYLE_ID)?.remove();
     this.capture.destroy();
-    this.renderer.destroy();
+    releaseSharedGlassRenderer(this.renderer);
   }
   // ────────────────────────────────────────────
   // Glass element setup
@@ -2109,7 +2197,7 @@ var LiquidGlass = class _LiquidGlass {
       this._glassDirty.add(element);
     }
     const rootRect = this.root.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = this._getRenderDpr();
     const elementDOMRect = rectOverride ?? element.getBoundingClientRect();
     const elementBox = this._getPixelRect(
       elementDOMRect,
@@ -2146,7 +2234,7 @@ var LiquidGlass = class _LiquidGlass {
    */
   _markGlassesIntersecting(element) {
     const rootRect = this.root.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = this._getRenderDpr();
     const elementBox = this._getPixelRect(
       element.getBoundingClientRect(),
       rootRect,
@@ -2238,7 +2326,7 @@ var LiquidGlass = class _LiquidGlass {
    * the next render-loop tick picks them up.
    */
   async _captureGlassContent(targets = null) {
-    if (this._capturingGlassContent) return;
+    if (!this.captureGlassContent || this._capturingGlassContent) return;
     this._capturingGlassContent = true;
     try {
       for (const [el, glassCanvas] of this.glassCanvases) {
@@ -2404,21 +2492,27 @@ var LiquidGlass = class _LiquidGlass {
   // Resize
   // ────────────────────────────────────────────
   _handleResize() {
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = this._getRenderDpr();
     const rect = this.root.getBoundingClientRect();
     this.capture.resize(dpr);
-    this.renderer.resize(Math.round(rect.width * dpr), Math.round(rect.height * dpr));
+    this._activeRootSize = { width: rect.width, height: rect.height };
     for (const el of this.glassSet) {
       this._updateGlassCanvasSize(el);
     }
     this._glassCache.clear();
-    for (const el of this.glassSet) this._glassContentDirty.add(el);
+    if (this.captureGlassContent) {
+      for (const el of this.glassSet) this._glassContentDirty.add(el);
+    }
     this._globalDirty = true;
+  }
+  _getRenderDpr() {
+    const deviceDpr = Math.min(window.devicePixelRatio || 1, 2);
+    return Math.max(0.8, deviceDpr * this.renderScale);
   }
   _updateGlassCanvasSize(el) {
     const canvas = this.glassCanvases.get(el);
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = this._getRenderDpr();
     const elW = Math.round(el.offsetWidth);
     const elH = Math.round(el.offsetHeight);
     const padW = SHADOW_PAD * 2;
@@ -2446,7 +2540,7 @@ var LiquidGlass = class _LiquidGlass {
         this._updateGlassCanvasSize(el);
         this._glassCache.delete(el);
         this.capture.invalidateCache(el);
-        this._glassContentDirty.add(el);
+        if (this.captureGlassContent) this._glassContentDirty.add(el);
         changed = true;
       }
     }
@@ -2494,6 +2588,7 @@ var LiquidGlass = class _LiquidGlass {
     }
   }
   _handlePointerMove(e) {
+    if (!this._active) return;
     if (!e.pointerType || e.pointerType === "mouse") {
       const wasOverGlass = this._pointer.active;
       const now = performance.now();
@@ -2570,7 +2665,10 @@ var LiquidGlass = class _LiquidGlass {
   // Render loop
   // ────────────────────────────────────────────
   _renderLoop() {
-    if (!this._running) return;
+    if (!this._running || !this._active) {
+      this._rafId = 0;
+      return;
+    }
     const now = performance.now();
     this._fpsFrames++;
     if (now - this._fpsTime >= 1e3) {
@@ -2580,7 +2678,7 @@ var LiquidGlass = class _LiquidGlass {
     }
     if (this._checkGlassSizeChanges()) {
     }
-    if (this._glassContentDirty.size > 0 && !this._capturingGlassContent) {
+    if (this.captureGlassContent && this._glassContentDirty.size > 0 && !this._capturingGlassContent) {
       const targets = new Set(this._glassContentDirty);
       this._glassContentDirty.clear();
       this._captureGlassContent(targets);
@@ -2593,7 +2691,8 @@ var LiquidGlass = class _LiquidGlass {
     this._rafId = requestAnimationFrame(() => this._renderLoop());
   }
   _renderFrame() {
-    const dpr = window.devicePixelRatio || 1;
+    if (!this._active) return;
+    const dpr = this._getRenderDpr();
     const rootRect = this.root.getBoundingClientRect();
     const isDragging = this._drag.active;
     if (this._scrolling) {
@@ -2619,7 +2718,6 @@ var LiquidGlass = class _LiquidGlass {
         if (isViewportVisible) this._scrollDirty.add(el);
       }
     }
-    let scrollBudget = SCROLL_RENDER_BUDGET;
     for (const el of this._scrollDirty) {
       const rect = el.getBoundingClientRect();
       const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
@@ -2627,11 +2725,8 @@ var LiquidGlass = class _LiquidGlass {
         this._scrollDirty.delete(el);
         continue;
       }
-      if (!claimScrollRenderBudget()) break;
       this._scrollDirty.delete(el);
       this._glassDirty.add(el);
-      scrollBudget -= 1;
-      if (scrollBudget <= 0) break;
     }
     const needsRender = this._glassDirty.size > 0 || this._hasDynamic || isDragging || this._scrollDirty.size > 0;
     if (!needsRender) return;
@@ -2669,6 +2764,8 @@ var LiquidGlass = class _LiquidGlass {
   _renderGlassElement(child, rootRect, dpr, isDragging, dirtyTargets, renderedThisFrame) {
     const config = this._getConfig(child);
     const elRect = child.getBoundingClientRect();
+    const isViewportVisible = elRect.width > 0 && elRect.height > 0 && elRect.bottom >= -SHADOW_PAD && elRect.right >= -SHADOW_PAD && elRect.left <= window.innerWidth + SHADOW_PAD && elRect.top <= window.innerHeight + SHADOW_PAD;
+    if (!isViewportVisible) return;
     const elW = child.offsetWidth;
     const elH = child.offsetHeight;
     const pointerX = this._pointer.clientX - elRect.left;
@@ -2697,6 +2794,10 @@ var LiquidGlass = class _LiquidGlass {
     const isExplicitlyDirty = dirtyTargets.has(child);
     const needsShaderRender = isDragging ? isBeingDragged || isExplicitlyDirty || priorGlassChanged || hasDynamicContributors : !cached || posChanged || isExplicitlyDirty || priorGlassChanged || hasDynamicContributors;
     if (needsShaderRender && glassCanvas) {
+      if (!claimGlassRenderBudget()) {
+        this._glassDirty.add(child);
+        return;
+      }
       const renderW = glassCanvas.width;
       const renderH = glassCanvas.height;
       this._composeSceneForGlass(child, sampleRect, rootRect, dpr);
@@ -2757,36 +2858,14 @@ var LiquidGlass = class _LiquidGlass {
   _drawBackgroundToScene(sampleRect, rootRect, dpr) {
     const image = this.backgroundImage;
     if (!image || !image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0) return;
-    const viewportW = Math.max(1, Math.round(window.innerWidth * dpr));
-    const viewportH = Math.max(1, Math.round(window.innerHeight * dpr));
-    const fitted = _LiquidGlass._objectFitRect(
-      image.naturalWidth,
-      image.naturalHeight,
-      viewportW,
-      viewportH,
-      "cover",
-      "50% 50%"
-    );
+    const backdrop = getSharedBackdropRaster(image, dpr);
     const globalX = rootRect.left * dpr + sampleRect.x;
     const globalY = rootRect.top * dpr + sampleRect.y;
-    const sourceX = fitted.sx + globalX * fitted.sw / viewportW;
-    const sourceY = fitted.sy + globalY * fitted.sh / viewportH;
-    const sourceW = sampleRect.w * fitted.sw / viewportW;
-    const sourceH = sampleRect.h * fitted.sh / viewportH;
     const ctx = this._sceneCtx;
-    ctx.save();
-    ctx.globalAlpha = 1;
-    ctx.filter = "none";
-    ctx.fillStyle = "rgb(15, 17, 27)";
-    ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
-    ctx.globalAlpha = 0.64;
-    ctx.filter = "saturate(0.78) brightness(0.68) contrast(1.08)";
-    ctx.drawImage(image, sourceX, sourceY, sourceW, sourceH, 0, 0, sampleRect.w, sampleRect.h);
-    ctx.filter = "none";
+    ctx.drawImage(backdrop, globalX, globalY, sampleRect.w, sampleRect.h, 0, 0, sampleRect.w, sampleRect.h);
     const overlay = ctx.createLinearGradient(0, 0, 0, sampleRect.h);
     overlay.addColorStop(0, "rgba(8, 10, 20, 0.2)");
     overlay.addColorStop(1, "rgba(10, 12, 24, 0.58)");
-    ctx.globalAlpha = 1;
     ctx.fillStyle = overlay;
     ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
     // A restrained cool-blue substrate restores the tone of the original
@@ -2797,7 +2876,6 @@ var LiquidGlass = class _LiquidGlass {
     tint.addColorStop(1, "rgba(8, 18, 40, 0.2)");
     ctx.fillStyle = tint;
     ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
-    ctx.restore();
   }
   _prepareSceneCanvas(width, height) {
     if (this._sceneCanvas.width !== width || this._sceneCanvas.height !== height) {

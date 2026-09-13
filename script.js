@@ -114,6 +114,7 @@ const setView = (view, { updateHash = true } = {}) => {
   document.body.dataset.view = nextView;
   setMenuState(false);
   if (updateHash) { history.replaceState(null, '', `#${nextView}`); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+  scheduleLiquidGlassForCurrentView();
 };
 
 const setFilterState = (buttons, activeButton) => buttons.forEach((button) => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); });
@@ -139,6 +140,7 @@ const applyScheduleFilter = (filter) => {
   if (!activeButton) return;
   setFilterState(scheduleFilters, activeButton);
   document.querySelectorAll('[data-schedule-group]').forEach((group) => { group.hidden = group.dataset.scheduleGroup !== filter; });
+  scheduleLiquidGlassForCurrentView();
 };
 scheduleFilters.forEach((button) => button.addEventListener('click', () => applyScheduleFilter(button.dataset.scheduleFilter)));
 
@@ -201,77 +203,140 @@ const bindCardPointerLight = () => {
   }, { passive: true });
 };
 
-const startLiquidGlass = async (LiquidGlass) => {
-  const roots = [...document.querySelectorAll('[data-liquid-glass-root]')];
-  if (!roots.length) return;
-  const backdropImage = document.querySelector('[data-site-backdrop] img');
-  try {
+const getLiquidGlassRoots = () => [...document.querySelectorAll('[data-liquid-glass-root]')];
+const liquidGlassInstances = new Map();
+const liquidGlassPending = new Map();
+let liquidGlassConstructor = null;
+let liquidGlassScrollTimer = 0;
+let liquidGlassResizeTimer = 0;
+
+const getLiquidGlassRenderScale = () => {
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const memory = Number(navigator.deviceMemory) || 0;
+  const cores = Number(navigator.hardwareConcurrency) || 0;
+  const lowPower = (memory > 0 && memory <= 4) || (cores > 0 && cores <= 4);
+  if (coarsePointer) return lowPower ? 0.58 : 0.72;
+  return lowPower ? 0.86 : 1;
+};
+
+const isLiquidGlassRootEligible = (root) => {
+  const activeView = document.body.dataset.view || 'home';
+  const panel = root.closest('[data-view-panel]');
+  if ((panel && panel.dataset.viewPanel !== activeView) || root.closest('[hidden]')) return false;
+  const rect = root.getBoundingClientRect();
+  const margin = Math.max(160, window.innerHeight * 0.15);
+  return rect.width > 0 && rect.height > 0 && rect.bottom >= -margin && rect.right >= -margin && rect.left <= window.innerWidth + margin && rect.top <= window.innerHeight + margin;
+};
+
+const initializeLiquidGlassRoot = async (root) => {
+  if (liquidGlassInstances.has(root)) return liquidGlassInstances.get(root);
+  if (liquidGlassPending.has(root)) return liquidGlassPending.get(root);
+  if (!liquidGlassConstructor || !isLiquidGlassRootEligible(root)) return null;
+
+  const initialize = async () => {
+    const backdropImage = document.querySelector('[data-site-backdrop] img');
     if (backdropImage && !backdropImage.complete) {
       await new Promise((resolve) => {
         backdropImage.addEventListener('load', resolve, { once: true });
         backdropImage.addEventListener('error', resolve, { once: true });
       });
     }
-    await Promise.all(roots.map(async (root) => {
-      const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
-      if (!glassElements.length) return;
-      const isScheduleRoot = root.matches('.schedule--dense');
-      const defaults = {
-        blurAmount: 0.20,
-        refraction: 0.84,
-        chromAberration: 0.05,
-        edgeHighlight: 0.1,
-        specular: 0.02,
-        fresnel: 0.88,
-        distortion: 0.006,
-        opacity: 0.82,
-        saturation: 0.02,
-        tintStrength: 0.025,
-        brightness: -0.06,
-        cornerRadius: 8,
-        zRadius: 22,
-        shadowOpacity: 0.24,
-        shadowSpread: 4,
-        shadowOffsetY: 1,
-        pointerRadius: 175,
-        pointerStrength: 0.92,
-      };
-      await LiquidGlass.init({
-        root,
-        glassElements,
-        backgroundImage: backdropImage,
-        defaults: isScheduleRoot ? {
-          ...defaults,
-          opacity: 0.84,
-          tintStrength: 0.045,
-          brightness: -0.09,
-          zRadius: 20,
-          shadowOpacity: 0.28,
-          shadowSpread: 5,
-        } : defaults,
-      });
-      glassElements.forEach((element) => {
-        const surfaceAlpha = element.dataset.liquidGlass === 'schedule' ? '0.34' : '0.22';
-        const highlightAlpha = element.dataset.liquidGlass === 'schedule' ? '0.11' : '0.1';
-        element.style.setProperty('background-color', `rgba(18, 36, 70, ${surfaceAlpha})`, 'important');
-        element.style.setProperty('background-image', `linear-gradient(135deg, rgba(255, 255, 255, ${highlightAlpha}), transparent 42%)`, 'important');
-      });
-      root.dataset.liquidGlassReady = 'true';
-    }));
-    document.documentElement.dataset.liquidGlassReady = 'true';
-  } catch (error) {
+    const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
+    if (!glassElements.length) return null;
+    const isScheduleRoot = root.matches('.schedule--dense');
+    const defaults = {
+      blurAmount: 0.20,
+      refraction: 0.84,
+      chromAberration: 0.05,
+      edgeHighlight: 0.1,
+      specular: 0.02,
+      fresnel: 0.88,
+      distortion: 0.006,
+      opacity: 0.82,
+      saturation: 0.02,
+      tintStrength: 0.025,
+      brightness: -0.06,
+      cornerRadius: 8,
+      zRadius: 22,
+      shadowOpacity: 0.24,
+      shadowSpread: 4,
+      shadowOffsetY: 1,
+      pointerRadius: 175,
+      pointerStrength: 0.92,
+    };
+    const instance = await liquidGlassConstructor.init({
+      root,
+      glassElements,
+      backgroundImage: backdropImage,
+      renderScale: getLiquidGlassRenderScale(),
+      active: true,
+      captureGlassContent: false,
+      prewarmCaptures: false,
+      defaults: isScheduleRoot ? {
+        ...defaults,
+        opacity: 0.84,
+        tintStrength: 0.045,
+        brightness: -0.09,
+        zRadius: 20,
+        shadowOpacity: 0.28,
+        shadowSpread: 5,
+      } : defaults,
+    });
+    glassElements.forEach((element) => {
+      const surfaceAlpha = element.dataset.liquidGlass === 'schedule' ? '0.34' : '0.22';
+      const highlightAlpha = element.dataset.liquidGlass === 'schedule' ? '0.11' : '0.1';
+      element.style.setProperty('background-color', `rgba(18, 36, 70, ${surfaceAlpha})`, 'important');
+      element.style.setProperty('background-image', `linear-gradient(135deg, rgba(255, 255, 255, ${highlightAlpha}), transparent 42%)`, 'important');
+    });
+    root.dataset.liquidGlassReady = 'true';
+    instance.setActive(isLiquidGlassRootEligible(root) && !document.documentElement.classList.contains('is-scrolling'));
+    liquidGlassInstances.set(root, instance);
+    return instance;
+  };
+
+  const pending = initialize().catch((error) => {
     document.documentElement.dataset.liquidGlassFallback = 'true';
     console.warn('LiquidGlass enhancement unavailable; keeping the CSS glass fallback.', error);
+    return null;
+  }).finally(() => liquidGlassPending.delete(root));
+  liquidGlassPending.set(root, pending);
+  return pending;
+};
+
+const scheduleLiquidGlassForCurrentView = () => {
+  if (!liquidGlassConstructor) return;
+  const scrolling = document.documentElement.classList.contains('is-scrolling');
+  for (const root of getLiquidGlassRoots()) {
+    const active = isLiquidGlassRootEligible(root);
+    liquidGlassInstances.get(root)?.setActive(active && !scrolling);
+    if (active && !scrolling && !liquidGlassInstances.has(root)) void initializeLiquidGlassRoot(root);
   }
 };
 
+window.addEventListener('scroll', () => {
+  document.documentElement.classList.add('is-scrolling');
+  window.clearTimeout(liquidGlassScrollTimer);
+  liquidGlassScrollTimer = window.setTimeout(() => {
+    document.documentElement.classList.remove('is-scrolling');
+    scheduleLiquidGlassForCurrentView();
+  }, 150);
+}, { passive: true });
+window.addEventListener('resize', () => {
+  window.clearTimeout(liquidGlassResizeTimer);
+  liquidGlassResizeTimer = window.setTimeout(scheduleLiquidGlassForCurrentView, 120);
+}, { passive: true });
+
 const initLiquidGlass = () => {
   if (window.NutnLiquidGlass) {
-    void startLiquidGlass(window.NutnLiquidGlass);
+    liquidGlassConstructor = window.NutnLiquidGlass;
+    scheduleLiquidGlassForCurrentView();
     return;
   }
   window.addEventListener('nutn-liquidglass-ready', () => {
-    if (window.NutnLiquidGlass) void startLiquidGlass(window.NutnLiquidGlass);
+    if (window.NutnLiquidGlass) {
+      liquidGlassConstructor = window.NutnLiquidGlass;
+      scheduleLiquidGlassForCurrentView();
+    }
   }, { once: true });
 };
 
@@ -279,7 +344,7 @@ renderSchedule();
 renderProjects();
 bindScheduleProjectLinks();
 bindCardPointerLight();
-void initLiquidGlass();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();
 setView(window.location.hash.slice(1), { updateHash: false });
+void initLiquidGlass();
