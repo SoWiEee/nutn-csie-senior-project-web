@@ -3101,14 +3101,15 @@ void main() {
       const groupProjects = projects.filter((project) => project.group === group);
       const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>\u4E2D\u5834\u4F11\u606F</strong></article>` : ""}
       ${timePointMarkup(project.time)}
-      <article class="schedule-card" data-liquid-glass="schedule" data-card-light>
+      <article class="schedule-card schedule-card--signal" data-card-light>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>
         </button>
+        <span class="schedule-card__signal" aria-hidden="true"><svg viewBox="0 0 96 24" focusable="false"><path d="M1 16h13l5-9 8 14 8-15 8 10h12l6-6 7 9h15" /></svg></span>
       </article>`).join("");
       return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
-      <div class="schedule schedule--dense" data-liquid-glass-root><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
+      <div class="schedule schedule--dense"><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
     </section>`;
     }).join("");
   };
@@ -3286,7 +3287,6 @@ void main() {
       }
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
-      const isScheduleRoot = root.matches(".schedule--dense");
       const defaults = {
         blurAmount: 0.2,
         refraction: 0.84,
@@ -3315,21 +3315,11 @@ void main() {
         active: true,
         captureGlassContent: false,
         prewarmCaptures: false,
-        defaults: isScheduleRoot ? {
-          ...defaults,
-          opacity: 0.84,
-          tintStrength: 0.045,
-          brightness: -0.09,
-          zRadius: 20,
-          shadowOpacity: 0.28,
-          shadowSpread: 5
-        } : defaults
+        defaults
       });
       glassElements.forEach((element) => {
-        const surfaceAlpha = element.dataset.liquidGlass === "schedule" ? "0.34" : "0.22";
-        const highlightAlpha = element.dataset.liquidGlass === "schedule" ? "0.11" : "0.1";
-        element.style.setProperty("background-color", `rgba(18, 36, 70, ${surfaceAlpha})`, "important");
-        element.style.setProperty("background-image", `linear-gradient(135deg, rgba(255, 255, 255, ${highlightAlpha}), transparent 42%)`, "important");
+        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.22)", "important");
+        element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
       });
       root.dataset.liquidGlassReady = "true";
       instance.setActive(isLiquidGlassRootEligible(root) && !document.documentElement.classList.contains("is-scrolling"));

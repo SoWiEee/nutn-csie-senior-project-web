@@ -392,6 +392,14 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card--break { margin-top: var(--space-xs); padding-block: var(--space-sm); border-style: dashed; background: transparent; color: var(--color-faint); }
 .schedule-card--break::before { display: none; }
 .schedule-card--break strong { font-size: var(--text-sm); font-weight: 500; }
+.schedule-card--signal { overflow: clip; isolation: isolate; border-color: oklch(100% 0.005 255 / 0.24); background: linear-gradient(90deg, transparent 0 18%, oklch(78% 0.16 272 / 0.075) 18.1%, transparent 18.25%), linear-gradient(135deg, oklch(78% 0.16 272 / 0.16), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.045), transparent 72%), oklch(15% 0.032 258 / 0.84); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.16), inset 0 -1px 0 oklch(100% 0.005 255 / 0.06), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.28); -webkit-backdrop-filter: none; backdrop-filter: none; contain: paint; }
+.schedule-card--signal:hover { border-color: oklch(78% 0.16 272 / 0.72); background: linear-gradient(90deg, transparent 0 18%, oklch(78% 0.16 272 / 0.1) 18.1%, transparent 18.25%), linear-gradient(135deg, oklch(78% 0.16 272 / 0.2), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.06), transparent 72%), oklch(16% 0.036 258 / 0.88); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.2), inset 0 -1px 0 oklch(100% 0.005 255 / 0.08), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.32); }
+.schedule-card--signal::before { z-index: 1; width: 3.5rem; background: linear-gradient(90deg, var(--color-accent-strong), oklch(78% 0.16 272 / 0.12)); }
+.schedule-card--signal[data-card-light]::after { z-index: 0; background: radial-gradient(8rem circle at var(--card-pointer-x) var(--card-pointer-y), oklch(100% 0.005 255 / 0.095), transparent 74%); mix-blend-mode: screen; transition: opacity 120ms var(--ease-out); }
+.schedule-card__signal { position: absolute; right: 4rem; bottom: 0.7rem; z-index: 0; width: min(9rem, 24%); color: var(--color-accent-strong); opacity: 0.26; pointer-events: none; }
+.schedule-card__signal svg { display: block; width: 100%; height: auto; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.25; }
+.schedule-card--signal .schedule-card__trigger { position: relative; z-index: 1; }
+.schedule-card--signal .schedule-card__toggle { position: relative; z-index: 2; background: oklch(15% 0.032 258 / 0.68); }
 .project-dialog { width: min(calc(100% - 2rem), 42rem); max-width: none; padding: 0; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.5rem 4rem var(--color-shadow-strong); -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); color: var(--color-ink); opacity: 0; transform: scale(0.97); transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out); }
 .project-dialog[open] { opacity: 1; transform: scale(1); }
 .project-dialog::backdrop { background: oklch(5% 0.02 260 / 0.72); -webkit-backdrop-filter: blur(0.35rem); backdrop-filter: blur(0.35rem); }
@@ -438,8 +446,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .transport-item--card,
 .agenda-notice,
 .filter-bar--tracks,
-.hero__meta-card,
-.schedule-card:not(.schedule-card--break) {
+.hero__meta-card {
   position: relative;
   border-color: var(--color-glass-line);
   background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
@@ -450,7 +457,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 }
 
 .project-card:hover,
-.schedule-card:not(.schedule-card--break):hover {
+.hero__meta-card:hover {
   transform: none;
   border-color: var(--color-glass-line);
   background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
@@ -466,7 +473,6 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .agenda-notice,
   .filter-bar--tracks,
   .hero__meta-card,
-  .schedule-card:not(.schedule-card--break),
   .project-dialog {
     background: var(--color-panel-strong);
   }

@@ -49,7 +49,7 @@ py -m http.server 4173
 
 ## 開發與重新產生 bundle
 
-主要互動程式碼位於 `script.js`，由 `app-entry.js` 載入本地 LiquidGlass library 後產生瀏覽器使用的 `app.js`。修改 `script.js`、`app-entry.js` 或 `vendor/liquidglass/index.js` 後，請重新產生 bundle：
+主要互動程式碼位於 `script.js`，由 `app-entry.js` 載入本地 LiquidGlass library 後產生瀏覽器使用的 `app.js`。目前 LiquidGlass 僅用於首頁日期／地點大型卡片；時程表議程採用不依賴 WebGL 的 CSS／SVG Signal Glass，以保持捲動穩定。修改 `script.js`、`app-entry.js` 或 `vendor/liquidglass/index.js` 後，請重新產生 bundle：
 
 ```powershell
 npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp --outfile=app.js
