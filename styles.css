@@ -98,10 +98,6 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   backdrop-filter: none;
 }
 
-html.is-scrolling [data-liquid-glass] > canvas {
-  opacity: 0 !important;
-}
-
 [data-card-light]::after {
   position: absolute;
   z-index: 2;

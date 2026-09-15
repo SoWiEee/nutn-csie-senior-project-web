@@ -1904,12 +1904,10 @@ void main() {
         if (!this._active) return;
         this._scrolling = true;
         this._positionDirty = true;
-        document.documentElement.classList.add("is-scrolling");
         window.clearTimeout(this._scrollIdleTimer);
         this._scrollIdleTimer = window.setTimeout(() => {
           this._scrolling = false;
           this._positionDirty = true;
-          document.documentElement.classList.remove("is-scrolling");
         }, SCROLL_IDLE_DELAY);
       };
       this._onBlur = () => {
