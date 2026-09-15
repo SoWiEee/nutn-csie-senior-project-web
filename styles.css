@@ -98,6 +98,13 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   backdrop-filter: none;
 }
 
+[data-liquid-glass-root][data-liquid-glass-ready] [data-liquid-glass][data-liquid-glass-placeholder] {
+  background-color: rgba(10, 18, 32, 0.58) !important;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%) !important;
+  -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04) !important;
+  backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04) !important;
+}
+
 [data-card-light]::after {
   position: absolute;
   z-index: 2;

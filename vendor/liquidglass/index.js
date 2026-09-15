@@ -1941,6 +1941,7 @@ var LiquidGlass = class _LiquidGlass {
     this._glassSubtreeObserver = null;
     this._sortedChildren = [];
     this._glassCache = /* @__PURE__ */ new Map();
+    this._scrollPlaceholders = /* @__PURE__ */ new Set();
     this._glassContentImages = /* @__PURE__ */ new Map();
     this._glassLastSize = /* @__PURE__ */ new Map();
     this._buttonStates = /* @__PURE__ */ new Map();
@@ -2110,10 +2111,12 @@ var LiquidGlass = class _LiquidGlass {
       el.style.removeProperty("position");
       el.style.removeProperty("overflow");
       el.style.removeProperty("touch-action");
+      el.removeAttribute("data-liquid-glass-placeholder");
       el.classList.remove(BUTTON_CLASS);
     }
     this.glassCanvases.clear();
     this._glassCache.clear();
+    this._scrollPlaceholders.clear();
     this._glassContentImages.clear();
     this._glassLastSize.clear();
     for (const removers of this._buttonListeners.values()) {
@@ -2151,7 +2154,7 @@ var LiquidGlass = class _LiquidGlass {
         this._setupButtonListeners(el);
       }
       const canvas = document.createElement("canvas");
-      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;";
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:rgba(10,18,32,0.58);";
       el.insertBefore(canvas, el.firstChild);
       this.glassCanvases.set(el, canvas);
     }
@@ -2498,6 +2501,7 @@ var LiquidGlass = class _LiquidGlass {
       this._updateGlassCanvasSize(el);
     }
     this._glassCache.clear();
+    this._scrollPlaceholders.clear();
     if (this.captureGlassContent) {
       for (const el of this.glassSet) this._glassContentDirty.add(el);
     }
@@ -2524,7 +2528,8 @@ var LiquidGlass = class _LiquidGlass {
       `width:${elW + padW}px`,
       `height:${elH + padH}px`,
       "pointer-events:none",
-      "z-index:-1"
+      "z-index:-1",
+      "background:rgba(10,18,32,0.58)"
     ].join(";") + ";";
     this._glassLastSize.set(el, { w: elW, h: elH });
   }
@@ -2696,6 +2701,14 @@ var LiquidGlass = class _LiquidGlass {
     if (this._scrolling) {
       this._positionDirty = false;
       this._scrollDirty.clear();
+      // Scrolling pauses shader updates so the page can move without asking
+      // WebGL to redraw an incomplete stack of dependent glass surfaces.
+      for (const child of this._sortedChildren) {
+        if (!this.glassSet.has(child) || this._glassCache.has(child) || this._scrollPlaceholders.has(child)) continue;
+        const rect = child.getBoundingClientRect();
+        const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
+        if (isViewportVisible) this._markScrollPlaceholder(child);
+      }
       return;
     }
     if (this._userMarkedChanged.size > 0) {
@@ -2828,8 +2841,16 @@ var LiquidGlass = class _LiquidGlass {
         glassCanvas.height
       );
       this._glassCache.set(child, { centerX, centerY });
+      this._scrollPlaceholders.delete(child);
+      child.removeAttribute("data-liquid-glass-placeholder");
       renderedThisFrame.push({ rect: sampleRect });
     }
+  }
+  _markScrollPlaceholder(child) {
+    const target = this.glassCanvases.get(child);
+    if (!target || target.width <= 0 || target.height <= 0) return;
+    child.setAttribute("data-liquid-glass-placeholder", "true");
+    this._scrollPlaceholders.add(child);
   }
   /**
    * Build the local input scene for a glass panel by walking only the
