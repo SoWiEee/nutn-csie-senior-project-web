@@ -561,7 +561,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 }
 
 #view-home .hero__note {
-  max-width: 76ch;
+  max-width: 72ch;
   color: var(--color-muted);
 }
 
@@ -667,4 +667,388 @@ body .location {
 
 body .site-footer {
   background: linear-gradient(to bottom, transparent 0%, var(--color-header) 20%, var(--color-header) 100%);
+}
+
+/* Signal to System · homepage visual layer
+ * A quiet data system sits behind the existing copy and Liquid Glass cards.
+ * It uses restrained movement to show flow without turning the hero into a dashboard.
+ */
+#view-home .hero {
+  isolation: isolate;
+}
+
+#view-home .hero::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(90deg, var(--color-signal-scrim) 0%, transparent 72%);
+  opacity: 0.78;
+}
+
+#view-home .hero__grid {
+  z-index: 0;
+  opacity: 0.48;
+}
+
+#view-home .hero__bloom {
+  display: none;
+}
+
+#view-home .hero__system-visual {
+  position: absolute;
+  z-index: 0;
+  top: clamp(8rem, 17vh, 11rem);
+  right: clamp(-8rem, -5vw, -3rem);
+  width: min(58vw, 50rem);
+  height: min(32rem, 58vh);
+  pointer-events: none;
+  color: var(--color-signal-label);
+  mask-image: linear-gradient(90deg, transparent 0%, var(--color-ink) 8%, var(--color-ink) 80%, transparent 100%);
+  opacity: 0.84;
+}
+
+#view-home .hero__system-canvas {
+  position: relative;
+  height: 100%;
+  overflow: clip;
+  border-block: var(--rule-thin) solid var(--color-signal-line-soft);
+  background:
+    linear-gradient(135deg, var(--color-signal-scrim), transparent 54%),
+    radial-gradient(circle at 72% 42%, var(--color-signal-block-b), transparent 28%),
+    var(--color-signal-surface);
+}
+
+#view-home .hero__system-canvas::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image: linear-gradient(90deg, transparent 49.7%, var(--color-signal-grid) 50%, transparent 50.3%), linear-gradient(var(--color-signal-grid) 1px, transparent 1px);
+  background-size: 25% 100%, 100% 3rem;
+  opacity: 0.72;
+}
+
+#view-home .hero__system-canvas::after {
+  position: absolute;
+  top: 16%;
+  bottom: 12%;
+  left: 42%;
+  width: 1px;
+  content: "";
+  background: linear-gradient(to bottom, transparent, var(--color-signal-line) 42%, transparent);
+  opacity: 0.6;
+}
+
+#view-home .hero__system-block {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2xs);
+  align-content: start;
+  width: 9.5rem;
+  min-height: 7.4rem;
+  padding: var(--space-sm);
+  border: var(--rule-thin) solid var(--color-signal-line-soft);
+  background: linear-gradient(135deg, var(--color-signal-block-a), var(--color-signal-surface));
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), 0 1rem 2.5rem var(--color-glass-shadow);
+  transform: translate3d(0, 0, 0);
+}
+
+#view-home .hero__system-block i {
+  display: block;
+  min-height: 1.1rem;
+  border: var(--rule-thin) solid var(--color-signal-line-soft);
+  background: linear-gradient(135deg, var(--color-signal-block-c), var(--color-signal-block-b));
+  opacity: 0.7;
+  transform: translate3d(0, 0, 0);
+  animation: signal-block-pulse var(--dur-signal-slow) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-block i:nth-of-type(2) { animation-delay: -2.8s; }
+#view-home .hero__system-block i:nth-of-type(3) { animation-delay: -5.4s; }
+#view-home .hero__system-block i:nth-of-type(4) { animation-delay: -7.2s; }
+
+#view-home .hero__system-block--input {
+  top: 14%;
+  left: 2%;
+  background: linear-gradient(135deg, var(--color-signal-block-a), var(--color-signal-surface));
+}
+
+#view-home .hero__system-block--model {
+  top: 35%;
+  left: 36%;
+  width: 11rem;
+  min-height: 8.4rem;
+  background: linear-gradient(135deg, var(--color-signal-block-b), var(--color-signal-surface));
+  animation: signal-block-drift var(--dur-signal-slow) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-block--action {
+  right: 5%;
+  bottom: 10%;
+  width: 10rem;
+  min-height: 6.7rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  background: linear-gradient(135deg, var(--color-signal-block-c), var(--color-signal-surface));
+  animation: signal-block-drift-reverse var(--dur-signal-slow) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-wave {
+  position: absolute;
+  z-index: 0;
+  height: 3rem;
+  border-top: 1px solid var(--color-signal-line);
+  border-radius: 52% 48% 0 0;
+  opacity: 0.7;
+  transform: rotate(-8deg);
+  animation: signal-wave-flow var(--dur-signal) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-wave::after {
+  position: absolute;
+  top: -0.28rem;
+  left: 38%;
+  width: 0.55rem;
+  height: 0.55rem;
+  content: "";
+  border: 1px solid var(--color-signal-node);
+  border-radius: 50%;
+  background: var(--color-void);
+  box-shadow: 0 0 0 0.3rem var(--color-signal-block-a);
+  animation: signal-node-pulse var(--dur-signal) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-wave--one {
+  top: 31%;
+  left: 20%;
+  width: 27%;
+}
+
+#view-home .hero__system-wave--two {
+  top: 60%;
+  left: 54%;
+  width: 27%;
+  transform: rotate(9deg);
+  animation-delay: -3.5s;
+}
+
+#view-home .hero__system-node {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  place-items: center;
+  border: 1px solid var(--color-signal-line);
+  border-radius: 50%;
+  background: var(--color-void);
+  box-shadow: 0 0 0 0.4rem var(--color-signal-block-a);
+  animation: signal-node-pulse var(--dur-signal) var(--ease-in-out) infinite;
+}
+
+#view-home .hero__system-node span {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--color-signal-node);
+}
+
+#view-home .hero__system-node--one {
+  top: 33%;
+  left: 33%;
+}
+
+#view-home .hero__system-node--two {
+  top: 63%;
+  right: 26%;
+  animation-delay: -3.5s;
+}
+
+#view-home .hero__content {
+  z-index: 2;
+}
+
+#view-home .home-venue {
+  position: relative;
+  overflow: clip;
+}
+
+#view-home .home-venue::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 9rem;
+  content: "";
+  background: linear-gradient(180deg, var(--color-signal-surface), transparent);
+  opacity: 0.72;
+}
+
+#view-home .home-venue::after {
+  position: absolute;
+  right: -9rem;
+  bottom: 8rem;
+  width: 24rem;
+  height: 16rem;
+  content: "";
+  background: radial-gradient(circle, var(--color-signal-block-a), transparent 68%);
+  opacity: 0.22;
+}
+
+#view-home .home-venue > .shell {
+  position: relative;
+  z-index: 1;
+}
+
+#view-home .home-venue .section-head {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+#view-home .home-venue .section-head::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--rule-thin);
+  content: "";
+  background: linear-gradient(90deg, var(--color-signal-line), transparent 74%);
+  opacity: 0.62;
+}
+
+#view-home .venue-grid {
+  position: relative;
+  gap: var(--space-lg);
+}
+
+#view-home .venue-figure {
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.2rem 3rem var(--color-glass-shadow);
+}
+
+#view-home .venue-figure::after {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 2.5rem;
+  height: 0.75rem;
+  content: "";
+  border: var(--rule-thin) solid var(--color-signal-line);
+  background: linear-gradient(90deg, var(--color-signal-block-b), transparent);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+#view-home .venue-figure:nth-child(2)::after {
+  background: linear-gradient(90deg, var(--color-signal-block-c), transparent);
+}
+
+#view-home .transport-grid--compact {
+  position: relative;
+  gap: var(--space-lg);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: var(--rule-thin) solid var(--color-signal-line-soft);
+}
+
+#view-home .transport-grid--compact::before {
+  position: absolute;
+  top: var(--space-xs);
+  left: 0;
+  content: "ACCESS / ROUTES";
+  color: var(--color-signal-label);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+}
+
+#view-home .transport-item--card {
+  overflow: clip;
+  box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.2rem 3rem var(--color-glass-shadow);
+}
+
+#view-home .transport-item--card::after {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  content: "ROUTE 01";
+  color: var(--color-signal-label);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+}
+
+#view-home .transport-item--card:nth-child(2)::after {
+  content: "ROUTE 02";
+}
+
+#view-home .transport-item--card > .transport-item__content > p {
+  padding-right: 5rem;
+}
+
+@keyframes signal-block-pulse {
+  0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0); }
+  50% { opacity: 0.9; transform: translate3d(0.16rem, -0.08rem, 0); }
+}
+
+@keyframes signal-block-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0.35rem, -0.18rem, 0); }
+}
+
+@keyframes signal-block-drift-reverse {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-0.28rem, 0.14rem, 0); }
+}
+
+@keyframes signal-wave-flow {
+  0%, 100% { opacity: 0.42; transform: translate3d(-0.35rem, 0, 0) rotate(-8deg); }
+  50% { opacity: 0.82; transform: translate3d(0.45rem, -0.15rem, 0) rotate(-6deg); }
+}
+
+@keyframes signal-node-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@media (max-width: 48rem) {
+#view-home .hero__system-visual {
+    top: 36%;
+    right: -28%;
+    width: 106vw;
+    height: 19rem;
+    opacity: 0.48;
+  }
+
+  #view-home .hero__system-block {
+    width: 7.5rem;
+    min-height: 5.8rem;
+    padding: var(--space-xs);
+  }
+
+  #view-home .hero__system-block--model {
+    width: 8.6rem;
+    min-height: 6.6rem;
+  }
+
+  #view-home .hero__system-block--action {
+    width: 7.9rem;
+    min-height: 5.6rem;
+  }
+
+  #view-home .transport-item--card > .transport-item__content > p {
+    padding-right: 4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #view-home .hero__system-block,
+  #view-home .hero__system-block i,
+  #view-home .hero__system-wave,
+  #view-home .hero__system-node,
+  #view-home .hero__system-wave::after {
+    animation: none;
+  }
+
 }

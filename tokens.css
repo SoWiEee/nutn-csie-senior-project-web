@@ -39,6 +39,16 @@
   --color-grid: oklch(100% 0.005 255 / 0.018);
   --color-grid-mid: oklch(100% 0.005 255 / 0.06);
   --color-grid-strong: oklch(100% 0.005 255 / 0.08);
+  --color-signal-line: oklch(78% 0.08 244 / 0.68);
+  --color-signal-line-soft: oklch(72% 0.06 244 / 0.3);
+  --color-signal-node: oklch(88% 0.06 244 / 0.92);
+  --color-signal-surface: oklch(15% 0.026 252 / 0.78);
+  --color-signal-block-a: oklch(55% 0.12 252 / 0.3);
+  --color-signal-block-b: oklch(63% 0.1 238 / 0.26);
+  --color-signal-block-c: oklch(71% 0.08 224 / 0.22);
+  --color-signal-label: oklch(84% 0.03 244 / 0.62);
+  --color-signal-scrim: oklch(12% 0.018 260 / 0.64);
+  --color-signal-grid: oklch(100% 0.005 255 / 0.08);
   --color-ghost: oklch(100% 0.005 255 / 0.06);
   --color-shadow: oklch(10% 0.005 260 / 0.25);
   --color-shadow-strong: oklch(10% 0.005 260 / 0.3);
@@ -86,4 +96,6 @@
   --dur-fast: 160ms;
   --dur-base: 260ms;
   --dur-slow: 700ms;
+  --dur-signal: 7s;
+  --dur-signal-slow: 12s;
 }
