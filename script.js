@@ -204,11 +204,188 @@ const bindCardPointerLight = () => {
   }, { passive: true });
 };
 
+const backdropElement = document.querySelector('[data-site-backdrop]');
+const backdropCanvas = document.querySelector('[data-site-backdrop-canvas]');
+const backdropImage = document.querySelector('[data-site-backdrop-source]');
+
+const BACKDROP_VERTEX_SHADER = `
+  attribute vec2 a_position;
+  varying vec2 v_uv;
+  void main() {
+    v_uv = a_position * 0.5 + 0.5;
+    gl_Position = vec4(a_position, 0.0, 1.0);
+  }
+`;
+
+const BACKDROP_FRAGMENT_SHADER = `
+  precision mediump float;
+  varying vec2 v_uv;
+  uniform sampler2D u_image;
+  uniform vec2 u_image_size;
+  uniform vec2 u_view_size;
+  uniform float u_time;
+
+  vec2 cover_uv(vec2 uv) {
+    float view_ratio = u_view_size.x / max(u_view_size.y, 1.0);
+    float image_ratio = u_image_size.x / max(u_image_size.y, 1.0);
+    vec2 crop = vec2(1.0);
+    if (view_ratio > image_ratio) crop.y = view_ratio / image_ratio;
+    else crop.x = image_ratio / view_ratio;
+    return (uv - 0.5) * crop + 0.5;
+  }
+
+  float line(float value, float width) {
+    return 1.0 - smoothstep(0.0, width, abs(fract(value) - 0.5));
+  }
+
+  void main() {
+    vec2 uv = v_uv;
+    vec3 photo = texture2D(u_image, cover_uv(uv)).rgb;
+    vec3 midnight = vec3(0.018, 0.034, 0.066);
+    vec3 color = mix(midnight, photo * vec3(0.78, 0.84, 0.94), 0.64);
+
+    float grid_x = line(uv.x * 7.0, 0.016);
+    float grid_y = line(uv.y * 5.0, 0.016);
+    float grid = max(grid_x, grid_y) * 0.032;
+    color += vec3(0.12, 0.31, 0.7) * grid;
+
+    float drift = fract(u_time * 0.018);
+    float beam = exp(-abs(uv.x + uv.y * 0.42 - drift * 1.65 - 0.12) * 42.0);
+    float pulse = exp(-abs(uv.y - (0.56 + sin(u_time * 0.11) * 0.08)) * 72.0);
+    color += vec3(0.08, 0.25, 0.62) * beam * 0.085;
+    color += vec3(0.18, 0.4, 0.92) * pulse * 0.035;
+
+    float vignette = smoothstep(0.3, 0.92, distance(uv, vec2(0.5)));
+    color *= 1.0 - vignette * 0.34;
+    color = mix(color, midnight, 0.16);
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+const compileBackdropShader = (gl, type, source) => {
+  const shader = gl.createShader(type);
+  if (!shader) return null;
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    gl.deleteShader(shader);
+    return null;
+  }
+  return shader;
+};
+
+const initSiteBackdrop = async () => {
+  if (!backdropElement || !backdropCanvas || !backdropImage) return null;
+  if (!backdropImage.complete) {
+    await new Promise((resolve) => {
+      backdropImage.addEventListener('load', resolve, { once: true });
+      backdropImage.addEventListener('error', resolve, { once: true });
+    });
+  }
+
+  const gl = backdropCanvas.getContext('webgl', {
+    alpha: false,
+    antialias: false,
+    depth: false,
+    stencil: false,
+    powerPreference: 'high-performance',
+  });
+  if (!gl || !backdropImage.naturalWidth || !backdropImage.naturalHeight) {
+    backdropElement.classList.add('is-static-fallback');
+    return null;
+  }
+
+  const vertexShader = compileBackdropShader(gl, gl.VERTEX_SHADER, BACKDROP_VERTEX_SHADER);
+  const fragmentShader = compileBackdropShader(gl, gl.FRAGMENT_SHADER, BACKDROP_FRAGMENT_SHADER);
+  const program = gl.createProgram();
+  if (!vertexShader || !fragmentShader || !program) {
+    backdropElement.classList.add('is-static-fallback');
+    return null;
+  }
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  gl.deleteShader(vertexShader);
+  gl.deleteShader(fragmentShader);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    gl.deleteProgram(program);
+    backdropElement.classList.add('is-static-fallback');
+    return null;
+  }
+
+  const position = gl.createBuffer();
+  const texture = gl.createTexture();
+  const positionLocation = gl.getAttribLocation(program, 'a_position');
+  const imageLocation = gl.getUniformLocation(program, 'u_image');
+  const imageSizeLocation = gl.getUniformLocation(program, 'u_image_size');
+  const viewSizeLocation = gl.getUniformLocation(program, 'u_view_size');
+  const timeLocation = gl.getUniformLocation(program, 'u_time');
+  if (!position || !texture || positionLocation < 0 || !imageLocation || !imageSizeLocation || !viewSizeLocation || !timeLocation) {
+    gl.deleteProgram(program);
+    backdropElement.classList.add('is-static-fallback');
+    return null;
+  }
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, position);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, backdropImage);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+  gl.useProgram(program);
+  gl.uniform1i(imageLocation, 0);
+  gl.uniform2f(imageSizeLocation, backdropImage.naturalWidth, backdropImage.naturalHeight);
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+  let frame = 0;
+  let disposed = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const resize = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const width = Math.max(1, Math.round(window.innerWidth * dpr));
+    const height = Math.max(1, Math.round(window.innerHeight * dpr));
+    if (backdropCanvas.width === width && backdropCanvas.height === height) return;
+    backdropCanvas.width = width;
+    backdropCanvas.height = height;
+    gl.viewport(0, 0, width, height);
+  };
+  const draw = (time = 0) => {
+    if (disposed) return;
+    resize();
+    gl.useProgram(program);
+    gl.uniform2f(viewSizeLocation, backdropCanvas.width, backdropCanvas.height);
+    gl.uniform1f(timeLocation, time * 0.001);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  };
+  const render = (time) => {
+    draw(time);
+    if (!reducedMotion.matches && !document.hidden) frame = window.requestAnimationFrame(render);
+  };
+  const onResize = () => draw(0);
+  const onVisibility = () => {
+    window.cancelAnimationFrame(frame);
+    if (!document.hidden) render(performance.now());
+  };
+  window.addEventListener('resize', onResize, { passive: true });
+  document.addEventListener('visibilitychange', onVisibility, { passive: true });
+  backdropElement.classList.remove('is-static-fallback');
+  render(0);
+  return { canvas: backdropCanvas, image: backdropImage };
+};
+
+const siteBackdropReady = initSiteBackdrop().catch(() => {
+  backdropElement?.classList.add('is-static-fallback');
+  return null;
+});
 const getLiquidGlassRoots = () => [...document.querySelectorAll('[data-liquid-glass-root]')];
 const liquidGlassInstances = new Map();
 const liquidGlassPending = new Map();
 let liquidGlassConstructor = null;
-let liquidGlassScrollTimer = 0;
 let liquidGlassResizeTimer = 0;
 
 const getLiquidGlassRenderScale = () => {
@@ -235,13 +412,9 @@ const initializeLiquidGlassRoot = async (root) => {
   if (!liquidGlassConstructor || !isLiquidGlassRootEligible(root)) return null;
 
   const initialize = async () => {
-    const backdropImage = document.querySelector('[data-site-backdrop] img');
-    if (backdropImage && !backdropImage.complete) {
-      await new Promise((resolve) => {
-        backdropImage.addEventListener('load', resolve, { once: true });
-        backdropImage.addEventListener('error', resolve, { once: true });
-      });
-    }
+    const backdrop = await siteBackdropReady;
+    const sourceImage = backdrop?.image || backdropImage;
+    const sourceCanvas = backdrop?.canvas;
     const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
     if (!glassElements.length) return null;
     const defaults = {
@@ -267,7 +440,8 @@ const initializeLiquidGlassRoot = async (root) => {
     const instance = await liquidGlassConstructor.init({
       root,
       glassElements,
-      backgroundImage: backdropImage,
+      backgroundImage: sourceImage,
+      backgroundCanvas: sourceCanvas,
       renderScale: getLiquidGlassRenderScale(),
       active: true,
       captureGlassContent: false,
@@ -279,7 +453,7 @@ const initializeLiquidGlassRoot = async (root) => {
       element.style.setProperty('background-image', 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)', 'important');
     });
     root.dataset.liquidGlassReady = 'true';
-    instance.setActive(isLiquidGlassRootEligible(root) && !document.documentElement.classList.contains('is-scrolling'));
+    instance.setActive(isLiquidGlassRootEligible(root));
     liquidGlassInstances.set(root, instance);
     return instance;
   };
@@ -295,22 +469,13 @@ const initializeLiquidGlassRoot = async (root) => {
 
 const scheduleLiquidGlassForCurrentView = () => {
   if (!liquidGlassConstructor) return;
-  const scrolling = document.documentElement.classList.contains('is-scrolling');
   for (const root of getLiquidGlassRoots()) {
     const active = isLiquidGlassRootEligible(root);
-    liquidGlassInstances.get(root)?.setActive(active && !scrolling);
-    if (active && !scrolling && !liquidGlassInstances.has(root)) void initializeLiquidGlassRoot(root);
+    liquidGlassInstances.get(root)?.setActive(active);
+    if (active && !liquidGlassInstances.has(root)) void initializeLiquidGlassRoot(root);
   }
 };
 
-window.addEventListener('scroll', () => {
-  document.documentElement.classList.add('is-scrolling');
-  window.clearTimeout(liquidGlassScrollTimer);
-  liquidGlassScrollTimer = window.setTimeout(() => {
-    document.documentElement.classList.remove('is-scrolling');
-    scheduleLiquidGlassForCurrentView();
-  }, 150);
-}, { passive: true });
 window.addEventListener('resize', () => {
   window.clearTimeout(liquidGlassResizeTimer);
   liquidGlassResizeTimer = window.setTimeout(scheduleLiquidGlassForCurrentView, 120);

@@ -10,11 +10,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="tokens.css?v=1.0.4" />
-    <link rel="stylesheet" href="styles.css?v=1.0.19" />
+    <link rel="stylesheet" href="styles.css?v=1.0.20" />
   </head>
   <body>
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
-      <img src="images.jpg" alt="" />
+      <canvas class="site-backdrop__canvas" data-site-backdrop-canvas></canvas>
+      <img class="site-backdrop__source" data-site-backdrop-source src="images.jpg" alt="" />
     </div>
     <a class="skip-link" href="#main-content">跳到主要內容</a>
 
@@ -238,6 +239,6 @@
       </div>
     </footer>
 
-    <script src="app.js?v=1.0.12"></script>
+    <script src="app.js?v=1.0.13"></script>
   </body>
 </html>

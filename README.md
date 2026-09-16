@@ -25,7 +25,7 @@
 - **時程表**：以單日議程呈現兩個組別，可切換「智慧感知與訊號分析組」及「智慧推論與決策系統組」，時間戳採議程開始時間點排列。
 - **專題一覽**：三欄專題卡片、組別篩選、成員與指導老師資訊，以及投稿成功後可顯示的 TANET、ICS、CVGIP 等研討會標籤。
 - **專題詳細資訊**：在時程表或專題卡片上操作後，以 dialog 顯示專題題目、組別、成員、指導老師與投稿標籤。
-- **Liquid Glass**：首頁資訊卡與時程卡片共用單一 WebGL context；只初始化目前分頁、接近可視範圍的卡片。手機依裝置能力降低內部 render resolution，背景影像處理結果會跨卡片共用，同尺寸 texture 使用既有配置更新。捲動中暫停 shader 更新並保留已繪製的 glass surface；剛進入視窗、尚未完成首幀的卡片會暫用穩定的 CSS glass placeholder，避免露出藍色 substrate 或反覆閃爍，停止捲動後再恢復 WebGL 渲染。DOM capture 與預熱則延後到實際需要時執行。
+- **Liquid Glass**：首頁資訊卡使用本地 LiquidGlass WebGL renderer，主視覺背景則由單一固定 WebGL canvas 繪製，並共用同一張背景場景供卡片取樣。只初始化目前分頁、接近可視範圍的卡片；手機依裝置能力降低內部 render resolution。捲動中保留最後一個完整 glass surface，不切換成另一套 placeholder，避免灰色／藍色閃爍；停止捲動後才補上卡片相對背景位置的更新。DOM capture 與預熱則延後到實際需要時執行。
 - **互動與無障礙**：支援網址 hash 分頁、鍵盤操作、跳到主要內容、ARIA tab/dialog 語意、焦點樣式與響應式版面。
 
 ## 快速開始
@@ -49,7 +49,7 @@ py -m http.server 4173
 
 ## 開發與重新產生 bundle
 
-主要互動程式碼位於 `script.js`，由 `app-entry.js` 載入本地 LiquidGlass library 後產生瀏覽器使用的 `app.js`。目前 LiquidGlass 僅用於首頁日期／地點大型卡片；時程表議程採用不依賴 WebGL 的 CSS／SVG Signal Glass，以保持捲動穩定。修改 `script.js`、`app-entry.js` 或 `vendor/liquidglass/index.js` 後，請重新產生 bundle：
+主要互動程式碼位於 `script.js`，由 `app-entry.js` 載入本地 LiquidGlass library 後產生瀏覽器使用的 `app.js`。目前 LiquidGlass 僅用於首頁日期／地點大型卡片；首頁背景使用單一 WebGL canvas，時程表議程採用不依賴 WebGL 的 CSS／SVG Signal Glass，以保持捲動穩定。修改 `script.js`、`app-entry.js` 或 `vendor/liquidglass/index.js` 後，請重新產生 bundle：
 
 ```powershell
 npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp --outfile=app.js
@@ -87,7 +87,7 @@ npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp 
 ├── app.js                        # 瀏覽器實際載入的 bundled script
 ├── styles.css                    # 版面、元件、responsive 與 glass fallback 樣式
 ├── tokens.css                    # 顏色、字體、間距、圓角與動態 token
-├── images.jpg                    # 全頁校園背景圖
+├── images.jpg                    # WebGL 背景 canvas 的校園影像來源
 └── vendor/liquidglass/index.js   # 本地 LiquidGlass WebGL renderer
 ```
 

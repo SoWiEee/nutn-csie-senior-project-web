@@ -1877,7 +1877,7 @@ var LiquidGlass = class _LiquidGlass {
   // ────────────────────────────────────────────
   // Constructor (prefer LiquidGlass.init)
   // ────────────────────────────────────────────
-  constructor({ root, glassElements, backgroundImage = null, defaults = {}, renderScale = 1, active = true, captureGlassContent = true, prewarmCaptures = true }) {
+  constructor({ root, glassElements, backgroundImage = null, backgroundCanvas = null, defaults = {}, renderScale = 1, active = true, captureGlassContent = true, prewarmCaptures = true }) {
     /** Current frames-per-second (updated every frame). */
     this.fps = 0;
     this._running = false;
@@ -1904,11 +1904,6 @@ var LiquidGlass = class _LiquidGlass {
     this._positionDirty = false;
     this._scrolling = false;
     this._scrollIdleTimer = 0;
-    /**
-     * Visible panels queued by scroll. Rendering one per frame keeps
-     * multiple glass surfaces from blocking the same scroll frame.
-     */
-    this._scrollDirty = /* @__PURE__ */ new Set();
     /**
      * Per-element shader-render dirty set. Each entry is a glass
      * element that needs its WebGL pipeline to re-run on the next
@@ -1941,7 +1936,6 @@ var LiquidGlass = class _LiquidGlass {
     this._glassSubtreeObserver = null;
     this._sortedChildren = [];
     this._glassCache = /* @__PURE__ */ new Map();
-    this._scrollPlaceholders = /* @__PURE__ */ new Set();
     this._glassContentImages = /* @__PURE__ */ new Map();
     this._glassLastSize = /* @__PURE__ */ new Map();
     this._buttonStates = /* @__PURE__ */ new Map();
@@ -1966,6 +1960,7 @@ var LiquidGlass = class _LiquidGlass {
     if (!root) throw new Error("LiquidGlass: `root` element is required.");
     this.root = root;
     this.backgroundImage = backgroundImage;
+    this.backgroundCanvas = backgroundCanvas;
     this.defaults = { ...DEFAULTS, ...defaults };
     this.glassSet = new Set(Array.from(glassElements || []));
     this.glassCanvases = /* @__PURE__ */ new Map();
@@ -2111,12 +2106,10 @@ var LiquidGlass = class _LiquidGlass {
       el.style.removeProperty("position");
       el.style.removeProperty("overflow");
       el.style.removeProperty("touch-action");
-      el.removeAttribute("data-liquid-glass-placeholder");
       el.classList.remove(BUTTON_CLASS);
     }
     this.glassCanvases.clear();
     this._glassCache.clear();
-    this._scrollPlaceholders.clear();
     this._glassContentImages.clear();
     this._glassLastSize.clear();
     for (const removers of this._buttonListeners.values()) {
@@ -2501,7 +2494,6 @@ var LiquidGlass = class _LiquidGlass {
       this._updateGlassCanvasSize(el);
     }
     this._glassCache.clear();
-    this._scrollPlaceholders.clear();
     if (this.captureGlassContent) {
       for (const el of this.glassSet) this._glassContentDirty.add(el);
     }
@@ -2700,15 +2692,9 @@ var LiquidGlass = class _LiquidGlass {
     const isDragging = this._drag.active;
     if (this._scrolling) {
       this._positionDirty = false;
-      this._scrollDirty.clear();
-      // Scrolling pauses shader updates so the page can move without asking
-      // WebGL to redraw an incomplete stack of dependent glass surfaces.
-      for (const child of this._sortedChildren) {
-        if (!this.glassSet.has(child) || this._glassCache.has(child) || this._scrollPlaceholders.has(child)) continue;
-        const rect = child.getBoundingClientRect();
-        const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
-        if (isViewportVisible) this._markScrollPlaceholder(child);
-      }
+      // Preserve the last complete surface while the browser moves the page.
+      // A stale glass frame is less distracting than switching to a different
+      // fallback surface on every scroll gesture.
       return;
     }
     if (this._userMarkedChanged.size > 0) {
@@ -2726,20 +2712,10 @@ var LiquidGlass = class _LiquidGlass {
       for (const el of this.glassSet) {
         const rect = el.getBoundingClientRect();
         const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
-        if (isViewportVisible) this._scrollDirty.add(el);
+        if (isViewportVisible) this._glassDirty.add(el);
       }
     }
-    for (const el of this._scrollDirty) {
-      const rect = el.getBoundingClientRect();
-      const isViewportVisible = rect.width > 0 && rect.height > 0 && rect.bottom >= -SHADOW_PAD && rect.right >= -SHADOW_PAD && rect.left <= window.innerWidth + SHADOW_PAD && rect.top <= window.innerHeight + SHADOW_PAD;
-      if (!isViewportVisible) {
-        this._scrollDirty.delete(el);
-        continue;
-      }
-      this._scrollDirty.delete(el);
-      this._glassDirty.add(el);
-    }
-    const needsRender = this._glassDirty.size > 0 || this._hasDynamic || isDragging || this._scrollDirty.size > 0;
+    const needsRender = this._glassDirty.size > 0 || this._hasDynamic || isDragging;
     if (!needsRender) return;
     const dirtyTargets = new Set(this._glassDirty);
     this._glassDirty.clear();
@@ -2841,16 +2817,8 @@ var LiquidGlass = class _LiquidGlass {
         glassCanvas.height
       );
       this._glassCache.set(child, { centerX, centerY });
-      this._scrollPlaceholders.delete(child);
-      child.removeAttribute("data-liquid-glass-placeholder");
       renderedThisFrame.push({ rect: sampleRect });
     }
-  }
-  _markScrollPlaceholder(child) {
-    const target = this.glassCanvases.get(child);
-    if (!target || target.width <= 0 || target.height <= 0) return;
-    child.setAttribute("data-liquid-glass-placeholder", "true");
-    this._scrollPlaceholders.add(child);
   }
   /**
    * Build the local input scene for a glass panel by walking only the
@@ -2873,8 +2841,27 @@ var LiquidGlass = class _LiquidGlass {
    * DOM contributors. The package normally only sees direct children of
    * `root`, so this explicit layer lets a glass panel refract an image
    * that lives behind the whole page rather than a per-card duplicate.
-   */
+  */
   _drawBackgroundToScene(sampleRect, rootRect, dpr) {
+    const backgroundCanvas = this.backgroundCanvas;
+    if (backgroundCanvas && backgroundCanvas.width > 0 && backgroundCanvas.height > 0) {
+      const canvasScaleX = backgroundCanvas.width / Math.max(1, window.innerWidth);
+      const canvasScaleY = backgroundCanvas.height / Math.max(1, window.innerHeight);
+      const cssX = rootRect.left + sampleRect.x / dpr;
+      const cssY = rootRect.top + sampleRect.y / dpr;
+      this._sceneCtx.drawImage(
+        backgroundCanvas,
+        cssX * canvasScaleX,
+        cssY * canvasScaleY,
+        sampleRect.w / dpr * canvasScaleX,
+        sampleRect.h / dpr * canvasScaleY,
+        0,
+        0,
+        sampleRect.w,
+        sampleRect.h
+      );
+      return;
+    }
     const image = this.backgroundImage;
     if (!image || !image.complete || image.naturalWidth <= 0 || image.naturalHeight <= 0) return;
     const backdrop = getSharedBackdropRaster(image, dpr);
