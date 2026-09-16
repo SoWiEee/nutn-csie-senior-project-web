@@ -1947,7 +1947,8 @@ var LiquidGlass = class _LiquidGlass {
       velocityX: 0,
       velocityY: 0,
       hasPosition: false,
-      active: false
+      active: false,
+      hoverElement: null
     };
     this._drag = {
       active: false,
@@ -1990,11 +1991,14 @@ var LiquidGlass = class _LiquidGlass {
       }, SCROLL_IDLE_DELAY);
     };
     this._onBlur = () => {
+      if (this._pointer.hoverElement) {
+        this._glassDirty.add(this._pointer.hoverElement);
+      }
       this._pointer.hasPosition = false;
       this._pointer.active = false;
+      this._pointer.hoverElement = null;
       this._pointer.velocityX = 0;
       this._pointer.velocityY = 0;
-      this._globalDirty = true;
     };
   }
   // ────────────────────────────────────────────
@@ -2585,7 +2589,7 @@ var LiquidGlass = class _LiquidGlass {
   _handlePointerMove(e) {
     if (!this._active) return;
     if (!e.pointerType || e.pointerType === "mouse") {
-      const wasOverGlass = this._pointer.active;
+      const previousHoverElement = this._pointer.hoverElement;
       const now = performance.now();
       if (this._pointer.hasPosition && this._pointer.lastTime > 0) {
         const dt = Math.max(8, now - this._pointer.lastTime);
@@ -2598,12 +2602,16 @@ var LiquidGlass = class _LiquidGlass {
       this._pointer.clientY = e.clientY;
       this._pointer.lastTime = now;
       this._pointer.hasPosition = true;
-      const isOverGlass = [...this.glassSet].some((el) => {
+      const hoveredGlass = [...this.glassSet].find((el) => {
         const rect = el.getBoundingClientRect();
         return e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
       });
-      this._pointer.active = isOverGlass;
-      if (wasOverGlass || isOverGlass) this._globalDirty = true;
+      this._pointer.active = Boolean(hoveredGlass);
+      this._pointer.hoverElement = hoveredGlass || null;
+      if (previousHoverElement && previousHoverElement !== hoveredGlass) {
+        this._glassDirty.add(previousHoverElement);
+      }
+      if (hoveredGlass) this._glassDirty.add(hoveredGlass);
     }
     if (!this._drag.active) {
       for (const el2 of this.glassSet) {
@@ -2720,7 +2728,11 @@ var LiquidGlass = class _LiquidGlass {
     const dirtyTargets = new Set(this._glassDirty);
     this._glassDirty.clear();
     const renderedThisFrame = [];
-    for (const child of this._sortedChildren) {
+    const priorityElement = this._pointer.hoverElement;
+    const renderOrder = priorityElement && dirtyTargets.has(priorityElement)
+      ? [priorityElement, ...this._sortedChildren.filter((child) => child !== priorityElement)]
+      : this._sortedChildren;
+    for (const child of renderOrder) {
       if (!this.glassSet.has(child)) continue;
       this._renderGlassElement(
         child,
@@ -2768,12 +2780,13 @@ var LiquidGlass = class _LiquidGlass {
     const glassCanvas = this.glassCanvases.get(child);
     const isBeingDragged = isDragging && this._drag.element === child;
     const sampleRect = this._getPixelRect(elRect, rootRect, dpr, SHADOW_PAD);
+    const elementRect = this._getPixelRect(elRect, rootRect, dpr);
     const cached = this._glassCache.get(child);
     const posChanged = !cached || Math.abs(cached.centerX - centerX) > 0.5 || Math.abs(cached.centerY - centerY) > 0.5;
     const hasDynamicContributors = this._hasDynamic && this._glassHasDynamicContributors(child, sampleRect, rootRect, dpr);
     let priorGlassChanged = false;
     for (const r of renderedThisFrame) {
-      if (_LiquidGlass._rectsIntersect(r.rect, sampleRect)) {
+      if (_LiquidGlass._rectsIntersect(r.rect, sampleRect) && _LiquidGlass._rectsIntersect(r.elementRect, elementRect)) {
         priorGlassChanged = true;
         break;
       }
@@ -2817,7 +2830,7 @@ var LiquidGlass = class _LiquidGlass {
         glassCanvas.height
       );
       this._glassCache.set(child, { centerX, centerY });
-      renderedThisFrame.push({ rect: sampleRect });
+      renderedThisFrame.push({ rect: sampleRect, elementRect });
     }
   }
   /**
