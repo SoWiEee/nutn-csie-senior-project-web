@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="tokens.css?v=1.0.4" />
-    <link rel="stylesheet" href="styles.css?v=1.0.17" />
+    <link rel="stylesheet" href="styles.css?v=1.0.19" />
   </head>
   <body>
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
@@ -73,7 +73,7 @@
             <div class="hero__meta" aria-label="展覽資訊" data-liquid-glass-root>
               <div class="hero__meta-card hero__meta-card--date" data-liquid-glass data-card-light>
                 <strong>日期</strong>
-                <p>2025-12-13</p>
+                <p>2026-12-12</p>
                 <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
               </div>
               <div class="hero__meta-card hero__meta-card--venue" data-liquid-glass data-card-light>
@@ -88,23 +88,26 @@
             <button class="text-button" type="button" data-view="projects">瀏覽 17 組專題 <span aria-hidden="true">↗</span></button>
           </div>
         </div>
-        <div class="hero__edge-label" aria-hidden="true">SCROLL TO EXPLORE <span>↓</span></div>
       </section>
 
       <section class="home-venue section" aria-labelledby="home-venue-title">
         <div class="shell">
           <div class="section-head">
             <div>
-              <p class="eyebrow">VENUE / LAST YEAR DATA</p>
+              <p class="eyebrow">VENUE / 2026</p>
               <h2 id="home-venue-title">展場資訊</h2>
             </div>
-            <p class="section-head__aside">府城校區・文薈樓地下一樓<br />交通資訊沿用去年公開頁面</p>
+            <p class="section-head__aside">府城校區・文薈樓地下一樓<br />2026 展場交通資訊</p>
           </div>
           <div class="venue-grid">
             <figure class="venue-figure" data-card-light><img src="https://csie.nutn.edu.tw/site/project/115/image/venue/SchoolAddress.png" alt="國立臺南大學校址示意圖" loading="lazy" /><figcaption>國立臺南大學校址示意圖</figcaption></figure>
             <figure class="venue-figure" data-card-light><img src="https://csie.nutn.edu.tw/site/project/115/image/venue/ExhibitionFloorPlan.png" alt="國立臺南大學資訊工程學系畢業專題展平面圖" loading="lazy" /><figcaption>畢業專題展平面圖</figcaption></figure>
           </div>
-          <a class="venue-map-link" href="https://www.google.com/maps?q=22.9849283,120.2064554" target="_blank" rel="noreferrer">在 Google 地圖開啟 <span aria-hidden="true">↗</span></a>
+          <a class="venue-map-link" href="https://www.google.com/maps?q=22.9849283,120.2064554" target="_blank" rel="noreferrer">
+            <span class="venue-map-link__icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M19 10c0 4.4-7 10-7 10S5 14.4 5 10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10" r="2.25" /></svg></span>
+            <span>在 Google 地圖開啟</span>
+            <span class="venue-map-link__arrow" aria-hidden="true">↗</span>
+          </a>
           <div class="transport-grid transport-grid--compact" aria-label="交通方式">
             <article class="transport-item transport-item--card" data-card-light>
               <span class="transport-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M6 17h12M7 17v2m10-2v2M5 10h14l-1.2-4H6.2L5 10Zm0 0v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6M8 13h.01M16 13h.01" /></svg></span>
@@ -124,13 +127,13 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <p class="eyebrow">SCHEDULE / ONE DAY / LAST YEAR DATA</p>
+              <p class="eyebrow">SCHEDULE / 2026 / ONE DAY</p>
               <h2 id="agenda-title">時程表</h2>
             </div>
-            <p class="section-head__aside">去年展覽・單日議程<br />13:00 — 15:25</p>
+            <p class="section-head__aside">2026 展覽・單日議程<br />13:00 — 15:25</p>
           </div>
 
-          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>已載入 116 級 17 組名單；PDF 未列出兩大領域分類，議程先以 9／8 組暫排，確認後更新。</span></div>
+          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>116 級 17 組名單已載入；正式議程依兩大領域分組呈現。</span></div>
           <div class="filter-bar filter-bar--tracks" role="tablist" aria-label="議程組別切換">
             <button class="filter-chip filter-chip--track is-active" type="button" role="tab" aria-selected="true" data-schedule-filter="sense"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 4 10 2-5h7" /></svg></span><span class="filter-chip__label">智慧感知與訊號分析組</span></button>
             <button class="filter-chip filter-chip--track" type="button" role="tab" aria-selected="false" data-schedule-filter="decision"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="m8 11 8-4M8 13l8 4" /></svg></span><span class="filter-chip__label">智慧推論與決策系統組</span></button>
@@ -155,7 +158,7 @@
             <button class="filter-chip" type="button" role="tab" aria-selected="false" data-project-filter="sense">智慧感知與訊號分析組 <span>9 組</span></button>
             <button class="filter-chip" type="button" role="tab" aria-selected="false" data-project-filter="decision">智慧推論與決策系統組 <span>8 組</span></button>
           </div>
-          <p class="tag-note">PROJECT TAG SYSTEM ／ 題目先以 dummy text 佔位；只有確認投稿成功的專題會顯示 TANET、ICS、CVGIP 等研討會標籤。</p>
+          <p class="tag-note">PROJECT TAG SYSTEM ／ 確認投稿成功的專題會顯示 TANET、ICS、CVGIP 等研討會標籤。</p>
           <div class="project-grid project-grid--archive" data-project-list></div>
         </div>
       </section>
@@ -170,20 +173,20 @@
             <a class="button button--accent" href="#location">查看示意圖 <span aria-hidden="true">↗</span></a>
           </div>
           <div class="map-card" aria-label="會場示意圖">
-            <div class="map-card__top"><span>MAP / PREVIEW</span><span>南大・資工系</span></div>
+            <div class="map-card__top"><span>MAP / 2026</span><span>南大・資工系</span></div>
             <div class="map-diagram" aria-hidden="true">
               <span class="map-line map-line--one"></span><span class="map-line map-line--two"></span><span class="map-line map-line--three"></span>
               <span class="map-node map-node--one">A</span><span class="map-node map-node--two">B</span><span class="map-node map-node--three">C</span>
-              <span class="map-label map-label--one">入口待更新</span><span class="map-label map-label--two">展區</span><span class="map-label map-label--three">主會場待更新</span>
+              <span class="map-label map-label--one">入口</span><span class="map-label map-label--two">展區</span><span class="map-label map-label--three">主會場</span>
               <div class="map-crosshair"><i></i><i></i></div>
             </div>
-            <div class="map-card__legend"><span><i class="legend-dot legend-dot--accent"></i>主要動線</span><span><i class="legend-dot"></i>位置待更新</span></div>
+            <div class="map-card__legend"><span><i class="legend-dot legend-dot--accent"></i>主要動線</span><span><i class="legend-dot"></i>位置</span></div>
           </div>
         </div>
         <div class="shell transport-grid">
-          <div class="transport-item"><span class="transport-item__index">01</span><div><p>公車</p><span>路線資訊待更新</span></div><span class="transport-item__arrow">↗</span></div>
-          <div class="transport-item"><span class="transport-item__index">02</span><div><p>汽／機車停車</p><span>停車資訊待更新</span></div><span class="transport-item__arrow">↗</span></div>
-          <div class="transport-item"><span class="transport-item__index">03</span><div><p>展場平面圖</p><span>圖面資料待更新</span></div><span class="transport-item__arrow">↗</span></div>
+          <div class="transport-item"><span class="transport-item__index">01</span><div><p>公車</p><span>路線資訊</span></div><span class="transport-item__arrow">↗</span></div>
+          <div class="transport-item"><span class="transport-item__index">02</span><div><p>汽／機車停車</p><span>停車資訊</span></div><span class="transport-item__arrow">↗</span></div>
+          <div class="transport-item"><span class="transport-item__index">03</span><div><p>展場平面圖</p><span>圖面資料</span></div><span class="transport-item__arrow">↗</span></div>
         </div>
       </section>
     </main>
@@ -231,10 +234,10 @@
             </div>
           </div>
         </div>
-        <div class="footer-bottom"><span>© 2025 NUTN CSIE, All Rights Reserved.</span><a href="#top">回到頂端 ↑</a></div>
+        <div class="footer-bottom"><span>© 2026 NUTN CSIE, All Rights Reserved.</span><a href="#top">回到頂端 ↑</a></div>
       </div>
     </footer>
 
-    <script src="app.js?v=1.0.11"></script>
+    <script src="app.js?v=1.0.12"></script>
   </body>
 </html>

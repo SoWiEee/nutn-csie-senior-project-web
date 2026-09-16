@@ -15,23 +15,23 @@ const projectDialogTags = document.querySelector('#project-dialog-tags');
 const projectDialogClose = document.querySelector('[data-project-dialog-close]');
 
 const projects = [
-  { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: 'Dummy Project 01：專題題目待更新', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: 'Dummy Project 02：專題題目待更新', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'Dummy Project 03：專題題目待更新', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: [] },
-  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: 'Dummy Project 04：專題題目待更新', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
-  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'Dummy Project 05：專題題目待更新', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: 'Dummy Project 06：專題題目待更新', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
-  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: 'Dummy Project 07：專題題目待更新', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
-  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: 'Dummy Project 08：專題題目待更新', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
-  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'Dummy Project 09：專題題目待更新', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [] },
-  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: 'Dummy Project 10：專題題目待更新', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: 'Dummy Project 11：專題題目待更新', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: 'Dummy Project 12：專題題目待更新', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
-  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: 'Dummy Project 13：專題題目待更新', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
-  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: 'Dummy Project 14：專題題目待更新', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: 'Dummy Project 15：專題題目待更新', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
-  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: 'Dummy Project 16：專題題目待更新', members: '蕭友翰、鄭珽升', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: [] },
-  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: 'Dummy Project 17：專題題目待更新', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: [] },
+  { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
+  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: '第 03 組專題作品', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: [] },
+  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
+  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: '第 05 組專題作品', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [] },
+  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '第 07 組專題作品', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
+  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
+  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: '第 09 組專題作品', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [] },
+  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '第 10 組專題作品', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
+  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '第 11 組專題作品', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
+  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '第 12 組專題作品', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
+  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
+  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '第 15 組專題作品', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '第 16 組專題作品', members: '蕭友翰、鄭珽升', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: [] },
+  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '第 17 組專題作品', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: [] },
 ];
 
 const groupMeta = {
@@ -79,7 +79,7 @@ const openProjectDialog = (projectId) => {
   projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
   projectDialogMembers.textContent = project.members;
   projectDialogAdvisor.textContent = project.advisor;
-  projectDialogTags.innerHTML = tagMarkup(project.conferenceTags) || '<span class="conference-tag conference-tag--pending">投稿標籤待確認</span>';
+  projectDialogTags.innerHTML = tagMarkup(project.conferenceTags) || '<span class="conference-tag conference-tag--pending">—</span>';
   if (typeof projectDialog.showModal === 'function') {
     projectDialog.showModal();
   } else {

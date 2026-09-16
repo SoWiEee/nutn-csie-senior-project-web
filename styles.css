@@ -170,7 +170,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .hero__bloom { position: absolute; width: 25rem; aspect-ratio: 1; border-radius: 50%; filter: blur(5rem); opacity: 0.18; pointer-events: none; }
 .hero__bloom--one { top: 13%; right: 7%; background: var(--color-accent); }
 .hero__bloom--two { right: 31%; bottom: -22%; width: 18rem; background: var(--color-bloom-secondary); opacity: 0.1; }
-.hero__content { position: relative; z-index: 1; padding-top: clamp(7rem, 15vh, 10rem); padding-bottom: clamp(12rem, 24vh, 16rem); }
+.hero__content { position: relative; z-index: 1; padding-top: clamp(7rem, 15vh, 10rem); padding-bottom: clamp(6rem, 11vh, 8rem); }
 .eyebrow { margin: 0 0 var(--space-lg); color: var(--color-accent-strong); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.11em; line-height: 1.4; text-transform: uppercase; }
 .hero h1 { max-width: 24ch; min-width: 0; margin: 0; font-family: var(--font-display); font-size: clamp(2.35rem, 5vw, 4.4rem); font-weight: 600; letter-spacing: -0.09em; line-height: 0.98; overflow-wrap: anywhere; text-wrap: balance; }
 .hero h1 span { color: var(--color-accent-strong); }
@@ -187,8 +187,6 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .hero__meta-card--date > p { color: var(--color-faint); font-family: var(--font-display); font-size: clamp(1.35rem, 2.8vw, 2.35rem); letter-spacing: -0.05em; line-height: 1.1; }
 .hero__meta-card--venue > p { font-size: clamp(1.1rem, 2.2vw, 1.5rem); letter-spacing: -0.03em; line-height: 1.35; }
 .hero__meta-card-code { position: absolute; z-index: 0; right: -0.35rem; bottom: -1.25rem; color: var(--color-meta-code); font-family: var(--font-display); font-size: 7.5rem; font-weight: 700; letter-spacing: -0.14em; line-height: 1; pointer-events: none; }
-.hero__edge-label { position: absolute; right: 1.5rem; bottom: var(--space-xl); color: var(--color-faint); font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; writing-mode: vertical-rl; }
-.hero__edge-label span { display: inline-block; margin-top: var(--space-sm); color: var(--color-accent-strong); font-size: var(--text-md); }
 
 .section { padding: var(--space-4xl) 0; }
 .intro { position: relative; border-top: var(--rule-thin) solid var(--color-line); }
@@ -338,8 +336,12 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .venue-figure { min-width: 0; margin: 0; overflow: clip; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-md); background: var(--color-void); }
 .venue-figure img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--color-panel-strong); }
 .venue-figure figcaption { padding: var(--space-sm) var(--space-md); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }
-.venue-map-link { display: inline-flex; align-items: center; gap: var(--space-xs); margin-top: var(--space-md); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); transition: color var(--dur-fast) var(--ease-out); }
-.venue-map-link:hover { color: var(--color-accent-strong); }
+.venue-map-link { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: 2.75rem; margin-top: var(--space-md); padding: 0.65rem 0.9rem; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 58%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), 0 0.5rem 1.25rem var(--color-glass-shadow); color: var(--color-muted); font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.venue-map-link:hover, .venue-map-link:focus-visible { border-color: var(--color-accent); background: linear-gradient(135deg, var(--color-accent-soft), transparent 62%), var(--color-glass-panel); color: var(--color-ink); transform: translateY(-0.12rem); }
+.venue-map-link:active { transform: scale(0.96); }
+.venue-map-link__icon { display: grid; flex: 0 0 1.15rem; width: 1.15rem; height: 1.15rem; place-items: center; color: var(--color-accent-strong); }
+.venue-map-link__icon svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
+.venue-map-link__arrow { margin-left: auto; color: var(--color-accent-strong); font-family: var(--font-mono); font-size: var(--text-md); line-height: 1; }
 .transport-grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-2xl); }
 .transport-grid--compact .transport-item { padding: var(--space-lg); }
 .transport-item--card { grid-template-columns: auto minmax(0, 1fr); min-width: 0; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); }
@@ -624,10 +626,20 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   color: var(--color-accent-strong);
 }
 
+#view-home .venue-map-link:hover,
+#view-home .venue-map-link:focus-visible {
+  color: var(--color-ink);
+}
+
 #view-home .transport-item--card {
   border-radius: 0.45rem;
   background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
   box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
+}
+
+#view-home .transport-item--card[data-card-light]::after {
+  inset: 0;
+  border-radius: inherit;
 }
 
 #view-home .transport-item__icon {
@@ -713,11 +725,8 @@ body .site-footer {
   position: relative;
   height: 100%;
   overflow: clip;
-  border-block: var(--rule-thin) solid var(--color-signal-line-soft);
-  background:
-    linear-gradient(135deg, var(--color-signal-scrim), transparent 54%),
-    radial-gradient(circle at 72% 42%, var(--color-signal-block-b), transparent 28%),
-    var(--color-signal-surface);
+  border-block: 0;
+  background: transparent;
 }
 
 #view-home .hero__system-canvas::before {
@@ -952,39 +961,9 @@ body .site-footer {
   border-top: var(--rule-thin) solid var(--color-signal-line-soft);
 }
 
-#view-home .transport-grid--compact::before {
-  position: absolute;
-  top: var(--space-xs);
-  left: 0;
-  content: "ACCESS / ROUTES";
-  color: var(--color-signal-label);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
-}
-
 #view-home .transport-item--card {
   overflow: clip;
   box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.2rem 3rem var(--color-glass-shadow);
-}
-
-#view-home .transport-item--card::after {
-  position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
-  content: "ROUTE 01";
-  color: var(--color-signal-label);
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-}
-
-#view-home .transport-item--card:nth-child(2)::after {
-  content: "ROUTE 02";
-}
-
-#view-home .transport-item--card > .transport-item__content > p {
-  padding-right: 5rem;
 }
 
 @keyframes signal-block-pulse {
@@ -1037,9 +1016,6 @@ body .site-footer {
     min-height: 5.6rem;
   }
 
-  #view-home .transport-item--card > .transport-item__content > p {
-    padding-right: 4rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
