@@ -30,7 +30,7 @@
 
 ## 快速開始
 
-本專案是無框架的靜態網站，不需要安裝 npm dependencies。請使用 HTTP server 預覽：
+本專案是無框架的靜態網站，不需要安裝 npm dependencies。正式部署時只需要交付網站執行檔案；本地預覽仍建議使用 HTTP server：
 
 ```powershell
 npx --yes http-server -p 4173
@@ -88,8 +88,24 @@ npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp 
 ├── styles.css                    # 版面、元件、responsive 與 glass fallback 樣式
 ├── tokens.css                    # 顏色、字體、間距、圓角與動態 token
 ├── images.jpg                    # WebGL 背景 canvas 的校園影像來源
+├── assets/fonts/                 # 本地 WOFF2 字體資源
 └── vendor/liquidglass/index.js   # 本地 LiquidGlass WebGL renderer
 ```
+
+## 系辦交付檔案
+
+若只需要上傳可直接執行的版本，可交付以下檔案與資料夾，不需要安裝 Node.js 或重新產生 bundle：
+
+```text
+index.html
+styles.css
+tokens.css
+app.js
+images.jpg
+assets/fonts/
+```
+
+`app.js` 已包含 LiquidGlass 與網站互動程式；`script.js`、`app-entry.js` 與 `vendor/` 是後續維護與重新 bundle 時才需要保留的原始檔案。
 
 ## 瀏覽器支援
 

@@ -3134,9 +3134,15 @@ void main() {
       trigger.addEventListener("click", () => openProjectDialog(trigger.dataset.scheduleProject));
     });
   };
+  var bindProjectLinks = () => {
+    projectList?.querySelectorAll("[data-project-detail]").forEach((trigger) => {
+      trigger.addEventListener("click", () => openProjectDialog(trigger.dataset.projectDetail));
+    });
+  };
   var renderProjects = () => {
     if (!projectList) return;
     projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
+    <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
     <div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup("group", "GROUP", `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`)}${projectInfoMarkup("members", "MEMBERS", project.members)}${projectInfoMarkup("advisor", "ADVISOR", project.advisor)}</div><div class="tag-row" aria-label="\u7814\u8A0E\u6703\u6295\u7A3F\u6A19\u7C64">${tagMarkup(project.conferenceTags)}</div></div>
     <span class="project-card__arrow" aria-hidden="true">\u2197</span>
@@ -3527,6 +3533,7 @@ void main() {
   renderSchedule();
   renderProjects();
   bindScheduleProjectLinks();
+  bindProjectLinks();
   bindCardPointerLight();
   applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || "sense");
   headerState();

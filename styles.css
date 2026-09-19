@@ -215,6 +215,11 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .section-head .eyebrow { margin-bottom: var(--space-sm); }
 .section-head__aside { margin: 0; color: var(--color-muted); font-size: var(--text-sm); text-align: right; }
 .section-head__title { display: flex; align-items: baseline; min-width: 0; }
+.section-head__title-row { display: inline-flex; align-items: center; min-width: 0; gap: var(--space-sm); }
+.section-head__signal { display: inline-grid; flex: 0 0 4.5rem; width: 4.5rem; height: 1.5rem; place-items: center; color: var(--color-accent-strong); opacity: 0.72; }
+.section-head__signal svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.35; }
+.section-head__signal path { stroke-dasharray: 7 6; animation: section-signal-flow 8s linear infinite; }
+.section-head__signal circle { fill: var(--color-void); stroke-width: 1.5; }
 .section-head__title h2 { position: relative; z-index: 1; }
 .section-head__aside--overview { position: relative; z-index: 0; margin-inline-start: -0.5rem; color: var(--color-meta-code); font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; letter-spacing: -0.14em; line-height: 1; white-space: nowrap; }
 .day-tabs { display: flex; gap: var(--space-xs); margin-bottom: var(--space-lg); }
@@ -237,6 +242,9 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .text-link:hover { color: var(--color-accent-strong); }
 .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 .project-card { position: relative; min-width: 0; overflow: clip; border: var(--rule-thin) solid var(--color-line); border-radius: var(--radius-md); background: var(--color-panel); transition: border-color var(--dur-base) var(--ease-out); }
+.project-card__trigger { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+.project-card__trigger:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -4px; }
+.project-card__visual, .project-card__body, .project-card__arrow { pointer-events: none; }
 .project-card:hover { border-color: var(--color-accent); }
 .project-card--featured { grid-row: span 2; }
 .project-card__visual { position: relative; display: flex; align-items: end; height: 14rem; padding: var(--space-md); overflow: clip; background: radial-gradient(circle at 72% 28%, var(--color-accent-soft), transparent 28%), linear-gradient(135deg, var(--color-project-a-start), var(--color-project-a-end)); }
@@ -384,7 +392,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule--dense .schedule-row--head { grid-template-columns: 7.5rem minmax(0, 1fr); min-height: 2.5rem; padding: 0 0 var(--space-sm); border-bottom: var(--rule-thin) solid var(--color-line-strong); }
 .schedule-card { position: relative; display: flex; align-items: center; min-width: 0; min-height: 6rem; margin-bottom: var(--space-2xs); padding: var(--space-lg); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
 .schedule-card:last-child { margin-bottom: 0; }
-.schedule-time { position: relative; display: grid; width: 6.4rem; min-height: 3.25rem; margin-top: var(--space-xs); padding: var(--space-xs) 1.05rem var(--space-xs) var(--space-sm); place-items: center; align-self: start; justify-self: end; border: var(--rule-thin) solid var(--color-accent); border-radius: 0; background: var(--color-accent-soft); color: var(--color-accent-strong); clip-path: polygon(0 0, calc(100% - 0.85rem) 0, 100% 50%, calc(100% - 0.85rem) 100%, 0 100%); font-family: var(--font-mono); font-size: var(--text-md); line-height: 1.1; text-align: center; white-space: nowrap; }
+.schedule-time { position: relative; display: grid; width: 6.4rem; min-height: 3.25rem; margin-top: var(--space-xs); padding: var(--space-xs) 1.05rem var(--space-xs) var(--space-sm); place-items: center; align-self: start; justify-self: end; border: var(--rule-thin) solid var(--color-accent); border-radius: 0; background: var(--color-accent-soft); color: var(--color-accent-strong); clip-path: polygon(0 0, calc(100% - 0.85rem) 0, 100% 50%, calc(100% - 0.85rem) 100%, 0 100%); font-family: var(--font-mono); font-size: var(--text-md); font-variant-numeric: tabular-nums; line-height: 1.1; text-align: center; white-space: nowrap; }
 .schedule-time--break { margin-top: var(--space-sm); background: transparent; color: var(--color-faint); }
 .schedule-time--break + .schedule-card:hover { background: var(--color-panel-strong); }
 .schedule-card::before { position: absolute; top: -1px; left: var(--space-lg); width: 2rem; height: 2px; content: ""; background: var(--color-accent-strong); }
@@ -508,6 +516,11 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .project-dialog__shell { padding: var(--space-lg); }.project-dialog__field { grid-template-columns: 1fr; gap: var(--space-2xs); }.project-dialog__details { margin-top: var(--space-xl); }
   .project-grid--archive { grid-template-columns: 1fr; }
   .tag-note { margin-top: calc(var(--space-sm) * -0.5); }
+  .section-head__signal { flex-basis: 3.25rem; width: 3.25rem; }
+}
+
+@keyframes section-signal-flow {
+  to { stroke-dashoffset: -26; }
 }
 
 /* Controlled Blue Editorial — homepage only.
@@ -1027,6 +1040,7 @@ body .site-footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .section-head__signal path,
   #view-home .hero__system-block,
   #view-home .hero__system-block i,
   #view-home .hero__system-wave,
