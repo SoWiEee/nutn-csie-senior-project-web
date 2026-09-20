@@ -2151,7 +2151,11 @@ var LiquidGlass = class _LiquidGlass {
         this._setupButtonListeners(el);
       }
       const canvas = document.createElement("canvas");
-      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:rgba(10,18,32,0.58);";
+      // The shader canvas extends beyond the panel by SHADOW_PAD so it can
+      // render a complete edge.  It is clipped by the panel itself; a solid
+      // canvas background would therefore become a visible rectangular rim
+      // whenever the compositor moves the rounded card during scroll.
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:transparent;";
       el.insertBefore(canvas, el.firstChild);
       this.glassCanvases.set(el, canvas);
     }
@@ -2525,7 +2529,7 @@ var LiquidGlass = class _LiquidGlass {
       `height:${elH + padH}px`,
       "pointer-events:none",
       "z-index:-1",
-      "background:rgba(10,18,32,0.58)"
+      "background:transparent"
     ].join(";") + ";";
     this._glassLastSize.set(el, { w: elW, h: elH });
   }

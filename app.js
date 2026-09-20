@@ -2072,7 +2072,7 @@ void main() {
           this._setupButtonListeners(el);
         }
         const canvas = document.createElement("canvas");
-        canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:rgba(10,18,32,0.58);";
+        canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1;background:transparent;";
         el.insertBefore(canvas, el.firstChild);
         this.glassCanvases.set(el, canvas);
       }
@@ -2446,7 +2446,7 @@ void main() {
         `height:${elH + padH}px`,
         "pointer-events:none",
         "z-index:-1",
-        "background:rgba(10,18,32,0.58)"
+        "background:transparent"
       ].join(";") + ";";
       this._glassLastSize.set(el, { w: elW, h: elH });
     }
