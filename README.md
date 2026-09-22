@@ -25,7 +25,7 @@
 - **時程表**：以單日議程呈現兩個組別，可切換「智慧感知與訊號分析組」及「智慧推論與決策系統組」，時間戳採議程開始時間點排列。
 - **專題一覽**：三欄專題卡片、組別篩選、成員與指導老師資訊，以及投稿成功後可顯示的 TANET、ICS、CVGIP 等研討會標籤。
 - **專題詳細資訊**：在時程表或專題卡片上操作後，以 dialog 顯示專題題目、組別、成員、指導老師與投稿標籤。
-- **Liquid Glass**：首頁資訊卡使用本地 LiquidGlass WebGL renderer，主視覺背景則由單一固定 WebGL canvas 繪製，並共用同一張背景場景供卡片取樣。只初始化目前分頁、接近可視範圍的卡片；手機依裝置能力降低內部 render resolution。捲動中保留最後一個完整 glass surface，不切換成另一套 placeholder，避免灰色／藍色閃爍；停止捲動後才補上卡片相對背景位置的更新。DOM capture 與預熱則延後到實際需要時執行。
+- **Liquid Glass**：首頁資訊卡使用本地 LiquidGlass WebGL renderer，主視覺背景則由單一固定 WebGL canvas 繪製，並共用同一張背景場景供卡片取樣。只初始化目前分頁、接近可視範圍的卡片；手機依裝置能力降低內部 render resolution。捲動中保留完整 glass surface，隨畫面更新可見卡片並輪流處理兩張卡，不切換成另一套 placeholder；停止捲動後補上最後的位置更新。DOM capture 與預熱則延後到實際需要時執行。
 - **互動與無障礙**：支援網址 hash 分頁、鍵盤操作、跳到主要內容、ARIA tab/dialog 語意、焦點樣式與響應式版面。
 
 ## 快速開始
@@ -56,6 +56,8 @@ npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp 
 ```
 
 若只修改 `index.html`、`styles.css` 或 `tokens.css`，不需要重新 bundle。瀏覽器若持續使用舊版 CSS/JS，可重新整理頁面或清除快取。
+
+捲動回歸檢查可在本地 HTTP server 啟動後，以 Playwright CLI 開啟首頁，再執行 `run-code --filename tests/glass-scroll-probe.js`。
 
 ## 資料更新
 

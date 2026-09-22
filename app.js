@@ -32,6 +32,7 @@ var NutnSiteApp = (() => {
   var SHADOW_PAD = 20;
   var GLASS_RENDER_BUDGET = 1;
   var SCROLL_IDLE_DELAY = 120;
+  var SCROLL_RENDER_INTERVAL = 16;
   var glassRenderBudgetFrame = -1;
   var glassRenderBudgetUsed = 0;
   function claimGlassRenderBudget() {
@@ -1847,6 +1848,8 @@ void main() {
       this._positionDirty = false;
       this._scrolling = false;
       this._scrollIdleTimer = 0;
+      this._lastScrollRender = 0;
+      this._scrollPriorityIndex = 0;
       this._glassDirty = /* @__PURE__ */ new Set();
       this._userMarkedChanged = /* @__PURE__ */ new Set();
       this._capturingGlassContent = false;
@@ -2620,8 +2623,9 @@ void main() {
       const rootRect = this.root.getBoundingClientRect();
       const isDragging = this._drag.active;
       if (this._scrolling) {
-        this._positionDirty = false;
-        return;
+        const now = performance.now();
+        if (now - this._lastScrollRender < SCROLL_RENDER_INTERVAL) return;
+        this._lastScrollRender = now;
       }
       if (this._userMarkedChanged.size > 0) {
         for (const el of this._userMarkedChanged) {
@@ -2646,7 +2650,8 @@ void main() {
       const dirtyTargets = new Set(this._glassDirty);
       this._glassDirty.clear();
       const renderedThisFrame = [];
-      const priorityElement = this._pointer.hoverElement;
+      const scrollPriority = this._scrolling && this.glassSet.size > 1 ? [...this.glassSet][this._scrollPriorityIndex++ % this.glassSet.size] : null;
+      const priorityElement = scrollPriority || this._pointer.hoverElement;
       const renderOrder = priorityElement && dirtyTargets.has(priorityElement) ? [priorityElement, ...this._sortedChildren.filter((child) => child !== priorityElement)] : this._sortedChildren;
       for (const child of renderOrder) {
         if (!this.glassSet.has(child)) continue;

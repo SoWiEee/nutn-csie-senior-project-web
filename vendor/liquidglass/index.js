@@ -31,6 +31,7 @@ var BLUR_ITERATIONS = 6;
 var SHADOW_PAD = 20;
 var GLASS_RENDER_BUDGET = 1;
 var SCROLL_IDLE_DELAY = 120;
+var SCROLL_RENDER_INTERVAL = 16;
 var glassRenderBudgetFrame = -1;
 var glassRenderBudgetUsed = 0;
 function claimGlassRenderBudget() {
@@ -1904,6 +1905,8 @@ var LiquidGlass = class _LiquidGlass {
     this._positionDirty = false;
     this._scrolling = false;
     this._scrollIdleTimer = 0;
+    this._lastScrollRender = 0;
+    this._scrollPriorityIndex = 0;
     /**
      * Per-element shader-render dirty set. Each entry is a glass
      * element that needs its WebGL pipeline to re-run on the next
@@ -2702,12 +2705,12 @@ var LiquidGlass = class _LiquidGlass {
     const dpr = this._getRenderDpr();
     const rootRect = this.root.getBoundingClientRect();
     const isDragging = this._drag.active;
+    // Keep the last complete surface between updates, but refresh it while
+    // scrolling so the refraction follows the card instead of waiting for idle.
     if (this._scrolling) {
-      this._positionDirty = false;
-      // Preserve the last complete surface while the browser moves the page.
-      // A stale glass frame is less distracting than switching to a different
-      // fallback surface on every scroll gesture.
-      return;
+      const now = performance.now();
+      if (now - this._lastScrollRender < SCROLL_RENDER_INTERVAL) return;
+      this._lastScrollRender = now;
     }
     if (this._userMarkedChanged.size > 0) {
       for (const el of this._userMarkedChanged) {
@@ -2732,7 +2735,10 @@ var LiquidGlass = class _LiquidGlass {
     const dirtyTargets = new Set(this._glassDirty);
     this._glassDirty.clear();
     const renderedThisFrame = [];
-    const priorityElement = this._pointer.hoverElement;
+    // With a one-panel render budget, a fixed first card would starve its
+    // neighbour throughout continuous scrolling.
+    const scrollPriority = this._scrolling && this.glassSet.size > 1 ? [...this.glassSet][this._scrollPriorityIndex++ % this.glassSet.size] : null;
+    const priorityElement = scrollPriority || this._pointer.hoverElement;
     const renderOrder = priorityElement && dirtyTargets.has(priorityElement)
       ? [priorityElement, ...this._sortedChildren.filter((child) => child !== priorityElement)]
       : this._sortedChildren;
