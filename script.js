@@ -79,7 +79,8 @@ const openProjectDialog = (projectId) => {
   projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
   projectDialogMembers.textContent = project.members;
   projectDialogAdvisor.textContent = project.advisor;
-  projectDialogTags.innerHTML = tagMarkup(project.conferenceTags) || '<span class="conference-tag conference-tag--pending">—</span>';
+  projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
+  projectDialogTags.innerHTML = tagMarkup(project.conferenceTags);
   if (typeof projectDialog.showModal === 'function') {
     projectDialog.showModal();
   } else {
@@ -105,14 +106,16 @@ const renderProjects = () => {
   projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊"></button>
     <div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
-    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}${projectInfoMarkup('advisor', 'ADVISOR', project.advisor)}</div><div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div></div>
+    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}${projectInfoMarkup('advisor', 'ADVISOR', project.advisor)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div>` : ''}</div>
     <span class="project-card__arrow" aria-hidden="true">↗</span>
   </article>`).join('');
 };
 
 const setMenuState = (isOpen) => {
+  const restoreFocus = !isOpen && siteNav?.contains(document.activeElement) && window.matchMedia('(max-width: 48rem)').matches;
   menuToggle?.setAttribute('aria-expanded', String(isOpen));
   siteNav?.classList.toggle('is-open', isOpen);
+  if (restoreFocus) menuToggle?.focus();
 };
 
 const setView = (view, { updateHash = true } = {}) => {

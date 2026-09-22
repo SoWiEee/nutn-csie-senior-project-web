@@ -310,6 +310,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 
 @media (max-width: 48rem) {
   .shell { width: min(100% - 2rem, 42rem); }
+  .site-nav:not(.is-open) { visibility: hidden; }
   .site-header { top: 0; width: 100%; min-height: 3.5rem; padding-inline: var(--space-md); }
   .menu-toggle { display: inline-flex; align-items: center; gap: var(--space-sm); cursor: pointer; }.menu-toggle__label { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }.menu-toggle__icon { display: grid; gap: 0.25rem; width: 1.2rem; }.menu-toggle__icon i { display: block; height: 1px; background: var(--color-ink); transition: transform var(--dur-fast) var(--ease-out); }.menu-toggle[aria-expanded="true"] .menu-toggle__icon i:first-child { transform: translateY(2.5px) rotate(45deg); }.menu-toggle[aria-expanded="true"] .menu-toggle__icon i:last-child { transform: translateY(-2.5px) rotate(-45deg); }
   .site-nav { position: absolute; top: calc(100% + 0.5rem); right: 0; left: 0; display: grid; gap: 0; padding: var(--space-sm); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-md); background: var(--color-header-scrolled); box-shadow: 0 1rem 2rem var(--color-shadow-strong); opacity: 0; pointer-events: none; transform: translateY(-0.5rem); transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }.site-nav.is-open { opacity: 1; pointer-events: auto; transform: translateY(0); }.site-nav > a:not(.nav-cta) { padding: 0.75rem var(--space-sm); }.nav-cta { margin-top: var(--space-xs); }
@@ -404,7 +405,6 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card__trigger:hover .schedule-card__toggle, .schedule-card__trigger:focus-visible .schedule-card__toggle { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent-strong); }
 .conference-tag { display: inline-flex; align-items: center; min-height: 1.6rem; padding: 0 var(--space-xs); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-pill); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.04em; white-space: nowrap; }
 .conference-tag--accent { border-color: var(--color-accent); color: var(--color-accent-strong); }
-.conference-tag--pending { border-style: dashed; color: var(--color-faint); }
 .schedule-tag { display: inline-flex; align-items: center; min-height: 1.6rem; padding: 0 var(--space-xs); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-pill); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.04em; white-space: nowrap; }
 .schedule-tag--group { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent-strong); }
 .schedule-card--break { margin-top: var(--space-xs); padding-block: var(--space-sm); border-style: dashed; background: transparent; color: var(--color-faint); }
