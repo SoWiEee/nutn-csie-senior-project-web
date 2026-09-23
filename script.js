@@ -115,13 +115,21 @@ const setMenuState = (isOpen) => {
   if (restoreFocus) menuToggle?.focus();
 };
 
+const scrollToTopImmediately = () => {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, 0);
+  root.style.scrollBehavior = previousBehavior;
+};
+
 const setView = (view, { updateHash = true } = {}) => {
   const nextView = ['home', 'schedule', 'projects'].includes(view) ? view : 'home';
   viewPanels.forEach((panel) => { panel.hidden = panel.dataset.viewPanel !== nextView; panel.classList.toggle('is-active', panel.dataset.viewPanel === nextView); });
   viewTabs.forEach((tab) => { const active = tab.dataset.view === nextView; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', String(active)); });
   document.body.dataset.view = nextView;
   setMenuState(false);
-  if (updateHash) { history.replaceState(null, '', `#${nextView}`); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+  if (updateHash) { history.replaceState(null, '', `#${nextView}`); scrollToTopImmediately(); }
   scheduleLiquidGlassForCurrentView();
 };
 

@@ -3382,6 +3382,13 @@ void main() {
     siteNav?.classList.toggle("is-open", isOpen);
     if (restoreFocus) menuToggle?.focus();
   };
+  var scrollToTopImmediately = () => {
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = previousBehavior;
+  };
   var setView = (view, { updateHash = true } = {}) => {
     const nextView = ["home", "schedule", "projects"].includes(view) ? view : "home";
     viewPanels.forEach((panel) => {
@@ -3397,7 +3404,7 @@ void main() {
     setMenuState(false);
     if (updateHash) {
       history.replaceState(null, "", `#${nextView}`);
-      window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      scrollToTopImmediately();
     }
     scheduleLiquidGlassForCurrentView();
   };
