@@ -7,7 +7,7 @@
     <meta name="description" content="NUTN CSIE 116｜國立臺南大學資訊工程學系 116 級畢業專題成果展。" />
     <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
     <link rel="stylesheet" href="tokens.css?v=1.1.3" />
-  <link rel="stylesheet" href="styles.css?v=1.1.11" />
+  <link rel="stylesheet" href="styles.css?v=1.1.12" />
   </head>
   <body>
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
@@ -72,21 +72,23 @@
               <p>歡迎來到展場，看看 116 級如何把各種訊號，轉化為對世界的理解與下一步行動。</p>
             </div>
             <div class="hero__meta" aria-label="展覽資訊" data-liquid-glass-root>
-              <div class="hero__meta-card hero__meta-card--date" data-liquid-glass data-card-light>
+              <button class="hero__meta-card hero__meta-card--date" type="button" data-view="schedule" data-liquid-glass data-card-light aria-label="查看 2026 年 12 月 12 日星期六的展覽時程">
+                <span class="hero__meta-card-flow" aria-hidden="true"></span>
                 <strong>日期</strong>
-                <p>2026-12-12</p>
+                <p>2026-12-12 <small>SAT</small></p>
                 <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
-              </div>
-              <div class="hero__meta-card hero__meta-card--venue" data-liquid-glass data-card-light>
+              </button>
+              <button class="hero__meta-card hero__meta-card--venue" type="button" data-view="home" data-scroll-target="home-venue-title" data-liquid-glass data-card-light aria-label="前往展場與交通資訊">
+                <span class="hero__meta-card-flow" aria-hidden="true"></span>
                 <strong>地點</strong>
                 <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
                 <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
-              </div>
+              </button>
             </div>
           </div>
           <div class="hero__actions">
-            <button class="button" type="button" data-view="schedule">查看單日議程 <span aria-hidden="true">↗</span></button>
-            <button class="text-button" type="button" data-view="projects">瀏覽 17 組專題 <span aria-hidden="true">↗</span></button>
+            <button class="button" type="button" data-view="schedule">查看時程 <span aria-hidden="true">↗</span></button>
+            <button class="text-button" type="button" data-view="projects">瀏覽專題 <span aria-hidden="true">↗</span></button>
           </div>
         </div>
       </section>
@@ -139,7 +141,7 @@
             <p class="section-head__aside">2026 展覽・單日議程<br />13:00 — 15:25</p>
           </div>
 
-          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>116 級 17 組名單已載入；正式議程依兩大領域分組呈現。</span></div>
+          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>兩組議程同步進行，請依展場分區前往。</span></div>
           <div class="filter-bar filter-bar--tracks" role="tablist" aria-label="議程組別切換">
             <button class="filter-chip filter-chip--track is-active" type="button" role="tab" aria-selected="true" data-schedule-filter="sense"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 4 10 2-5h7" /></svg></span><span class="filter-chip__label">智慧感知與訊號分析組</span></button>
             <button class="filter-chip filter-chip--track" type="button" role="tab" aria-selected="false" data-schedule-filter="decision"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="m8 11 8-4M8 13l8 4" /></svg></span><span class="filter-chip__label">智慧推論與決策系統組</span></button>
@@ -247,6 +249,6 @@
       </div>
     </footer>
 
-  <script src="app.js?v=1.1.11"></script>
+  <script src="app.js?v=1.1.12"></script>
   </body>
 </html>
