@@ -81,6 +81,8 @@ npx --yes esbuild app-entry.js --bundle --format=iife --global-name=NutnSiteApp 
 
 ## 專案結構
 
+網站英數字使用 Geist，繁體中文使用 LINE Seed TW。LINE Seed TW 由 LY Corporation 發布，依 SIL Open Font License 1.1 授權；授權全文隨字型放在 `assets/fonts/LINE-SEED-OFL.txt`。
+
 ```text
 .
 ├── index.html                    # 單頁網站骨架與靜態內容

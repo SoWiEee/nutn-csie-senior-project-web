@@ -261,7 +261,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .project-card__visual--line { background: linear-gradient(135deg, var(--color-project-c-start), var(--color-project-c-end)); }
 .project-card__visual--line::after { width: 75%; height: 1px; border: 0; border-radius: 0; background: var(--color-accent-strong); box-shadow: 0 2rem 0 var(--color-accent-soft), 0 -2rem 0 var(--color-line-shadow); }
 .project-card__body { padding: var(--space-lg); }
-.project-card h3 { margin: 0; font-size: var(--text-xl); font-weight: 500; letter-spacing: -0.03em; }
+.project-card h3 { margin: 0; font-size: var(--text-xl); font-weight: 700; letter-spacing: -0.03em; }
 .project-card__body > p:last-child { max-width: 32ch; margin: var(--space-sm) 0 0; color: var(--color-muted); font-size: var(--text-sm); }
 .project-card__arrow { position: absolute; top: var(--space-lg); right: var(--space-lg); color: var(--color-muted); transition: color var(--dur-fast) var(--ease-out); }
 .project-card:hover .project-card__arrow { color: var(--color-accent-strong); }
@@ -347,7 +347,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 /* Single-page view switcher */
 .view-panel[hidden] { display: none !important; }
 .site-nav-tabs { position: absolute; left: 50%; display: flex; align-items: center; gap: var(--space-lg); transform: translateX(-50%); }
-.view-tab { padding: 0; border: 0; background: transparent; color: var(--color-muted); cursor: pointer; font-size: var(--text-md); white-space: nowrap; transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.view-tab { padding: 0; border: 0; background: transparent; color: var(--color-muted); cursor: pointer; font-size: var(--text-md); font-weight: 700; white-space: nowrap; transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
 .view-tab:active { transform: scale(0.98); }
 .view-tab:hover, .view-tab.is-active { color: var(--color-ink); }
 .view-tab.is-active { color: var(--color-accent-strong); }
@@ -386,7 +386,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .filter-chip span { color: var(--color-faint); font-family: var(--font-body); }
 .filter-chip:hover, .filter-chip.is-active { border-color: var(--color-accent); color: var(--color-ink); }
 .filter-chip.is-active { background: var(--color-accent-soft); }
-#view-projects .filter-chip { background: var(--color-panel); }
+#view-projects .filter-chip { min-height: 2.75rem; padding: 0.7rem 1.1rem; background: var(--color-panel); font-size: var(--text-sm); font-weight: 600; }
 #view-projects .filter-chip:hover { background: var(--color-panel-strong); }
 #view-projects .filter-chip.is-active { background: var(--color-accent-soft); }
 .filter-bar--tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2xs); padding: var(--space-2xs); border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); }
@@ -411,7 +411,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card::before { position: absolute; top: -1px; left: var(--space-lg); width: 2rem; height: 2px; content: ""; background: var(--color-accent-strong); }
 .schedule-card:hover { border-color: var(--color-accent); background: var(--color-panel); }
 .schedule-card__trigger { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-lg); width: 100%; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; transition: transform var(--dur-fast) var(--ease-out); }
-.schedule-card__trigger > strong { display: block; max-width: 56ch; font-size: var(--text-lg); font-weight: 500; line-height: 1.35; }
+.schedule-card__trigger > strong { display: block; max-width: 56ch; font-size: var(--text-lg); font-weight: 700; line-height: 1.35; }
 .schedule-card__trigger:active { transform: scale(0.995); }
 .schedule-card__toggle { display: grid; flex: 0 0 2rem; width: 2rem; height: 2rem; place-items: center; border: var(--rule-thin) solid var(--color-line-strong); border-radius: 50%; background: var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-lg); line-height: 1; transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
 .schedule-card__trigger:hover .schedule-card__toggle, .schedule-card__trigger:focus-visible .schedule-card__toggle { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent-strong); }

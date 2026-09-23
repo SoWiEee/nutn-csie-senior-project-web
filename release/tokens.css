@@ -1,4 +1,4 @@
-/* Hallmark · tokens · Midnight / atmospheric · NUTN CSIE 116 / 116 級成果展 · local Geist + IBM Plex Sans */
+/* Hallmark · tokens · Midnight / atmospheric · NUTN CSIE 116 / 116 級成果展 · local Geist + LINE Seed TW */
 
 @font-face {
   font-family: "Geist Variable";
@@ -9,67 +9,35 @@
 }
 
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "LINE Seed TW";
   font-style: normal;
   font-display: swap;
   font-weight: 400;
-  src: url("assets/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+  src: url("assets/fonts/line-seed-tw-regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "LINE Seed TW";
   font-style: normal;
   font-display: swap;
   font-weight: 500;
-  src: url("assets/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+  src: url("assets/fonts/line-seed-tw-regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "LINE Seed TW";
   font-style: normal;
   font-display: swap;
   font-weight: 600;
-  src: url("assets/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+  src: url("assets/fonts/line-seed-tw-bold.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "LINE Seed TW";
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url("assets/fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url("assets/fonts/noto-sans-tc-chinese-traditional-400-normal.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 500;
-  src: url("assets/fonts/noto-sans-tc-chinese-traditional-500-normal.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 600;
-  src: url("assets/fonts/noto-sans-tc-chinese-traditional-600-normal.woff2") format("woff2");
-}
-
-@font-face {
-  font-family: "Noto Sans TC";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 700;
-  src: url("assets/fonts/noto-sans-tc-chinese-traditional-700-normal.woff2") format("woff2");
+  src: url("assets/fonts/line-seed-tw-bold.woff2") format("woff2");
 }
 
 :root {
@@ -128,9 +96,9 @@
   --color-border-ghost: oklch(100% 0.005 255 / 0.13);
   --color-line-shadow: oklch(100% 0.005 255 / 0.12);
 
-  --font-display: "Geist Variable", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "IBM Plex Sans", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Sans", "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
