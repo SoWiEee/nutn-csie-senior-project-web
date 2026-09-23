@@ -1,0 +1,14 @@
+國立臺南大學資訊工程學系 116 級畢業專題成果展網站
+
+部署方式：
+1. 將本資料夾內的全部檔案與 assets 資料夾上傳到網站目錄。
+2. 保持目前的資料夾結構，不要只上傳 index.html。
+3. 網站入口為 index.html。
+
+建議使用 HTTP／HTTPS 網頁伺服器開啟；請勿直接以滑鼠雙擊 index.html 預覽，
+否則部分瀏覽器可能限制 WebGL、字型或 JavaScript 的載入。
+
+內容更新：
+- 背景圖片：images.jpg
+- 校址示意圖：assets/images/SchoolAddress.png
+- 展場平面圖：assets/images/ExhibitionFloorPlan.png
