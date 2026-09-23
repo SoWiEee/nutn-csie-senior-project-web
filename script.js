@@ -10,7 +10,6 @@ const projectDialog = document.querySelector('#project-dialog');
 const projectDialogTitle = document.querySelector('#project-dialog-title');
 const projectDialogGroup = document.querySelector('#project-dialog-group');
 const projectDialogMembers = document.querySelector('#project-dialog-members');
-const projectDialogAdvisor = document.querySelector('#project-dialog-advisor');
 const projectDialogTags = document.querySelector('#project-dialog-tags');
 const projectDialogClose = document.querySelector('[data-project-dialog-close]');
 
@@ -49,7 +48,6 @@ const groupName = (group) => groupMeta[group].title;
 const projectInfoIcons = {
   group: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" /></svg>',
   members: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3" /><path d="M3.5 19c.7-3 2.5-4.5 5.5-4.5s4.8 1.5 5.5 4.5M16 9a2.5 2.5 0 1 0 0-5M16 14.5c2.2 0 3.8 1.1 4.5 3.5" /></svg>',
-  advisor: '<svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="10.5" height="11" rx="1" /><path d="M6.5 8h4M6.5 11h3M6 20h12M8 15.5V20" /><circle cx="17.5" cy="9" r="2.5" /><path d="M14.5 16.5c.4-2 1.4-3 3-3s2.6 1 3 3" /></svg>',
 };
 const projectInfoMarkup = (icon, label, value) => `<p><span class="project-card__info-icon" aria-hidden="true">${projectInfoIcons[icon]}</span><span class="sr-only">${label}</span>${escapeHTML(value)}</p>`;
 
@@ -78,7 +76,6 @@ const openProjectDialog = (projectId) => {
   projectDialogTitle.textContent = project.title;
   projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
   projectDialogMembers.textContent = project.members;
-  projectDialogAdvisor.textContent = project.advisor;
   projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
   projectDialogTags.innerHTML = tagMarkup(project.conferenceTags);
   if (typeof projectDialog.showModal === 'function') {
@@ -106,7 +103,7 @@ const renderProjects = () => {
   projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊"></button>
     <div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
-    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}${projectInfoMarkup('advisor', 'ADVISOR', project.advisor)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div>` : ''}</div>
+    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div>` : ''}</div>
     <span class="project-card__arrow" aria-hidden="true">↗</span>
   </article>`).join('');
 };
