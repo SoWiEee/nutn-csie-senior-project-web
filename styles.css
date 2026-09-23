@@ -72,7 +72,7 @@ body::before {
 
 .site-backdrop.is-static-fallback::after { display: block; }
 .site-backdrop.is-static-fallback .site-backdrop__canvas { opacity: 0; }
-.site-backdrop.is-static-fallback .site-backdrop__source { opacity: 0.64; }
+.site-backdrop.is-static-fallback .site-backdrop__source { opacity: 0.4; }
 
 ::selection { background: var(--color-accent); color: var(--color-void); }
 

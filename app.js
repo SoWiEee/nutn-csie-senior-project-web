@@ -3527,7 +3527,7 @@ void main() {
     vec2 uv = v_uv;
     vec3 photo = texture2D(u_image, cover_uv(uv)).rgb;
     vec3 midnight = vec3(0.018, 0.034, 0.066);
-    vec3 color = mix(midnight, photo * vec3(0.78, 0.84, 0.94), 0.64);
+    vec3 color = mix(midnight, photo * vec3(0.78, 0.84, 0.94), 0.4);
 
     float grid_x = line(uv.x * 7.0, 0.016);
     float grid_y = line(uv.y * 5.0, 0.016);
