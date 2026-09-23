@@ -57,7 +57,7 @@ const renderSchedule = () => {
   if (!scheduleList) return;
   scheduleList.innerHTML = Object.entries(groupMeta).map(([group, meta]) => {
     const groupProjects = projects.filter((project) => project.group === group);
-    const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>中場休息</strong></article>` : ''}
+    const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>Break</strong></article>` : ''}
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
@@ -67,7 +67,7 @@ const renderSchedule = () => {
         <span class="schedule-card__signal" aria-hidden="true"><svg viewBox="0 0 96 24" focusable="false"><path d="M1 16h13l5-9 8 14 8-15 8 10h12l6-6 7 9h15" /></svg></span>
       </article>`).join('');
     return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
-      <div class="schedule schedule--dense"><div class="schedule-row schedule-row--head"><span>TIME</span><span>PROJECT / TEAM</span></div>${rows}</div>
+      <div class="schedule schedule--dense">${rows}</div>
     </section>`;
   }).join('');
 };
