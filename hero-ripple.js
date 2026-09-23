@@ -25,7 +25,8 @@ const FRAGMENT_SHADER = `
     if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) {
       gl_FragColor = vec4(0.0);
     } else {
-      gl_FragColor = texture2D(uText, uv);
+      vec4 text = texture2D(uText, uv);
+      gl_FragColor = vec4(text.rgb * text.a, text.a);
     }
   }
 `;
@@ -35,7 +36,7 @@ const TITLE_PADDING = 16;
 const rasterizeTitle = (title) => {
   const rect = title.getBoundingClientRect();
   const bitmap = document.createElement('canvas');
-  const scale = Math.min(devicePixelRatio || 1, 1.5);
+  const scale = Math.min(Math.max(devicePixelRatio || 1, 1.5), 2);
   bitmap.width = Math.ceil((rect.width + TITLE_PADDING * 2) * scale);
   bitmap.height = Math.ceil((rect.height + TITLE_PADDING * 2) * scale);
   const context = bitmap.getContext('2d');
@@ -55,7 +56,7 @@ const rasterizeTitle = (title) => {
       if (!line.length) return;
       const metrics = context.measureText(line.map(({ segment }) => segment).join(''));
       const first = line[0].glyph;
-      const baseline = first.top - rect.top + TITLE_PADDING + (first.height + metrics.fontBoundingBoxAscent - metrics.fontBoundingBoxDescent) / 2;
+      const baseline = first.top - rect.top + TITLE_PADDING + (first.height + metrics.fontBoundingBoxAscent - metrics.fontBoundingBoxDescent) / 2 + 1;
       for (const { segment, glyph } of line) context.fillText(segment, glyph.left - rect.left + TITLE_PADDING, baseline);
     };
     for (const { segment, index } of segmenter.segment(node.textContent)) {
@@ -164,9 +165,10 @@ export const initHeroRipple = () => {
     root.classList.remove('is-ripple-active');
     try {
       await document.fonts.ready;
+      const rect = title.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
       const bitmap = rasterizeTitle(title);
       if (version !== captureVersion) return;
-      const rect = title.getBoundingClientRect();
       canvas.width = bitmap.width;
       canvas.height = bitmap.height;
       canvas.style.left = `${-TITLE_PADDING}px`;
