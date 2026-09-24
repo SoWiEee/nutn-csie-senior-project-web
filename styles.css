@@ -726,6 +726,10 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
     gap: var(--space-lg);
   }
 
+  #view-home .hero__meta {
+    grid-template-columns: 1fr;
+  }
+
   #view-home .hero__bloom--one {
     top: 31%;
     right: -10rem;

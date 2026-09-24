@@ -3520,8 +3520,8 @@ void main() {
     float view_ratio = u_view_size.x / max(u_view_size.y, 1.0);
     float image_ratio = u_image_size.x / max(u_image_size.y, 1.0);
     vec2 crop = vec2(1.0);
-    if (view_ratio > image_ratio) crop.y = view_ratio / image_ratio;
-    else crop.x = image_ratio / view_ratio;
+    if (view_ratio > image_ratio) crop.y = image_ratio / view_ratio;
+    else crop.x = view_ratio / image_ratio;
     return (uv - 0.5) * crop + 0.5;
   }
 
