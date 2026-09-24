@@ -1,3 +1,86 @@
+const GLASS_DEBUG_PREFIX = '[DEBUG-glass-life-116]';
+const glassDebugEnabled = new URLSearchParams(window.location.search).get('debugGlass') === '1';
+const glassDebugEntries = [];
+let glassDebugPanel = null;
+let glassDebugSummary = null;
+let glassDebugOutput = null;
+let getGlassDebugSnapshot = () => ({ ready: false });
+
+const updateGlassDebugPanel = () => {
+  if (!glassDebugPanel || !glassDebugSummary || !glassDebugOutput) return;
+  glassDebugSummary.textContent = `Glass debug · ${glassDebugEntries.length} events`;
+  glassDebugOutput.textContent = glassDebugEntries.slice(-24).map((entry) => JSON.stringify(entry)).join('\n');
+  glassDebugOutput.scrollTop = glassDebugOutput.scrollHeight;
+};
+
+const recordGlassDebug = (event, details = {}) => {
+  if (!glassDebugEnabled) return;
+  const entry = {
+    wallTime: new Date().toISOString(),
+    elapsedMs: Math.round(performance.now()),
+    event,
+    visibility: document.visibilityState,
+    scrollY: Math.round(window.scrollY),
+    ...details,
+  };
+  glassDebugEntries.push(entry);
+  if (glassDebugEntries.length > 300) glassDebugEntries.shift();
+  console.info(GLASS_DEBUG_PREFIX, JSON.stringify(entry));
+  updateGlassDebugPanel();
+};
+
+const installGlassDebugPanel = () => {
+  if (!glassDebugEnabled || !document.body || glassDebugPanel) return;
+  const style = document.createElement('style');
+  style.textContent = `
+    [data-glass-debug-panel] { position: fixed; z-index: 2147483646; left: max(8px, env(safe-area-inset-left)); bottom: max(8px, env(safe-area-inset-bottom)); width: min(30rem, calc(100vw - 16px)); color: #eaf2ff; font: 12px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    [data-glass-debug-panel] details { overflow: hidden; border: 1px solid rgb(153 194 255 / 42%); border-radius: 10px; background: rgb(5 13 28 / 94%); box-shadow: 0 8px 28px rgb(0 0 0 / 30%); }
+    [data-glass-debug-panel] summary { min-height: 40px; padding: 10px 12px; cursor: pointer; font-weight: 700; touch-action: manipulation; }
+    [data-glass-debug-panel] [data-debug-actions] { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 10px 10px; }
+    [data-glass-debug-panel] button { min-height: 40px; padding: 0 10px; border: 1px solid rgb(153 194 255 / 30%); border-radius: 7px; background: #122546; color: inherit; font: inherit; touch-action: manipulation; }
+    [data-glass-debug-panel] pre { max-height: 32vh; overflow: auto; margin: 0; padding: 0 10px 10px; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+  `;
+  const panel = document.createElement('aside');
+  panel.dataset.glassDebugPanel = '';
+  const details = document.createElement('details');
+  const summary = document.createElement('summary');
+  const actions = document.createElement('div');
+  actions.dataset.debugActions = '';
+  const captureButton = document.createElement('button');
+  captureButton.type = 'button';
+  captureButton.textContent = '記錄目前狀態';
+  captureButton.addEventListener('click', () => recordGlassDebug('manual-snapshot', { snapshot: getGlassDebugSnapshot() }));
+  const copyButton = document.createElement('button');
+  copyButton.type = 'button';
+  copyButton.textContent = '複製紀錄';
+  copyButton.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(glassDebugEntries, null, 2));
+      copyButton.textContent = '已複製';
+    } catch {
+      copyButton.textContent = '展開後長按紀錄複製';
+    }
+  });
+  const output = document.createElement('pre');
+  output.setAttribute('aria-live', 'polite');
+  actions.append(captureButton, copyButton);
+  details.append(summary, actions, output);
+  panel.append(details);
+  document.head.append(style);
+  document.body.append(panel);
+  glassDebugPanel = panel;
+  glassDebugSummary = summary;
+  glassDebugOutput = output;
+  updateGlassDebugPanel();
+};
+
+if (glassDebugEnabled) {
+  window.NutnGlassDebug = Object.freeze({
+    enabled: true,
+    record: recordGlassDebug,
+  });
+}
+
 const header = document.querySelector('[data-header]');
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('#site-nav');
@@ -8,6 +91,7 @@ const scheduleList = document.querySelector('[data-schedule-list]');
 const projectList = document.querySelector('[data-project-list]');
 const projectDialog = document.querySelector('#project-dialog');
 const projectDialogTitle = document.querySelector('#project-dialog-title');
+const projectDialogEnglishTitle = document.querySelector('#project-dialog-title-en');
 const projectDialogGroup = document.querySelector('#project-dialog-group');
 const projectDialogMembers = document.querySelector('#project-dialog-members');
 const projectDialogTags = document.querySelector('#project-dialog-tags');
@@ -16,21 +100,21 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: '第 03 組專題作品', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: [] },
+  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: '運用Transformer結合光流預測行人與行車路徑實現用路人安全之研究', titleEn: 'Enhancing Road User Safety by Predicting Pedestrian and Vehicle Trajectories Using Transformer-Integrated Optical Flow', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
   { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: '第 05 組專題作品', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [] },
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '第 07 組專題作品', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
-  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: '第 09 組專題作品', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [] },
-  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '第 10 組專題作品', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
+  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: '自然語言導向的三維視覺理解與物件定位', titleEn: 'Natural Language-Guided 3D Visual Understanding and Object Localization', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [] },
+  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '基於 VGGT 之多視角 3D 重建改進', titleEn: 'Enhancing VGGT for Efficient Multi-View 3D Reconstruction', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '第 11 組專題作品', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '第 12 組專題作品', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
+  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫診斷治療系統', titleEn: 'Traditional Chinese Medicine Diagnosis and Treatment System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
   { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '第 15 組專題作品', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
-  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '第 16 組專題作品', members: '蕭友翰、鄭珽升', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: [] },
-  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '第 17 組專題作品', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: [] },
+  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於Slurm與Kubernetes架構下AI伺服器GPU工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '蕭友翰、鄭珽升', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'] },
+  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '運動教練', titleEn: 'Sports Coach', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'] },
 ];
 
 const groupMeta = {
@@ -74,6 +158,8 @@ const openProjectDialog = (projectId) => {
   const project = projects.find((item) => item.id === projectId);
   if (!project || !projectDialog) return;
   projectDialogTitle.textContent = project.title;
+  projectDialogEnglishTitle.textContent = project.titleEn || '';
+  projectDialogEnglishTitle.hidden = !project.titleEn;
   projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
   projectDialogMembers.textContent = project.members;
   projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
@@ -265,6 +351,7 @@ const bindCardPointerLight = () => {
 const backdropElement = document.querySelector('[data-site-backdrop]');
 const backdropCanvas = document.querySelector('[data-site-backdrop-canvas]');
 const backdropImage = document.querySelector('[data-site-backdrop-source]');
+let backdropGl = null;
 
 const BACKDROP_VERTEX_SHADER = `
   attribute vec2 a_position;
@@ -349,8 +436,25 @@ const initSiteBackdrop = async () => {
     powerPreference: 'high-performance',
   });
   if (!gl || !backdropImage.naturalWidth || !backdropImage.naturalHeight) {
+    recordGlassDebug('backdrop-unavailable', {
+      hasWebGL: Boolean(gl),
+      imageWidth: backdropImage.naturalWidth,
+      imageHeight: backdropImage.naturalHeight,
+    });
     backdropElement.classList.add('is-static-fallback');
     return null;
+  }
+  backdropGl = gl;
+  if (glassDebugEnabled) {
+    backdropCanvas.addEventListener('webglcontextlost', (event) => {
+      recordGlassDebug('backdrop-context-lost', {
+        cancelable: event.cancelable,
+        snapshot: getGlassDebugSnapshot(),
+      });
+    });
+    backdropCanvas.addEventListener('webglcontextrestored', () => {
+      recordGlassDebug('backdrop-context-restored', { snapshot: getGlassDebugSnapshot() });
+    });
   }
 
   const vertexShader = compileBackdropShader(gl, gl.VERTEX_SHADER, BACKDROP_VERTEX_SHADER);
@@ -438,6 +542,7 @@ const initSiteBackdrop = async () => {
 
 const siteBackdropReady = initSiteBackdrop().catch(() => {
   backdropElement?.classList.add('is-static-fallback');
+  recordGlassDebug('backdrop-init-failed', { fallbackClass: backdropElement?.classList.contains('is-static-fallback') || false });
   return null;
 });
 const getLiquidGlassRoots = () => [...document.querySelectorAll('[data-liquid-glass-root]')];
@@ -445,6 +550,135 @@ const liquidGlassInstances = new Map();
 const liquidGlassPending = new Map();
 let liquidGlassConstructor = null;
 let liquidGlassResizeTimer = 0;
+
+const readCanvasSample = (canvas) => {
+  if (!canvas) return { present: false };
+  try {
+    const context = canvas.getContext('2d');
+    if (!context) return { present: true, width: canvas.width, height: canvas.height, context: 'unavailable' };
+    const x = Math.max(0, Math.floor(canvas.width / 2));
+    const y = Math.max(0, Math.floor(canvas.height / 2));
+    const rgba = context.getImageData(x, y, 1, 1).data;
+    return { present: true, width: canvas.width, height: canvas.height, centerRGBA: Array.from(rgba) };
+  } catch (error) {
+    return { present: true, width: canvas.width, height: canvas.height, sampleError: error.name || 'Error' };
+  }
+};
+
+getGlassDebugSnapshot = () => ({
+  fallbackFlag: document.documentElement.dataset.liquidGlassFallback || null,
+  backdrop: {
+    fallbackClass: backdropElement?.classList.contains('is-static-fallback') || false,
+    contextLost: backdropGl?.isContextLost() ?? null,
+    size: backdropCanvas ? [backdropCanvas.width, backdropCanvas.height] : null,
+  },
+  glassRoots: getLiquidGlassRoots().map((root) => {
+    const instance = liquidGlassInstances.get(root);
+    return {
+      id: root.id || null,
+      ready: root.dataset.liquidGlassReady === 'true',
+      active: instance?._active ?? null,
+      scrolling: instance?._scrolling ?? null,
+      pointer: instance?._pointer ? {
+        hasPosition: instance._pointer.hasPosition,
+        active: instance._pointer.active,
+        hoveredCard: typeof instance._pointer.hoverElement?.className === 'string' ? instance._pointer.hoverElement.className : null,
+        x: Math.round(instance._pointer.clientX || 0),
+        y: Math.round(instance._pointer.clientY || 0),
+        velocityX: Math.round(instance._pointer.velocityX || 0),
+        velocityY: Math.round(instance._pointer.velocityY || 0),
+      } : null,
+      rendererLostFlag: instance?.renderer?.contextLost ?? null,
+      rendererContextLost: instance?.renderer?.gl?.isContextLost?.() ?? null,
+      cards: [...root.querySelectorAll('[data-liquid-glass]')].map((card) => ({
+        canvas: readCanvasSample(card.querySelector('canvas')),
+        backgroundColor: getComputedStyle(card).backgroundColor,
+        backgroundImage: getComputedStyle(card).backgroundImage,
+      })),
+    };
+  }),
+  lenis: window.NutnLenis ? {
+    scrolling: window.NutnLenis.isScrolling,
+    scroll: Math.round(window.NutnLenis.scroll || 0),
+    animatedScroll: Math.round(window.NutnLenis.animatedScroll || 0),
+    targetScroll: Math.round(window.NutnLenis.targetScroll || 0),
+  } : { enabled: false },
+});
+
+const attachLiquidGlassDebugListeners = (instance) => {
+  if (!glassDebugEnabled || !instance.renderer?.canvas) return;
+  const canvas = instance.renderer.canvas;
+  canvas.addEventListener('webglcontextlost', (event) => {
+    recordGlassDebug('glass-context-lost', {
+      cancelable: event.cancelable,
+      defaultPrevented: event.defaultPrevented,
+      snapshot: getGlassDebugSnapshot(),
+    });
+  });
+  canvas.addEventListener('webglcontextrestored', () => {
+    recordGlassDebug('glass-context-restored', { snapshot: getGlassDebugSnapshot() });
+  });
+};
+
+const initGlassDiagnostics = () => {
+  if (!glassDebugEnabled) return;
+  installGlassDebugPanel();
+  for (const root of getLiquidGlassRoots()) {
+    for (const card of root.querySelectorAll('[data-liquid-glass]')) {
+      for (const eventName of ['pointerenter', 'pointerleave']) {
+        card.addEventListener(eventName, (event) => {
+          window.setTimeout(() => recordGlassDebug(`glass-${eventName}`, {
+            pointerType: event.pointerType || null,
+            pointer: [Math.round(event.clientX), Math.round(event.clientY)],
+            cardClass: typeof card.className === 'string' ? card.className : null,
+            snapshot: getGlassDebugSnapshot(),
+          }), 50);
+        }, { passive: true });
+      }
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    recordGlassDebug('visibilitychange', { snapshot: getGlassDebugSnapshot() });
+  });
+  window.addEventListener('pagehide', (event) => {
+    recordGlassDebug('pagehide', { persisted: event.persisted, snapshot: getGlassDebugSnapshot() });
+  });
+  window.addEventListener('pageshow', (event) => {
+    recordGlassDebug('pageshow', { persisted: event.persisted, snapshot: getGlassDebugSnapshot() });
+  });
+  window.addEventListener('freeze', () => recordGlassDebug('freeze', { snapshot: getGlassDebugSnapshot() }));
+  window.addEventListener('resume', () => recordGlassDebug('resume', { snapshot: getGlassDebugSnapshot() }));
+  window.addEventListener('blur', () => recordGlassDebug('window-blur'));
+  window.addEventListener('focus', () => recordGlassDebug('window-focus', { snapshot: getGlassDebugSnapshot() }));
+
+  let debugScrolling = false;
+  let lastProgressAt = 0;
+  let scrollIdleTimer = 0;
+  window.addEventListener('scroll', () => {
+    const now = performance.now();
+    if (!debugScrolling) {
+      debugScrolling = true;
+      lastProgressAt = now;
+      recordGlassDebug('scroll-start', { snapshot: getGlassDebugSnapshot() });
+    } else if (now - lastProgressAt >= 750) {
+      lastProgressAt = now;
+      recordGlassDebug('scroll-progress', { snapshot: getGlassDebugSnapshot() });
+    }
+    window.clearTimeout(scrollIdleTimer);
+    scrollIdleTimer = window.setTimeout(() => {
+      debugScrolling = false;
+      lastProgressAt = 0;
+      recordGlassDebug('scroll-idle', { snapshot: getGlassDebugSnapshot() });
+    }, 280);
+  }, { passive: true });
+
+  recordGlassDebug('debug-start', {
+    viewport: [window.innerWidth, window.innerHeight],
+    devicePixelRatio: window.devicePixelRatio || 1,
+    coarsePointer: window.matchMedia('(pointer: coarse)').matches,
+    snapshot: getGlassDebugSnapshot(),
+  });
+};
 
 const getLiquidGlassRenderScale = () => {
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
@@ -513,11 +747,14 @@ const initializeLiquidGlassRoot = async (root) => {
     root.dataset.liquidGlassReady = 'true';
     instance.setActive(isLiquidGlassRootEligible(root));
     liquidGlassInstances.set(root, instance);
+    attachLiquidGlassDebugListeners(instance);
+    recordGlassDebug('liquidglass-ready', { root: root.id || null, snapshot: getGlassDebugSnapshot() });
     return instance;
   };
 
   const pending = initialize().catch((error) => {
     document.documentElement.dataset.liquidGlassFallback = 'true';
+    recordGlassDebug('liquidglass-init-failed', { root: root.id || null, error: error.message || String(error) });
     console.warn('LiquidGlass enhancement unavailable; keeping the CSS glass fallback.', error);
     return null;
   }).finally(() => liquidGlassPending.delete(root));
@@ -561,4 +798,5 @@ bindCardPointerLight();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();
 setView(window.location.hash.slice(1), { updateHash: false });
+initGlassDiagnostics();
 void initLiquidGlass();

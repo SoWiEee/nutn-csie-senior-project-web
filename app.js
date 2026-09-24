@@ -4255,6 +4255,84 @@ void main() {
   };
 
   // script.js
+  var GLASS_DEBUG_PREFIX = "[DEBUG-glass-life-116]";
+  var glassDebugEnabled = new URLSearchParams(window.location.search).get("debugGlass") === "1";
+  var glassDebugEntries = [];
+  var glassDebugPanel = null;
+  var glassDebugSummary = null;
+  var glassDebugOutput = null;
+  var getGlassDebugSnapshot = () => ({ ready: false });
+  var updateGlassDebugPanel = () => {
+    if (!glassDebugPanel || !glassDebugSummary || !glassDebugOutput) return;
+    glassDebugSummary.textContent = `Glass debug \xB7 ${glassDebugEntries.length} events`;
+    glassDebugOutput.textContent = glassDebugEntries.slice(-24).map((entry) => JSON.stringify(entry)).join("\n");
+    glassDebugOutput.scrollTop = glassDebugOutput.scrollHeight;
+  };
+  var recordGlassDebug = (event, details = {}) => {
+    if (!glassDebugEnabled) return;
+    const entry = {
+      wallTime: (/* @__PURE__ */ new Date()).toISOString(),
+      elapsedMs: Math.round(performance.now()),
+      event,
+      visibility: document.visibilityState,
+      scrollY: Math.round(window.scrollY),
+      ...details
+    };
+    glassDebugEntries.push(entry);
+    if (glassDebugEntries.length > 300) glassDebugEntries.shift();
+    console.info(GLASS_DEBUG_PREFIX, JSON.stringify(entry));
+    updateGlassDebugPanel();
+  };
+  var installGlassDebugPanel = () => {
+    if (!glassDebugEnabled || !document.body || glassDebugPanel) return;
+    const style = document.createElement("style");
+    style.textContent = `
+    [data-glass-debug-panel] { position: fixed; z-index: 2147483646; left: max(8px, env(safe-area-inset-left)); bottom: max(8px, env(safe-area-inset-bottom)); width: min(30rem, calc(100vw - 16px)); color: #eaf2ff; font: 12px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; }
+    [data-glass-debug-panel] details { overflow: hidden; border: 1px solid rgb(153 194 255 / 42%); border-radius: 10px; background: rgb(5 13 28 / 94%); box-shadow: 0 8px 28px rgb(0 0 0 / 30%); }
+    [data-glass-debug-panel] summary { min-height: 40px; padding: 10px 12px; cursor: pointer; font-weight: 700; touch-action: manipulation; }
+    [data-glass-debug-panel] [data-debug-actions] { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 10px 10px; }
+    [data-glass-debug-panel] button { min-height: 40px; padding: 0 10px; border: 1px solid rgb(153 194 255 / 30%); border-radius: 7px; background: #122546; color: inherit; font: inherit; touch-action: manipulation; }
+    [data-glass-debug-panel] pre { max-height: 32vh; overflow: auto; margin: 0; padding: 0 10px 10px; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
+  `;
+    const panel = document.createElement("aside");
+    panel.dataset.glassDebugPanel = "";
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    const actions = document.createElement("div");
+    actions.dataset.debugActions = "";
+    const captureButton = document.createElement("button");
+    captureButton.type = "button";
+    captureButton.textContent = "\u8A18\u9304\u76EE\u524D\u72C0\u614B";
+    captureButton.addEventListener("click", () => recordGlassDebug("manual-snapshot", { snapshot: getGlassDebugSnapshot() }));
+    const copyButton = document.createElement("button");
+    copyButton.type = "button";
+    copyButton.textContent = "\u8907\u88FD\u7D00\u9304";
+    copyButton.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(glassDebugEntries, null, 2));
+        copyButton.textContent = "\u5DF2\u8907\u88FD";
+      } catch {
+        copyButton.textContent = "\u5C55\u958B\u5F8C\u9577\u6309\u7D00\u9304\u8907\u88FD";
+      }
+    });
+    const output = document.createElement("pre");
+    output.setAttribute("aria-live", "polite");
+    actions.append(captureButton, copyButton);
+    details.append(summary, actions, output);
+    panel.append(details);
+    document.head.append(style);
+    document.body.append(panel);
+    glassDebugPanel = panel;
+    glassDebugSummary = summary;
+    glassDebugOutput = output;
+    updateGlassDebugPanel();
+  };
+  if (glassDebugEnabled) {
+    window.NutnGlassDebug = Object.freeze({
+      enabled: true,
+      record: recordGlassDebug
+    });
+  }
   var header = document.querySelector("[data-header]");
   var menuToggle = document.querySelector(".menu-toggle");
   var siteNav = document.querySelector("#site-nav");
@@ -4265,6 +4343,7 @@ void main() {
   var projectList = document.querySelector("[data-project-list]");
   var projectDialog = document.querySelector("#project-dialog");
   var projectDialogTitle = document.querySelector("#project-dialog-title");
+  var projectDialogEnglishTitle = document.querySelector("#project-dialog-title-en");
   var projectDialogGroup = document.querySelector("#project-dialog-group");
   var projectDialogMembers = document.querySelector("#project-dialog-members");
   var projectDialogTags = document.querySelector("#project-dialog-tags");
@@ -4272,21 +4351,21 @@ void main() {
   var projects = [
     { id: "01", code: "NUTN-CSIE-PRJ-116-001", group: "sense", title: "\u7B2C 01 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u4FCA\u4EA6\u3001\u5433\u8A8C\u8ED2", studentIds: "S11259001\u3001S11259009", advisor: "\u6731\u660E\u6BC5", time: "13:00 ~ 13:15", conferenceTags: [] },
     { id: "02", code: "NUTN-CSIE-PRJ-116-002", group: "sense", title: "\u7B2C 02 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u51FD\u5F97\u3001\u9EC3\u67CF\u667A", studentIds: "S11259002\u3001S11259016", advisor: "\u674E\u5065\u8208", time: "13:15 ~ 13:30", conferenceTags: [] },
-    { id: "03", code: "NUTN-CSIE-PRJ-116-003", group: "sense", title: "\u7B2C 03 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u7FC1\u7ACB\u6668\u3001\u9EC3\u53EF\u745C\u3001\u6D2A\u4F2F\u7FCA", studentIds: "S11259004\u3001S11259035\u3001S11259046", advisor: "\u9673\u5B97\u79A7", time: "13:30 ~ 13:45", conferenceTags: [] },
+    { id: "03", code: "NUTN-CSIE-PRJ-116-003", group: "sense", title: "\u904B\u7528Transformer\u7D50\u5408\u5149\u6D41\u9810\u6E2C\u884C\u4EBA\u8207\u884C\u8ECA\u8DEF\u5F91\u5BE6\u73FE\u7528\u8DEF\u4EBA\u5B89\u5168\u4E4B\u7814\u7A76", titleEn: "Enhancing Road User Safety by Predicting Pedestrian and Vehicle Trajectories Using Transformer-Integrated Optical Flow", members: "\u7FC1\u7ACB\u6668\u3001\u9EC3\u53EF\u745C\u3001\u6D2A\u4F2F\u7FCA", studentIds: "S11259004\u3001S11259035\u3001S11259046", advisor: "\u9673\u5B97\u79A7", time: "13:30 ~ 13:45", conferenceTags: ["TANET 2026"] },
     { id: "04", code: "NUTN-CSIE-PRJ-116-004", group: "sense", title: "\u7B2C 04 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u5F35\u4EE5\u878D\u3001\u5442\u5B88\u52F3\u3001\u5085\u8702\u8CB4", studentIds: "S11259005\u3001S11259007\u3001S11259036", advisor: "\u6731\u660E\u6BC5", time: "13:45 ~ 14:00", conferenceTags: [] },
     { id: "05", code: "NUTN-CSIE-PRJ-116-005", group: "sense", title: "\u7B2C 05 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u88D5\u8343\u3001\u6797\u660E\u4EAE", studentIds: "S11259006\u3001S11259053", advisor: "\u674E\u5EFA\u6A39", time: "14:00 ~ 14:15", conferenceTags: [] },
     { id: "06", code: "NUTN-CSIE-PRJ-116-006", group: "sense", title: "\u7B2C 06 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9418\u57F9\u5609\u3001\u66FE\u91D1\u5B8F\u3001\u8607\u5955\u5B89", studentIds: "S11259008\u3001S11259030\u3001S11259047", advisor: "\u9673\u69AE\u9298", time: "14:25 ~ 14:40", conferenceTags: [] },
     { id: "07", code: "NUTN-CSIE-PRJ-116-007", group: "sense", title: "\u7B2C 07 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u56B4\u624D\u52DD\u3001\u674E\u4F7E\u6069\u3001\u9EC3\u8056\u5091", studentIds: "S11259011\u3001S11259044\u3001S11259055", advisor: "\u8607\u6EA2\u82B3", time: "14:40 ~ 14:55", conferenceTags: [] },
     { id: "08", code: "NUTN-CSIE-PRJ-116-008", group: "sense", title: "\u7B2C 08 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u674E\u7965\u5B89\u3001\u8521\u4F91\u8ED2", studentIds: "S11259012\u3001S11259040", advisor: "\u674E\u5EFA\u6A39", time: "14:55 ~ 15:10", conferenceTags: [] },
-    { id: "09", code: "NUTN-CSIE-PRJ-116-009", group: "sense", title: "\u7B2C 09 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u7F85\u6690\u5A81\u3001\u838A\u65FB\u82B3\u3001\u674E\u5B89\u4EE5", studentIds: "S11259013\u3001S11259019\u3001S11259029", advisor: "\u6797\u671D\u8208", time: "15:10 ~ 15:25", conferenceTags: [] },
-    { id: "10", code: "NUTN-CSIE-PRJ-116-010", group: "decision", title: "\u7B2C 10 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5B50\u9F4A\u3001\u6797\u5D07\u744B\u3001\u9673\u51A0\u53CB", studentIds: "S11259014\u3001S11259031\u3001S11259039", advisor: "\u6797\u671D\u8208", time: "13:00 ~ 13:15", conferenceTags: [] },
+    { id: "09", code: "NUTN-CSIE-PRJ-116-009", group: "sense", title: "\u81EA\u7136\u8A9E\u8A00\u5C0E\u5411\u7684\u4E09\u7DAD\u8996\u89BA\u7406\u89E3\u8207\u7269\u4EF6\u5B9A\u4F4D", titleEn: "Natural Language-Guided 3D Visual Understanding and Object Localization", members: "\u7F85\u6690\u5A81\u3001\u838A\u65FB\u82B3\u3001\u674E\u5B89\u4EE5", studentIds: "S11259013\u3001S11259019\u3001S11259029", advisor: "\u6797\u671D\u8208", time: "15:10 ~ 15:25", conferenceTags: [] },
+    { id: "10", code: "NUTN-CSIE-PRJ-116-010", group: "decision", title: "\u57FA\u65BC VGGT \u4E4B\u591A\u8996\u89D2 3D \u91CD\u5EFA\u6539\u9032", titleEn: "Enhancing VGGT for Efficient Multi-View 3D Reconstruction", members: "\u9EC3\u5B50\u9F4A\u3001\u6797\u5D07\u744B\u3001\u9673\u51A0\u53CB", studentIds: "S11259014\u3001S11259031\u3001S11259039", advisor: "\u6797\u671D\u8208", time: "13:00 ~ 13:15", conferenceTags: [] },
     { id: "11", code: "NUTN-CSIE-PRJ-116-011", group: "decision", title: "\u7B2C 11 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u6D2A\u7B71\u6674\u3001\u5F35\u83EF\u5EAD", studentIds: "S11259017\u3001S11259042", advisor: "\u674E\u5EFA\u6A39", time: "13:15 ~ 13:30", conferenceTags: [] },
-    { id: "12", code: "NUTN-CSIE-PRJ-116-012", group: "decision", title: "\u7B2C 12 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u694A\u8AED\u660C\u3001\u82B1\u63DA\u666F\u3001\u674E\u6CF3\u5100", studentIds: "S11259018\u3001S11259025\u3001S11259049", advisor: "\u9AD8\u555F\u6D32", time: "13:30 ~ 13:45", conferenceTags: [] },
+    { id: "12", code: "NUTN-CSIE-PRJ-116-012", group: "decision", title: "\u4E2D\u91AB\u8A3A\u65B7\u6CBB\u7642\u7CFB\u7D71", titleEn: "Traditional Chinese Medicine Diagnosis and Treatment System", members: "\u694A\u8AED\u660C\u3001\u82B1\u63DA\u666F\u3001\u674E\u6CF3\u5100", studentIds: "S11259018\u3001S11259025\u3001S11259049", advisor: "\u9AD8\u555F\u6D32", time: "13:30 ~ 13:45", conferenceTags: [] },
     { id: "13", code: "NUTN-CSIE-PRJ-116-013", group: "decision", title: "\u7B2C 13 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u6B66\u660E\u4E56\u3001\u856D\u9E97\u9E97", studentIds: "S11259020\u3001S11259021", advisor: "\u674E\u5065\u8208", time: "13:45 ~ 14:00", conferenceTags: [] },
     { id: "14", code: "NUTN-CSIE-PRJ-116-014", group: "decision", title: "\u7B2C 14 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5955\u777F\u3001\u6797\u79C9\u9054\u3001\u8449\u82A2\u6770", studentIds: "S11259024\u3001S11259027\u3001S11259041", advisor: "\u9AD8\u555F\u6D32", time: "14:00 ~ 14:15", conferenceTags: [] },
     { id: "15", code: "NUTN-CSIE-PRJ-116-015", group: "decision", title: "\u7B2C 15 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u77F3\u7693\u5B87", studentIds: "S11259032", advisor: "\u6731\u660E\u6BC5", time: "14:25 ~ 14:40", conferenceTags: [] },
-    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "\u7B2C 16 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: [] },
-    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u7B2C 17 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: [] }
+    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "\u57FA\u65BCSlurm\u8207Kubernetes\u67B6\u69CB\u4E0BAI\u4F3A\u670D\u5668GPU\u5DE5\u4F5C\u8CA0\u8F09\u667A\u6167\u6392\u7A0B", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"] },
+    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u904B\u52D5\u6559\u7DF4", titleEn: "Sports Coach", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"] }
   ];
   var groupMeta = {
     sense: { title: "\u667A\u6167\u611F\u77E5\u8207\u8A0A\u865F\u5206\u6790\u7D44", label: "SENSE / SIGNAL ANALYSIS" },
@@ -4326,6 +4405,8 @@ void main() {
     const project = projects.find((item) => item.id === projectId);
     if (!project || !projectDialog) return;
     projectDialogTitle.textContent = project.title;
+    projectDialogEnglishTitle.textContent = project.titleEn || "";
+    projectDialogEnglishTitle.hidden = !project.titleEn;
     projectDialogGroup.textContent = `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`;
     projectDialogMembers.textContent = project.members;
     projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
@@ -4518,6 +4599,7 @@ void main() {
   var backdropElement = document.querySelector("[data-site-backdrop]");
   var backdropCanvas = document.querySelector("[data-site-backdrop-canvas]");
   var backdropImage = document.querySelector("[data-site-backdrop-source]");
+  var backdropGl = null;
   var BACKDROP_VERTEX_SHADER = `
   attribute vec2 a_position;
   varying vec2 v_uv;
@@ -4597,8 +4679,25 @@ void main() {
       powerPreference: "high-performance"
     });
     if (!gl || !backdropImage.naturalWidth || !backdropImage.naturalHeight) {
+      recordGlassDebug("backdrop-unavailable", {
+        hasWebGL: Boolean(gl),
+        imageWidth: backdropImage.naturalWidth,
+        imageHeight: backdropImage.naturalHeight
+      });
       backdropElement.classList.add("is-static-fallback");
       return null;
+    }
+    backdropGl = gl;
+    if (glassDebugEnabled) {
+      backdropCanvas.addEventListener("webglcontextlost", (event) => {
+        recordGlassDebug("backdrop-context-lost", {
+          cancelable: event.cancelable,
+          snapshot: getGlassDebugSnapshot()
+        });
+      });
+      backdropCanvas.addEventListener("webglcontextrestored", () => {
+        recordGlassDebug("backdrop-context-restored", { snapshot: getGlassDebugSnapshot() });
+      });
     }
     const vertexShader = compileBackdropShader(gl, gl.VERTEX_SHADER, BACKDROP_VERTEX_SHADER);
     const fragmentShader = compileBackdropShader(gl, gl.FRAGMENT_SHADER, BACKDROP_FRAGMENT_SHADER);
@@ -4681,6 +4780,7 @@ void main() {
   };
   var siteBackdropReady = initSiteBackdrop().catch(() => {
     backdropElement?.classList.add("is-static-fallback");
+    recordGlassDebug("backdrop-init-failed", { fallbackClass: backdropElement?.classList.contains("is-static-fallback") || false });
     return null;
   });
   var getLiquidGlassRoots = () => [...document.querySelectorAll("[data-liquid-glass-root]")];
@@ -4688,6 +4788,129 @@ void main() {
   var liquidGlassPending = /* @__PURE__ */ new Map();
   var liquidGlassConstructor = null;
   var liquidGlassResizeTimer = 0;
+  var readCanvasSample = (canvas) => {
+    if (!canvas) return { present: false };
+    try {
+      const context = canvas.getContext("2d");
+      if (!context) return { present: true, width: canvas.width, height: canvas.height, context: "unavailable" };
+      const x = Math.max(0, Math.floor(canvas.width / 2));
+      const y = Math.max(0, Math.floor(canvas.height / 2));
+      const rgba = context.getImageData(x, y, 1, 1).data;
+      return { present: true, width: canvas.width, height: canvas.height, centerRGBA: Array.from(rgba) };
+    } catch (error) {
+      return { present: true, width: canvas.width, height: canvas.height, sampleError: error.name || "Error" };
+    }
+  };
+  getGlassDebugSnapshot = () => ({
+    fallbackFlag: document.documentElement.dataset.liquidGlassFallback || null,
+    backdrop: {
+      fallbackClass: backdropElement?.classList.contains("is-static-fallback") || false,
+      contextLost: backdropGl?.isContextLost() ?? null,
+      size: backdropCanvas ? [backdropCanvas.width, backdropCanvas.height] : null
+    },
+    glassRoots: getLiquidGlassRoots().map((root) => {
+      const instance = liquidGlassInstances.get(root);
+      return {
+        id: root.id || null,
+        ready: root.dataset.liquidGlassReady === "true",
+        active: instance?._active ?? null,
+        scrolling: instance?._scrolling ?? null,
+        pointer: instance?._pointer ? {
+          hasPosition: instance._pointer.hasPosition,
+          active: instance._pointer.active,
+          hoveredCard: typeof instance._pointer.hoverElement?.className === "string" ? instance._pointer.hoverElement.className : null,
+          x: Math.round(instance._pointer.clientX || 0),
+          y: Math.round(instance._pointer.clientY || 0),
+          velocityX: Math.round(instance._pointer.velocityX || 0),
+          velocityY: Math.round(instance._pointer.velocityY || 0)
+        } : null,
+        rendererLostFlag: instance?.renderer?.contextLost ?? null,
+        rendererContextLost: instance?.renderer?.gl?.isContextLost?.() ?? null,
+        cards: [...root.querySelectorAll("[data-liquid-glass]")].map((card) => ({
+          canvas: readCanvasSample(card.querySelector("canvas")),
+          backgroundColor: getComputedStyle(card).backgroundColor,
+          backgroundImage: getComputedStyle(card).backgroundImage
+        }))
+      };
+    }),
+    lenis: window.NutnLenis ? {
+      scrolling: window.NutnLenis.isScrolling,
+      scroll: Math.round(window.NutnLenis.scroll || 0),
+      animatedScroll: Math.round(window.NutnLenis.animatedScroll || 0),
+      targetScroll: Math.round(window.NutnLenis.targetScroll || 0)
+    } : { enabled: false }
+  });
+  var attachLiquidGlassDebugListeners = (instance) => {
+    if (!glassDebugEnabled || !instance.renderer?.canvas) return;
+    const canvas = instance.renderer.canvas;
+    canvas.addEventListener("webglcontextlost", (event) => {
+      recordGlassDebug("glass-context-lost", {
+        cancelable: event.cancelable,
+        defaultPrevented: event.defaultPrevented,
+        snapshot: getGlassDebugSnapshot()
+      });
+    });
+    canvas.addEventListener("webglcontextrestored", () => {
+      recordGlassDebug("glass-context-restored", { snapshot: getGlassDebugSnapshot() });
+    });
+  };
+  var initGlassDiagnostics = () => {
+    if (!glassDebugEnabled) return;
+    installGlassDebugPanel();
+    for (const root of getLiquidGlassRoots()) {
+      for (const card of root.querySelectorAll("[data-liquid-glass]")) {
+        for (const eventName of ["pointerenter", "pointerleave"]) {
+          card.addEventListener(eventName, (event) => {
+            window.setTimeout(() => recordGlassDebug(`glass-${eventName}`, {
+              pointerType: event.pointerType || null,
+              pointer: [Math.round(event.clientX), Math.round(event.clientY)],
+              cardClass: typeof card.className === "string" ? card.className : null,
+              snapshot: getGlassDebugSnapshot()
+            }), 50);
+          }, { passive: true });
+        }
+      }
+    }
+    document.addEventListener("visibilitychange", () => {
+      recordGlassDebug("visibilitychange", { snapshot: getGlassDebugSnapshot() });
+    });
+    window.addEventListener("pagehide", (event) => {
+      recordGlassDebug("pagehide", { persisted: event.persisted, snapshot: getGlassDebugSnapshot() });
+    });
+    window.addEventListener("pageshow", (event) => {
+      recordGlassDebug("pageshow", { persisted: event.persisted, snapshot: getGlassDebugSnapshot() });
+    });
+    window.addEventListener("freeze", () => recordGlassDebug("freeze", { snapshot: getGlassDebugSnapshot() }));
+    window.addEventListener("resume", () => recordGlassDebug("resume", { snapshot: getGlassDebugSnapshot() }));
+    window.addEventListener("blur", () => recordGlassDebug("window-blur"));
+    window.addEventListener("focus", () => recordGlassDebug("window-focus", { snapshot: getGlassDebugSnapshot() }));
+    let debugScrolling = false;
+    let lastProgressAt = 0;
+    let scrollIdleTimer = 0;
+    window.addEventListener("scroll", () => {
+      const now = performance.now();
+      if (!debugScrolling) {
+        debugScrolling = true;
+        lastProgressAt = now;
+        recordGlassDebug("scroll-start", { snapshot: getGlassDebugSnapshot() });
+      } else if (now - lastProgressAt >= 750) {
+        lastProgressAt = now;
+        recordGlassDebug("scroll-progress", { snapshot: getGlassDebugSnapshot() });
+      }
+      window.clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = window.setTimeout(() => {
+        debugScrolling = false;
+        lastProgressAt = 0;
+        recordGlassDebug("scroll-idle", { snapshot: getGlassDebugSnapshot() });
+      }, 280);
+    }, { passive: true });
+    recordGlassDebug("debug-start", {
+      viewport: [window.innerWidth, window.innerHeight],
+      devicePixelRatio: window.devicePixelRatio || 1,
+      coarsePointer: window.matchMedia("(pointer: coarse)").matches,
+      snapshot: getGlassDebugSnapshot()
+    });
+  };
   var getLiquidGlassRenderScale = () => {
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     const memory = Number(navigator.deviceMemory) || 0;
@@ -4752,10 +4975,13 @@ void main() {
       root.dataset.liquidGlassReady = "true";
       instance.setActive(isLiquidGlassRootEligible(root));
       liquidGlassInstances.set(root, instance);
+      attachLiquidGlassDebugListeners(instance);
+      recordGlassDebug("liquidglass-ready", { root: root.id || null, snapshot: getGlassDebugSnapshot() });
       return instance;
     };
     const pending = initialize().catch((error) => {
       document.documentElement.dataset.liquidGlassFallback = "true";
+      recordGlassDebug("liquidglass-init-failed", { root: root.id || null, error: error.message || String(error) });
       console.warn("LiquidGlass enhancement unavailable; keeping the CSS glass fallback.", error);
       return null;
     }).finally(() => liquidGlassPending.delete(root));
@@ -4795,6 +5021,7 @@ void main() {
   applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || "sense");
   headerState();
   setView(window.location.hash.slice(1), { updateHash: false });
+  initGlassDiagnostics();
   void initLiquidGlass();
 
   // app-entry.js
@@ -4809,22 +5036,78 @@ void main() {
         respectReducedMotion: true
       });
       let frame = 0;
+      let previousRafTime = 0;
       const tick = (time) => {
+        const lastLenisRafTime = lenis.time;
+        if (window.NutnGlassDebug?.enabled && lastLenisRafTime > 0) {
+          const gapMs = time - lastLenisRafTime;
+          if (gapMs >= 100) {
+            window.NutnGlassDebug.record("lenis-raf-gap", {
+              gapMs: Math.round(gapMs),
+              consecutiveLoopGapMs: previousRafTime > 0 ? Math.round(time - previousRafTime) : null,
+              lastLenisRafTime: Math.round(lastLenisRafTime),
+              isScrolling: lenis.isScrolling,
+              scroll: Math.round(lenis.scroll || 0),
+              animatedScroll: Math.round(lenis.animatedScroll || 0),
+              targetScroll: Math.round(lenis.targetScroll || 0)
+            });
+          }
+        }
+        previousRafTime = time;
         lenis.raf(time);
         if (lenis.isScrolling === "smooth") {
           frame = window.requestAnimationFrame(tick);
           return;
         }
         frame = 0;
+        previousRafTime = 0;
       };
       lenis.requestFrame = () => {
         if (!frame) frame = window.requestAnimationFrame(tick);
       };
-      lenis.on("virtual-scroll", lenis.requestFrame);
+      const rebaseLenisClock = (reason) => {
+        const now = performance.now();
+        const previousTime = lenis.time;
+        lenis.time = now;
+        window.NutnGlassDebug?.record("lenis-clock-rebased", {
+          reason,
+          gapMs: previousTime ? Math.round(now - previousTime) : null,
+          isScrolling: lenis.isScrolling
+        });
+      };
       window.NutnLenis = lenis;
+      lenis.on("virtual-scroll", ({ deltaX, deltaY, event }) => {
+        if (window.NutnGlassDebug?.enabled) {
+          window.NutnGlassDebug.record("lenis-input", {
+            eventType: event?.type || null,
+            deltaX: Math.round(deltaX || 0),
+            deltaY: Math.round(deltaY || 0),
+            timeSinceLastLenisRafMs: lenis.time ? Math.round(performance.now() - lenis.time) : null,
+            isScrolling: lenis.isScrolling,
+            scroll: Math.round(lenis.scroll || 0),
+            targetScroll: Math.round(lenis.targetScroll || 0)
+          });
+        }
+        if (lenis.isScrolling !== "smooth") rebaseLenisClock("idle-input");
+        lenis.requestFrame();
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) rebaseLenisClock("visibility-resume");
+      });
+      window.addEventListener("focus", () => rebaseLenisClock("window-focus"));
+      window.NutnGlassDebug?.record("lenis-ready", {
+        canSmoothWheel,
+        prefersReducedMotion,
+        isIos: lenis.isIos
+      });
     } catch (error) {
       console.warn("Lenis smooth wheel is unavailable; keeping native scrolling.", error);
     }
+  } else {
+    window.NutnGlassDebug?.record("lenis-skipped", {
+      canSmoothWheel,
+      prefersReducedMotion
+    });
   }
   initHeroRipple();
   window.NutnLiquidGlass = LiquidGlass;
