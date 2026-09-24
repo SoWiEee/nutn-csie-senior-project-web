@@ -25,7 +25,7 @@
             <div>
                 Visit <a href="https://www.cloudflare.com/" target="_blank" rel="noopener noreferrer">cloudflare.com</a> for more information.
             </div>
-            <div class="mt-3">2026-09-24 11:12:49 UTC</div>
+            <div class="mt-3" id="cf-current-time">2026-09-24 11:12:49 UTC</div>
         </header>
         <div class="my-8 bg-gradient-gray">
             <div class="w-240 lg:w-full mx-auto">
@@ -44,7 +44,7 @@
                             <span class="cf-icon-cloud block md:hidden h-20 bg-center bg-no-repeat"></span>
                             <span class="cf-icon-error w-12 h-12 absolute left-1/2 md:left-auto md:right-0 md:top-0 -ml-6 -bottom-4"></span>
                         </div>
-                        <span class="md:block w-full truncate">Taiwan</span>
+                        <span class="md:block w-full truncate">Taipei</span>
                         <h3 class="md:inline-block mt-3 md:mt-0 text-2xl text-gray-600 font-light leading-1.3" style="color: #2f7bbf;">Cloudflare</h3>
                         <span class="leading-1.3 text-2xl" style="color: #bd2426">Error</span>
                     </div>
@@ -90,6 +90,40 @@
         </div><!-- /.error-footer -->
     </div>
 </div>
-<script>(function(){function d(){var b=a.getElementById("cf-footer-item-ip"),c=a.getElementById("cf-footer-ip-reveal");b&&"classList"in b&&(b.classList.remove("hidden"),c.addEventListener("click",function(){c.classList.add("hidden");a.getElementById("cf-footer-ip").classList.remove("hidden")}))}var a=document;document.addEventListener&&a.addEventListener("DOMContentLoaded",d)})();</script>
+<script>
+(function(){
+    function updateTime(){
+        var el = document.getElementById("cf-current-time");
+        if (!el) return;
+        var now = new Date();
+        var y = now.getUTCFullYear();
+        var m = String(now.getUTCMonth() + 1).padStart(2, "0");
+        var d = String(now.getUTCDate()).padStart(2, "0");
+        var h = String(now.getUTCHours()).padStart(2, "0");
+        var min = String(now.getUTCMinutes()).padStart(2, "0");
+        var sec = String(now.getUTCSeconds()).padStart(2, "0");
+        el.textContent = y + "-" + m + "-" + d + " " + h + ":" + min + ":" + sec + " UTC";
+    }
+
+    function initFooter(){
+        var a = document;
+        var b = a.getElementById("cf-footer-item-ip");
+        var c = a.getElementById("cf-footer-ip-reveal");
+        if (b && "classList" in b) {
+            b.classList.remove("hidden");
+            c.addEventListener("click", function(){
+                c.classList.add("hidden");
+                a.getElementById("cf-footer-ip").classList.remove("hidden");
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+        initFooter();
+        updateTime();
+        setInterval(updateTime, 1000);
+    });
+})();
+</script>
 </body>
 </html>
