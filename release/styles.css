@@ -372,7 +372,27 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .venue-copy { min-width: 0; padding: var(--space-lg) 0; }
 .venue-copy__title { margin: 0; font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 600; letter-spacing: -0.08em; line-height: 1; }
 .venue-figure { min-width: 0; margin: 0; overflow: clip; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-md); background: var(--color-void); }
-.venue-figure img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: var(--color-panel-strong); }
+.venue-figure img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--color-panel-strong); }
+.venue-artwork { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; isolation: isolate; background: var(--color-void); }
+.venue-artwork > img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; }
+.venue-artwork__callout { position: absolute; z-index: 2; top: 62%; left: 52%; display: grid; grid-template-columns: 0.55rem minmax(0, 1fr); align-items: center; column-gap: 0.45rem; width: min(14rem, 44%); padding: clamp(0.4rem, 1vw, 0.7rem); border: 1px solid rgb(131 198 255 / 0.38); border-radius: 0.45rem; background: rgb(4 17 37 / 88%); box-shadow: 0 0.5rem 1.25rem rgb(0 8 22 / 28%), inset 0 1px 0 rgb(255 255 255 / 10%); -webkit-backdrop-filter: blur(0.4rem); backdrop-filter: blur(0.4rem); }
+.venue-artwork__callout strong,
+.venue-artwork__callout small { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.venue-artwork__callout strong { color: var(--color-ink); font-size: clamp(0.62rem, 0.85vw, 0.76rem); font-weight: 700; }
+.venue-artwork__callout small { grid-column: 2; color: var(--color-accent-strong); font-size: clamp(0.55rem, 0.72vw, 0.66rem); }
+.venue-artwork__pin { grid-row: span 2; width: 0.5rem; height: 0.5rem; border: 2px solid var(--color-accent-strong); border-radius: 50%; box-shadow: 0 0 0 0.18rem rgb(95 179 255 / 14%); }
+.venue-artwork__label { position: absolute; z-index: 2; display: inline-flex; align-items: center; justify-content: center; min-height: 1.25rem; padding: 0.12rem 0.34rem; border: 1px solid rgb(131 198 255 / 40%); border-radius: 0.28rem; background: rgb(4 17 37 / 90%); box-shadow: 0 0.2rem 0.5rem rgb(0 8 22 / 24%), inset 0 1px 0 rgb(255 255 255 / 10%); color: var(--color-ink); font-family: var(--font-mono); font-size: clamp(0.58rem, 0.78vw, 0.7rem); font-weight: 700; line-height: 1; white-space: nowrap; transform: translate(-50%, -50%); }
+.venue-artwork__label--jb104 { top: 14%; left: 16.3%; }
+.venue-artwork__label--jb103 { top: 14%; left: 38.1%; }
+.venue-artwork__label--jb102 { top: 14%; left: 61.5%; }
+.venue-artwork__label--jb101 { top: 14%; left: 83%; }
+.venue-artwork__label--jb106 { top: 50%; left: 26.3%; }
+.venue-artwork__label--jb110 { top: 79.5%; left: 16.5%; }
+.venue-artwork__label--jb109 { top: 79.5%; left: 37.6%; }
+.venue-artwork__label--women { top: 38%; left: 86.4%; font-family: var(--font-body); }
+.venue-artwork__label--men { top: 72%; left: 86.4%; font-family: var(--font-body); }
+.venue-artwork__label--checkin { top: 85.5%; left: 61%; font-family: var(--font-body); }
+.venue-artwork__label--entrance { top: 95%; left: 61.5%; font-family: var(--font-body); }
 .venue-figure figcaption { padding: var(--space-sm) var(--space-md); color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }
 .venue-map-link { display: inline-flex; align-items: center; gap: var(--space-sm); min-height: 2.75rem; margin-top: var(--space-md); padding: 0.65rem 0.9rem; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 58%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), 0 0.5rem 1.25rem var(--color-glass-shadow); color: var(--color-muted); font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
 .venue-map-link:focus-visible { border-color: var(--color-accent); background: linear-gradient(135deg, var(--color-accent-soft), transparent 62%), var(--color-glass-panel); color: var(--color-ink); transform: translateY(-0.12rem); }
