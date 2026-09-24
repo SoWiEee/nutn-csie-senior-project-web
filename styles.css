@@ -37,7 +37,9 @@ body::before {
 .site-backdrop {
   position: fixed;
   z-index: -2;
-  inset: 0;
+  inset: 0 0 auto;
+  height: 100vh;
+  height: 100lvh;
   overflow: hidden;
   pointer-events: none;
   background: var(--color-void);

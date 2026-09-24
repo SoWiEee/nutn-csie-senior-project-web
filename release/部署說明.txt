@@ -10,5 +10,5 @@
 
 內容更新：
 - 背景圖片：images.jpg
-- 校址示意圖：assets/images/SchoolAddress.png
-- 展場平面圖：assets/images/ExhibitionFloorPlan.png
+- 校址示意圖：assets/images/campus-map-2026.png
+- 展場平面圖：assets/images/exhibition-floorplan-2026.png

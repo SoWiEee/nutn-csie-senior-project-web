@@ -367,8 +367,8 @@ const initSiteBackdrop = async () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    const width = Math.max(1, Math.round(window.innerWidth * dpr));
-    const height = Math.max(1, Math.round(window.innerHeight * dpr));
+    const width = Math.max(1, Math.round(backdropElement.clientWidth * dpr));
+    const height = Math.max(1, Math.round(backdropElement.clientHeight * dpr));
     if (backdropCanvas.width === width && backdropCanvas.height === height) return;
     backdropCanvas.width = width;
     backdropCanvas.height = height;
