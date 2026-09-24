@@ -3828,7 +3828,10 @@ void main() {
       } else {
         this._sceneCtx.clearRect(0, 0, width, height);
       }
-      this._sceneCtx.fillStyle = "#ffffff";
+      // A viewport-backed scene can be smaller than a partly offscreen glass
+      // panel. Keep its uncovered sample area on-brand instead of letting the
+      // white clear color bleed through the refraction as a gray flash.
+      this._sceneCtx.fillStyle = "#0b162b";
       this._sceneCtx.fillRect(0, 0, width, height);
     }
     _glassHasDynamicContributors(currentGlass, sampleRect, rootRect, dpr) {
@@ -4498,7 +4501,7 @@ void main() {
       history.replaceState(null, "", `#${nextView}`);
       scrollToTopImmediately();
     }
-    scheduleLiquidGlassForCurrentView();
+    scheduleLiquidGlassForCurrentView('view');
   };
   var setFilterState = (buttons, activeButton) => buttons.forEach((button) => {
     const active = button === activeButton;
@@ -4545,7 +4548,7 @@ void main() {
     document.querySelectorAll("[data-schedule-group]").forEach((group) => {
       group.hidden = group.dataset.scheduleGroup !== filter;
     });
-    scheduleLiquidGlassForCurrentView();
+    scheduleLiquidGlassForCurrentView('schedule-filter');
   };
   scheduleFilters.forEach((button) => button.addEventListener("click", () => applyScheduleFilter(button.dataset.scheduleFilter)));
   var projectFilters = [...document.querySelectorAll("[data-project-filter]")];
@@ -5019,18 +5022,46 @@ void main() {
     liquidGlassPending.set(root, pending);
     return pending;
   };
-  var scheduleLiquidGlassForCurrentView = () => {
+  var scheduleLiquidGlassForCurrentView = (reason = 'manual') => {
     if (!liquidGlassConstructor) return;
     for (const root of getLiquidGlassRoots()) {
       const active = isLiquidGlassRootEligible(root);
-      liquidGlassInstances.get(root)?.setActive(active);
+      const instance = liquidGlassInstances.get(root);
+      if (glassDebugEnabled && instance && instance._active !== active) {
+        const rect = root.getBoundingClientRect();
+        recordGlassDebug('liquidglass-active-change', {
+          reason,
+          active,
+          view: document.body.dataset.view || 'home',
+          hidden: Boolean(root.closest('[hidden]')),
+          rect: [Math.round(rect.top), Math.round(rect.bottom), Math.round(rect.width), Math.round(rect.height)],
+          viewport: [window.innerWidth, window.innerHeight],
+        });
+      }
+      instance?.setActive(active);
       if (active && !liquidGlassInstances.has(root)) void initializeLiquidGlassRoot(root);
     }
   };
+  var liquidGlassScrollFrame = 0;
+  var liquidGlassScrollIdleTimer = 0;
+  var scheduleLiquidGlassDuringScroll = () => {
+    if (!liquidGlassScrollFrame) {
+      liquidGlassScrollFrame = window.requestAnimationFrame(() => {
+        liquidGlassScrollFrame = 0;
+        scheduleLiquidGlassForCurrentView('scroll');
+      });
+    }
+    window.clearTimeout(liquidGlassScrollIdleTimer);
+    liquidGlassScrollIdleTimer = window.setTimeout(() => {
+      liquidGlassScrollIdleTimer = 0;
+      scheduleLiquidGlassForCurrentView('scroll-idle');
+    }, 180);
+  };
   window.addEventListener("resize", () => {
     window.clearTimeout(liquidGlassResizeTimer);
-    liquidGlassResizeTimer = window.setTimeout(scheduleLiquidGlassForCurrentView, 120);
+    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
   }, { passive: true });
+  window.addEventListener("scroll", scheduleLiquidGlassDuringScroll, { passive: true });
   var initLiquidGlass = () => {
     if (window.NutnLiquidGlass) {
       liquidGlassConstructor = window.NutnLiquidGlass;

@@ -2939,7 +2939,10 @@ var LiquidGlass = class _LiquidGlass {
     } else {
       this._sceneCtx.clearRect(0, 0, width, height);
     }
-    this._sceneCtx.fillStyle = "#ffffff";
+    // A viewport-backed scene can be smaller than a partly offscreen glass
+    // panel. Keep its uncovered sample area on-brand instead of letting the
+    // white clear color bleed through the refraction as a gray flash.
+    this._sceneCtx.fillStyle = "#0b162b";
     this._sceneCtx.fillRect(0, 0, width, height);
   }
   _glassHasDynamicContributors(currentGlass, sampleRect, rootRect, dpr) {

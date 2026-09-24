@@ -221,7 +221,7 @@ const setView = (view, { updateHash = true } = {}) => {
   document.body.dataset.view = nextView;
   setMenuState(false);
   if (updateHash) { history.replaceState(null, '', `#${nextView}`); scrollToTopImmediately(); }
-  scheduleLiquidGlassForCurrentView();
+  scheduleLiquidGlassForCurrentView('view');
 };
 
 const setFilterState = (buttons, activeButton) => buttons.forEach((button) => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); });
@@ -265,7 +265,7 @@ const applyScheduleFilter = (filter) => {
   if (!activeButton) return;
   setFilterState(scheduleFilters, activeButton);
   document.querySelectorAll('[data-schedule-group]').forEach((group) => { group.hidden = group.dataset.scheduleGroup !== filter; });
-  scheduleLiquidGlassForCurrentView();
+  scheduleLiquidGlassForCurrentView('schedule-filter');
 };
 scheduleFilters.forEach((button) => button.addEventListener('click', () => applyScheduleFilter(button.dataset.scheduleFilter)));
 
@@ -767,19 +767,49 @@ const initializeLiquidGlassRoot = async (root) => {
   return pending;
 };
 
-const scheduleLiquidGlassForCurrentView = () => {
+const scheduleLiquidGlassForCurrentView = (reason = 'manual') => {
   if (!liquidGlassConstructor) return;
   for (const root of getLiquidGlassRoots()) {
     const active = isLiquidGlassRootEligible(root);
-    liquidGlassInstances.get(root)?.setActive(active);
+    const instance = liquidGlassInstances.get(root);
+    if (glassDebugEnabled && instance && instance._active !== active) {
+      const rect = root.getBoundingClientRect();
+      recordGlassDebug('liquidglass-active-change', {
+        reason,
+        active,
+        view: document.body.dataset.view || 'home',
+        hidden: Boolean(root.closest('[hidden]')),
+        rect: [Math.round(rect.top), Math.round(rect.bottom), Math.round(rect.width), Math.round(rect.height)],
+        viewport: [window.innerWidth, window.innerHeight],
+      });
+    }
+    instance?.setActive(active);
     if (active && !liquidGlassInstances.has(root)) void initializeLiquidGlassRoot(root);
   }
 };
 
+let liquidGlassScrollFrame = 0;
+let liquidGlassScrollIdleTimer = 0;
+const scheduleLiquidGlassDuringScroll = () => {
+  if (!liquidGlassScrollFrame) {
+    liquidGlassScrollFrame = window.requestAnimationFrame(() => {
+      liquidGlassScrollFrame = 0;
+      scheduleLiquidGlassForCurrentView('scroll');
+    });
+  }
+  window.clearTimeout(liquidGlassScrollIdleTimer);
+  liquidGlassScrollIdleTimer = window.setTimeout(() => {
+    liquidGlassScrollIdleTimer = 0;
+    scheduleLiquidGlassForCurrentView('scroll-idle');
+  }, 180);
+};
+
 window.addEventListener('resize', () => {
   window.clearTimeout(liquidGlassResizeTimer);
-  liquidGlassResizeTimer = window.setTimeout(scheduleLiquidGlassForCurrentView, 120);
+  liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
 }, { passive: true });
+
+window.addEventListener('scroll', scheduleLiquidGlassDuringScroll, { passive: true });
 
 const initLiquidGlass = () => {
   if (window.NutnLiquidGlass) {
