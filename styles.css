@@ -405,7 +405,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .venue-map-link__arrow { margin-left: auto; color: var(--color-accent-strong); font-family: var(--font-mono); font-size: var(--text-md); line-height: 1; }
 .transport-grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); margin-top: var(--space-2xl); }
 .transport-grid--compact .transport-item { padding: var(--space-lg); }
-.transport-item--card { grid-template-columns: auto minmax(0, 1fr); min-width: 0; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); }
+.transport-item--card { grid-template-columns: auto minmax(0, 1fr); column-gap: calc(var(--space-md) - 0.5em); min-width: 0; border: var(--rule-thin) solid var(--color-line-strong); border-radius: var(--radius-sm); background: var(--color-panel-strong); }
 .transport-item__content { min-width: 0; }
 .transport-item__icon { display: grid; width: 2.35rem; height: 1.8rem; place-items: center; align-self: start; color: var(--color-accent-strong); }
 .transport-item__icon svg { width: 1.9rem; height: 1.9rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.4; }
