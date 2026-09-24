@@ -434,6 +434,10 @@ const initSiteBackdrop = async () => {
     depth: false,
     stencil: false,
     powerPreference: 'high-performance',
+    // LiquidGlass reads this canvas later via drawImage(); without the
+    // preserved buffer, some browsers expose a cleared (black) frame after
+    // compositing or tab resume even while the canvas itself still looks right.
+    preserveDrawingBuffer: true,
   });
   if (!gl || !backdropImage.naturalWidth || !backdropImage.naturalHeight) {
     recordGlassDebug('backdrop-unavailable', {
@@ -673,6 +677,7 @@ const initGlassDiagnostics = () => {
   }, { passive: true });
 
   recordGlassDebug('debug-start', {
+    userAgent: navigator.userAgent,
     viewport: [window.innerWidth, window.innerHeight],
     devicePixelRatio: window.devicePixelRatio || 1,
     coarsePointer: window.matchMedia('(pointer: coarse)').matches,

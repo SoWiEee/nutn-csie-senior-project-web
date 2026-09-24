@@ -2854,6 +2854,14 @@ void main() {
         active: false,
         hoverElement: null
       };
+      this._onFocus = () => this._handleResume();
+      this._onVisibilityChange = () => {
+        if (document.hidden) {
+          this._resetPointer();
+          return;
+        }
+        this._handleResume();
+      };
       this._drag = {
         active: false,
         element: null,
@@ -2894,16 +2902,7 @@ void main() {
           this._positionDirty = true;
         }, SCROLL_IDLE_DELAY);
       };
-      this._onBlur = () => {
-        if (this._pointer.hoverElement) {
-          this._glassDirty.add(this._pointer.hoverElement);
-        }
-        this._pointer.hasPosition = false;
-        this._pointer.active = false;
-        this._pointer.hoverElement = null;
-        this._pointer.velocityX = 0;
-        this._pointer.velocityY = 0;
-      };
+      this._onBlur = () => this._resetPointer();
     }
     // ────────────────────────────────────────────
     // Static entry point
@@ -2934,6 +2933,9 @@ void main() {
       window.addEventListener("resize", this._onResize);
       window.addEventListener("scroll", this._onScroll, { passive: true });
       window.addEventListener("blur", this._onBlur);
+      window.addEventListener("focus", this._onFocus);
+      window.addEventListener("pageshow", this._onFocus);
+      document.addEventListener("visibilitychange", this._onVisibilityChange);
       this.root.addEventListener("pointerdown", this._onPointerDown);
       window.addEventListener("pointermove", this._onPointerMove);
       window.addEventListener("pointerup", this._onPointerUp);
@@ -3002,6 +3004,9 @@ void main() {
       window.removeEventListener("scroll", this._onScroll);
       window.clearTimeout(this._scrollIdleTimer);
       window.removeEventListener("blur", this._onBlur);
+      window.removeEventListener("focus", this._onFocus);
+      window.removeEventListener("pageshow", this._onFocus);
+      document.removeEventListener("visibilitychange", this._onVisibilityChange);
       this.root.removeEventListener("pointerdown", this._onPointerDown);
       window.removeEventListener("pointermove", this._onPointerMove);
       window.removeEventListener("pointerup", this._onPointerUp);
@@ -3028,6 +3033,27 @@ void main() {
       document.getElementById(STYLE_ID)?.remove();
       this.capture.destroy();
       releaseSharedGlassRenderer(this.renderer);
+    }
+    _resetPointer() {
+      if (this._pointer.hoverElement) {
+        this._glassDirty.add(this._pointer.hoverElement);
+      }
+      this._pointer.clientX = 0;
+      this._pointer.clientY = 0;
+      this._pointer.lastTime = 0;
+      this._pointer.velocityX = 0;
+      this._pointer.velocityY = 0;
+      this._pointer.hasPosition = false;
+      this._pointer.active = false;
+      this._pointer.hoverElement = null;
+    }
+    _handleResume() {
+      if (this._destroyed || document.hidden) return;
+      this._resetPointer();
+      this._globalDirty = true;
+      this._positionDirty = true;
+      if (!this._running || !this._active || this._rafId) return;
+      this._rafId = requestAnimationFrame(() => this._renderLoop());
     }
     // ────────────────────────────────────────────
     // Glass element setup
@@ -4676,7 +4702,11 @@ void main() {
       antialias: false,
       depth: false,
       stencil: false,
-      powerPreference: "high-performance"
+      powerPreference: "high-performance",
+      // LiquidGlass reads this canvas later via drawImage(); without the
+      // preserved buffer, some browsers expose a cleared (black) frame after
+      // compositing or tab resume even while the canvas itself still looks right.
+      preserveDrawingBuffer: true
     });
     if (!gl || !backdropImage.naturalWidth || !backdropImage.naturalHeight) {
       recordGlassDebug("backdrop-unavailable", {
@@ -4905,6 +4935,7 @@ void main() {
       }, 280);
     }, { passive: true });
     recordGlassDebug("debug-start", {
+      userAgent: navigator.userAgent,
       viewport: [window.innerWidth, window.innerHeight],
       devicePixelRatio: window.devicePixelRatio || 1,
       coarsePointer: window.matchMedia("(pointer: coarse)").matches,
