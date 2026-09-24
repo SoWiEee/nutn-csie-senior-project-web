@@ -259,6 +259,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .text-link { display: inline-flex; align-items: center; gap: var(--space-xs); color: var(--color-muted); font-size: var(--text-sm); transition: color var(--dur-fast) var(--ease-out); white-space: nowrap; }
 .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 .project-card { position: relative; min-width: 0; overflow: clip; border: var(--rule-thin) solid var(--color-line); border-radius: var(--radius-md); background: var(--color-panel); transition: border-color var(--dur-base) var(--ease-out); }
+.project-card--archive { transition: transform 220ms var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow 220ms var(--ease-out); }
 .project-card__trigger { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
 .project-card__trigger:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -4px; }
 .project-card__visual, .project-card__body, .project-card__arrow { pointer-events: none; }
@@ -318,11 +319,11 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .footer-icon-link .footer-icon { width: 100%; height: 100%; }
 .footer-icon--csie { font-family: var(--font-mono); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.03em; }
 .footer-icon--github svg { fill: currentColor; stroke: none; }
-.footer-contact--email { --footer-icon-hover: oklch(79% 0.14 145); }
-.footer-icon-link--school { --footer-icon-hover: oklch(76% 0.16 55); }
-.footer-icon-link--csie { --footer-icon-hover: oklch(80% 0.11 225); }
-.footer-icon-link--github { --footer-icon-hover: oklch(87% 0.15 95); }
-.footer-column a:focus-visible .footer-icon { border-color: color-mix(in oklch, var(--footer-icon-hover), white 18%); background-color: var(--footer-icon-hover); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.32), 0 0 1.15rem color-mix(in oklch, var(--footer-icon-hover), transparent 58%); color: oklch(18% 0.025 255); }
+.footer-contact--email { --footer-icon-hover: oklch(38% 0.045 145); }
+.footer-icon-link--school { --footer-icon-hover: oklch(40% 0.05 55); }
+.footer-icon-link--csie { --footer-icon-hover: oklch(39% 0.04 225); }
+.footer-icon-link--github { --footer-icon-hover: oklch(43% 0.045 95); }
+.footer-column a:focus-visible .footer-icon { border-color: color-mix(in oklch, var(--footer-icon-hover), white 18%); background-color: var(--footer-icon-hover); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 0 0.85rem color-mix(in oklch, var(--footer-icon-hover), transparent 78%); }
 .footer-bottom { display: flex; justify-content: space-between; gap: var(--space-md); padding-top: var(--space-md); color: var(--color-faint); font-family: var(--font-mono); font-size: var(--text-xs); }
 .footer-bottom a { color: var(--color-muted); white-space: nowrap; transition: color var(--dur-fast) var(--ease-out); }
 
@@ -353,6 +354,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .nav-cta:active, .button:active, .filter-chip:active, .view-tab:active, .text-button:active, .menu-toggle:active { transform: none !important; }
+  .project-card--archive:hover { transform: none; }
 }
 
 /* Single-page view switcher */
@@ -489,11 +491,12 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .day-tab:hover { border-color: var(--color-accent); }
   .text-link:hover, .text-button:hover, .footer-bottom a:hover { color: var(--color-accent-strong); }
   .project-card:hover .project-card__arrow { color: var(--color-accent-strong); }
+  .project-card--archive:hover { z-index: 1; transform: translateY(-0.22rem); box-shadow: 0 0.8rem 1.8rem var(--color-shadow-strong); }
   .hero__meta-card:hover .hero__meta-card-flow { opacity: 1; animation: meta-card-border-flow 1.8s linear infinite; }
   .hero__meta-card:hover { box-shadow: inset 0 0 0 1px var(--color-accent-soft), inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow); }
   .project-card:hover .project-card__shine { animation: project-card-shine 1.8s linear infinite; }
   .footer-column a:hover { color: var(--color-ink); transform: translateY(-0.15rem); }
-  .footer-column a:hover .footer-icon { border-color: color-mix(in oklch, var(--footer-icon-hover), white 18%); background-color: var(--footer-icon-hover); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.32), 0 0 1.15rem color-mix(in oklch, var(--footer-icon-hover), transparent 58%); color: oklch(18% 0.025 255); }
+  .footer-column a:hover .footer-icon { border-color: color-mix(in oklch, var(--footer-icon-hover), white 18%); background-color: var(--footer-icon-hover); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.18), 0 0 0.85rem color-mix(in oklch, var(--footer-icon-hover), transparent 78%); }
   .view-tab:hover { color: var(--color-ink); }
   .venue-map-link:hover { border-color: var(--color-accent); background: linear-gradient(135deg, var(--color-accent-soft), transparent 62%), var(--color-glass-panel); color: var(--color-ink); transform: translateY(-0.12rem); }
   .filter-chip:hover { border-color: var(--color-accent); color: var(--color-ink); }
@@ -509,6 +512,10 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 
 @media (min-width: 48.01rem) and (max-width: 64rem) {
   .project-grid--archive { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 64.01rem) {
+  .projects > .shell { width: min(calc(100% - 3rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)), 76rem); }
 }
 
 /* Shared liquid-glass treatment — timestamp remains static by design. */
