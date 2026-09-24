@@ -3328,7 +3328,7 @@ void main() {
     if (!scheduleList) return;
     scheduleList.innerHTML = Object.entries(groupMeta).map(([group, meta]) => {
       const groupProjects = projects.filter((project) => project.group === group);
-      const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>Break</strong></article>` : ""}
+      const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>Break \u{1F634}</strong></article>` : ""}
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">

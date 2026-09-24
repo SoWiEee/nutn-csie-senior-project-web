@@ -55,7 +55,7 @@ const renderSchedule = () => {
   if (!scheduleList) return;
   scheduleList.innerHTML = Object.entries(groupMeta).map(([group, meta]) => {
     const groupProjects = projects.filter((project) => project.group === group);
-    const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>Break</strong></article>` : ''}
+    const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>Break 😴</strong></article>` : ''}
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
