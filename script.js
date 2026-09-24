@@ -117,6 +117,10 @@ const setMenuState = (isOpen) => {
 };
 
 const scrollToTopImmediately = () => {
+  if (window.NutnLenis) {
+    window.NutnLenis.scrollTo(0, { immediate: true });
+    return;
+  }
   const root = document.documentElement;
   const previousBehavior = root.style.scrollBehavior;
   root.style.scrollBehavior = 'auto';
@@ -150,7 +154,21 @@ menuToggle?.addEventListener('click', () => setMenuState(menuToggle.getAttribute
 viewButtons.forEach((control) => control.addEventListener('click', (event) => {
   if (control.tagName === 'A') event.preventDefault();
   setView(control.dataset.view);
-  if (control.dataset.scrollTarget) document.getElementById(control.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (control.dataset.scrollTarget) {
+    const target = document.getElementById(control.dataset.scrollTarget);
+    if (!target) return;
+    if (window.NutnLenis) {
+      const scrollMarginTop = Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      if (event.detail === 0) {
+        window.NutnLenis.scrollTo(target, { offset: -scrollMarginTop, immediate: true });
+        return;
+      }
+      window.NutnLenis.scrollTo(target, { offset: -scrollMarginTop });
+      window.NutnLenis.requestFrame?.();
+    } else {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }));
 window.addEventListener('scroll', headerState, { passive: true });
 window.addEventListener('hashchange', () => setView(window.location.hash.slice(1), { updateHash: false }));
@@ -166,9 +184,29 @@ const applyScheduleFilter = (filter) => {
 scheduleFilters.forEach((button) => button.addEventListener('click', () => applyScheduleFilter(button.dataset.scheduleFilter)));
 
 const projectFilters = [...document.querySelectorAll('[data-project-filter]')];
+const projectFilterBar = projectFilters[0]?.closest('.filter-bar');
+const updateProjectFilterIndicator = () => {
+  const activeButton = projectFilters.find((button) => button.classList.contains('is-active'));
+  if (!activeButton || !projectFilterBar) return;
+  projectFilterBar.style.setProperty('--filter-indicator-x', `${activeButton.offsetLeft}px`);
+  projectFilterBar.style.setProperty('--filter-indicator-y', `${activeButton.offsetTop}px`);
+  projectFilterBar.style.setProperty('--filter-indicator-width', `${activeButton.offsetWidth}px`);
+  projectFilterBar.style.setProperty('--filter-indicator-height', `${activeButton.offsetHeight}px`);
+};
+if (projectFilterBar) {
+  updateProjectFilterIndicator();
+  window.addEventListener('resize', updateProjectFilterIndicator, { passive: true });
+  if ('ResizeObserver' in window) {
+    const filterIndicatorResizeObserver = new ResizeObserver(updateProjectFilterIndicator);
+    filterIndicatorResizeObserver.observe(projectFilterBar);
+    projectFilters.forEach((button) => filterIndicatorResizeObserver.observe(button));
+  }
+  document.fonts?.ready.then(updateProjectFilterIndicator);
+}
 projectFilters.forEach((button) => button.addEventListener('click', () => {
   const filter = button.dataset.projectFilter;
   setFilterState(projectFilters, button);
+  updateProjectFilterIndicator();
   document.querySelectorAll('[data-project-group]').forEach((card) => { card.hidden = filter !== 'all' && card.dataset.projectGroup !== filter; });
 }));
 
