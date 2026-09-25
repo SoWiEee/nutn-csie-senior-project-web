@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./images.jpg" alt="國立臺南大學校園背景" width="720" />
+<img src="./images.png" alt="國立臺南大學校園背景" width="720" />
 
 # NUTN CSIE 116 畢業專題成果展
 
