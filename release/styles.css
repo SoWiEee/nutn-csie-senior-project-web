@@ -362,6 +362,13 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .footer-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 0.8fr); gap: var(--space-lg); }
 }
 
+@media (min-width: 48.01rem) {
+  .project-dialog { width: min(calc(100% - 3rem), 120rem); max-height: calc(100vh - 8rem); max-height: calc(100dvh - 8rem); }
+  .project-dialog__shell { padding-block: var(--space-lg); }
+  .project-dialog__details { margin-top: var(--space-lg); padding-block-start: var(--space-md); }
+  .project-dialog__summary { margin-top: var(--space-lg); padding-block-start: var(--space-md); }
+}
+
 @media (max-width: 22rem) {
   .hero h1 { font-size: 2rem; }.hero__meta { grid-template-columns: 1fr; }.schedule-row { grid-template-columns: 4rem minmax(0, 1fr); }.schedule-tag { display: none; }.day-tab { padding-inline: 0.75rem; }.day-tab span { display: none; }
 }
