@@ -7,9 +7,9 @@
     <meta name="description" content="NUTN CSIE 116｜國立臺南大學資訊工程學系 116 級畢業專題成果展。" />
     <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
     <link rel="stylesheet" href="tokens.css?v=1.1.5" />
-  <link rel="stylesheet" href="styles.css?v=1.1.43" />
+  <link rel="stylesheet" href="styles.css?v=1.1.49" />
   </head>
-  <body>
+  <body data-view="home">
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
       <canvas class="site-backdrop__canvas" data-site-backdrop-canvas></canvas>
       <img class="site-backdrop__source" data-site-backdrop-source src="assets/campus-lineart-background-v3.png" alt="" />
@@ -36,58 +36,40 @@
     <main id="main-content">
       <section class="view-panel is-active" id="view-home" data-view-panel="home" role="tabpanel" aria-labelledby="view-home-tab">
       <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero__grid" aria-hidden="true"></div>
-        <div class="hero__system-visual" aria-hidden="true">
-          <div class="hero__system-canvas">
-            <div class="hero__system-block hero__system-block--input">
-              <i></i><i></i><i></i><i></i>
-            </div>
-            <div class="hero__system-wave hero__system-wave--one"></div>
-            <div class="hero__system-node hero__system-node--one"><span></span></div>
-            <div class="hero__system-block hero__system-block--model">
-              <i></i><i></i><i></i>
-            </div>
-            <div class="hero__system-wave hero__system-wave--two"></div>
-            <div class="hero__system-node hero__system-node--two"><span></span></div>
-            <div class="hero__system-block hero__system-block--action">
-              <i></i><i></i>
+        <div class="hero__content shell">
+          <div class="hero__layout">
+            <div class="hero__copy">
+              <div class="hero__title-effect" data-hero-ripple>
+                <h1 id="hero-title">國立臺南大學<br />資訊工程學系<br /><span>116 級畢業專題成果展</span></h1>
+                <canvas class="hero__title-ripple" aria-hidden="true"></canvas>
+              </div>
+              <div class="hero__meta" aria-label="展覽資訊" data-liquid-glass-root>
+                <button class="hero__meta-card hero__meta-card--date" type="button" data-view="schedule" data-liquid-glass data-card-light aria-label="查看 2026 年 12 月 12 日星期六的展覽時程">
+                  <span class="hero__meta-card-flow" aria-hidden="true"></span>
+                  <p>2026 年 12 月 12 日</p>
+                  <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
+                </button>
+                <button class="hero__meta-card hero__meta-card--venue" type="button" data-view="home" data-scroll-target="home-venue-title" data-liquid-glass data-card-light aria-label="前往展場與交通資訊">
+                  <span class="hero__meta-card-flow" aria-hidden="true"></span>
+                  <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
+                  <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="hero__bloom hero__bloom--one" aria-hidden="true"></div>
-        <div class="hero__bloom hero__bloom--two" aria-hidden="true"></div>
-        <div class="hero__content shell">
-          <p class="eyebrow">NUTN CSIE 116</p>
-          <div class="hero__title-effect" data-hero-ripple>
-            <h1 id="hero-title">國立臺南大學 資訊工程學系<br /><span>116 級畢業專題成果展</span></h1>
-            <canvas class="hero__title-ripple" aria-hidden="true"></canvas>
+      </section>
+
+      <section class="home-intro section" id="intro" aria-labelledby="intro-title">
+        <div class="shell home-intro__layout">
+          <div class="home-intro__heading">
+            <h2 id="intro-title">介紹 <span aria-hidden="true">_</span></h2>
           </div>
-          <div class="hero__lower">
-            <p class="hero__lede">介紹</p>
-            <div class="hero__note">
-              <p>資訊工程，正在從螢幕裡的運算走向真實世界。影像、空間、生醫資料與環境感測，先被讀取，再被理解，最後成為能被使用的回應。</p>
-              <p>國立臺南大學資訊工程學系第 116 級畢業專題成果展，匯集 17 組作品，沿著「智慧感知與訊號分析」與「智慧推論與決策系統」兩條路徑展開。從 Video-LM 解析道路影像、VGGT 重建多視角空間，到心電圖與單細胞資料、AIoT 與行動感測；也從聯邦學習與資安防禦，思考資料如何在被使用的同時保持安全。</p>
-              <p>這些作品沒有把 AI 當成一個抽象答案，而是把技術放回交通、醫療、校園、室內與野外等場景，練習在有限資料、延遲與資源中，完成一個可以被看見、被驗證，也能真正運作的系統。</p>
-              <p>歡迎來到展場，看看 116 級如何把各種訊號，轉化為對世界的理解與下一步行動。</p>
-            </div>
-            <div class="hero__meta" aria-label="展覽資訊" data-liquid-glass-root>
-              <button class="hero__meta-card hero__meta-card--date" type="button" data-view="schedule" data-liquid-glass data-card-light aria-label="查看 2026 年 12 月 12 日星期六的展覽時程">
-                <span class="hero__meta-card-flow" aria-hidden="true"></span>
-                <strong>日期</strong>
-                <p>2026-12-12 <small>SAT</small></p>
-                <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
-              </button>
-              <button class="hero__meta-card hero__meta-card--venue" type="button" data-view="home" data-scroll-target="home-venue-title" data-liquid-glass data-card-light aria-label="前往展場與交通資訊">
-                <span class="hero__meta-card-flow" aria-hidden="true"></span>
-                <strong>地點</strong>
-                <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
-                <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
-              </button>
-            </div>
-          </div>
-          <div class="hero__actions">
-            <button class="button" type="button" data-view="schedule">查看時程 <span aria-hidden="true">↗</span></button>
-            <button class="text-button" type="button" data-view="projects">瀏覽專題 <span aria-hidden="true">↗</span></button>
+          <div class="home-intro__copy">
+            <p>資訊工程，正在從螢幕裡的運算走向真實世界。影像、空間、生醫資料與環境感測，先被讀取，再被理解，最後成為能被使用的回應。</p>
+            <p>國立臺南大學資訊工程學系第 116 級畢業專題成果展，匯集 17 組作品，沿著「智慧感知與訊號分析」與「智慧推論與決策系統」兩條路徑展開。從 Video-LM 解析道路影像、VGGT 重建多視角空間，到心電圖與單細胞資料、AIoT 與行動感測；也從聯邦學習與資安防禦，思考資料如何在被使用的同時保持安全。</p>
+            <p>這些作品沒有把 AI 當成一個抽象答案，而是把技術放回交通、醫療、校園、室內與野外等場景，練習在有限資料、延遲與資源中，完成一個可以被看見、被驗證，也能真正運作的系統。</p>
+            <p>歡迎來到展場，看看 116 級如何把各種訊號，轉化為對世界的理解與下一步行動。</p>
           </div>
         </div>
       </section>
@@ -279,6 +261,6 @@
       </div>
     </footer>
 
-  <script src="app.js?v=1.1.31"></script>
+  <script src="app.js?v=1.1.34"></script>
   </body>
 </html>

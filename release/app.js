@@ -4512,6 +4512,7 @@ void main() {
   };
   var setView = (view, { updateHash = true } = {}) => {
     const nextView = ["home", "schedule", "projects"].includes(view) ? view : "home";
+    const viewChanged = document.body.dataset.view !== nextView;
     viewPanels.forEach((panel) => {
       panel.hidden = panel.dataset.viewPanel !== nextView;
       panel.classList.toggle("is-active", panel.dataset.viewPanel === nextView);
@@ -4522,10 +4523,11 @@ void main() {
       tab.setAttribute("aria-selected", String(active));
     });
     document.body.dataset.view = nextView;
+    updateHomeBackdropFocus();
     setMenuState(false);
     if (updateHash) {
       history.replaceState(null, "", `#${nextView}`);
-      scrollToTopImmediately();
+      if (viewChanged) scrollToTopImmediately();
     }
     scheduleLiquidGlassForCurrentView('view');
   };
@@ -4662,6 +4664,22 @@ void main() {
   var backdropElement = document.querySelector("[data-site-backdrop]");
   var backdropCanvas = document.querySelector("[data-site-backdrop-canvas]");
   var backdropImage = document.querySelector("[data-site-backdrop-source]");
+  var homeHero = document.querySelector("#view-home .hero");
+  var homeBackdropFrame = 0;
+  var updateHomeBackdropFocus = () => {
+    if (homeBackdropFrame) return;
+    homeBackdropFrame = window.requestAnimationFrame(() => {
+      homeBackdropFrame = 0;
+      if (!backdropElement) return;
+      const isHomeView = document.body.dataset.view === "home";
+      const heroHeight = Math.max(1, homeHero?.getBoundingClientRect().height || window.innerHeight);
+      const progress = isHomeView ? Math.min(1, Math.max(0, window.scrollY / heroHeight)) : 0;
+      backdropElement.style.setProperty("--home-backdrop-progress", progress.toFixed(3));
+    });
+  };
+  window.addEventListener("scroll", updateHomeBackdropFocus, { passive: true });
+  window.addEventListener("resize", updateHomeBackdropFocus, { passive: true });
+  updateHomeBackdropFocus();
   var backdropGl = null;
   var BACKDROP_VERTEX_SHADER = `
   attribute vec2 a_position;
@@ -5037,7 +5055,7 @@ void main() {
         defaults
       });
       glassElements.forEach((element) => {
-        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.22)", "important");
+        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.15)", "important");
         element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
       });
       root.dataset.liquidGlassReady = "true";
