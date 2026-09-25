@@ -128,8 +128,8 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   /* Keep a quiet blue substrate behind the WebGL surface. The upstream
    * renderer paints the canvas with transparency, so removing this layer
    * makes the same glass look pale and flat against a photo. */
-  background-color: rgba(18, 36, 70, 0.15) !important;
-  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%) !important;
+  background-color: rgba(18, 36, 70, 0.13) !important;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%) !important;
   overflow: hidden !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
@@ -600,8 +600,8 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   border-color: var(--color-glass-line);
   background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
   box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
-  -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
-  backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
+  -webkit-backdrop-filter: blur(1rem) saturate(1.2) brightness(1.04);
+  backdrop-filter: blur(1rem) saturate(1.2) brightness(1.04);
   transition: none;
 }
 
@@ -723,11 +723,12 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 }
 
 #view-home .hero__meta-card {
-  border-radius: 0.45rem;
+  --color-glass-panel: oklch(20% 0.025 258 / 0.62);
+  border-radius: 1.6rem;
   background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel);
   box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1rem 2.5rem var(--color-glass-shadow);
-  -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
-  backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04);
+  -webkit-backdrop-filter: blur(1rem) saturate(1.2) brightness(1.04);
+  backdrop-filter: blur(1rem) saturate(1.2) brightness(1.04);
 }
 
 #view-home .hero__meta-card::before {
@@ -1435,7 +1436,7 @@ body[data-view="home"] .site-backdrop__canvas {
 
 body[data-view="home"] .site-backdrop__source {
   z-index: 1;
-  opacity: 1;
+  opacity: 0.85;
   filter: none;
 }
 
@@ -1449,7 +1450,7 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__canvas 
 
 body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source {
   z-index: 1;
-  opacity: 1;
+  opacity: 0.85;
   filter: none;
 }
 

@@ -5024,18 +5024,18 @@ void main() {
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
-        blurAmount: 0.2,
+        blurAmount: 0.16,
         refraction: 0.84,
         chromAberration: 0.05,
         edgeHighlight: 0.1,
         specular: 0.02,
         fresnel: 0.88,
         distortion: 6e-3,
-        opacity: 0.82,
+        opacity: 0.72,
         saturation: 0.02,
         tintStrength: 0.025,
         brightness: -0.06,
-        cornerRadius: 8,
+        cornerRadius: 26,
         zRadius: 22,
         shadowOpacity: 0.24,
         shadowSpread: 4,
@@ -5055,8 +5055,8 @@ void main() {
         defaults
       });
       glassElements.forEach((element) => {
-        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.15)", "important");
-        element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
+        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.13)", "important");
+        element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 42%)", "important");
       });
       root.dataset.liquidGlassReady = "true";
       instance.setActive(isLiquidGlassRootEligible(root));
