@@ -1523,6 +1523,10 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source 
     min-height: 0;
   }
 
+  #view-home .hero h1 {
+    font-size: clamp(2rem, 9.5vw, 4rem);
+  }
+
   #view-home .hero__content {
     padding-block: 7.5rem var(--space-3xl);
   }
@@ -1537,10 +1541,14 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source 
   }
 
   #view-home .hero__meta-card--date > p {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
   }
 
   #view-home .hero__meta-card--venue > p {
     font-size: var(--text-xl);
+  }
+
+  #view-home .home-intro__copy {
+    font-size: var(--text-lg);
   }
 }

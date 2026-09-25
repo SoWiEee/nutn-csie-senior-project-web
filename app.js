@@ -4365,7 +4365,7 @@ void main() {
   var header = document.querySelector("[data-header]");
   var menuToggle = document.querySelector(".menu-toggle");
   var siteNav = document.querySelector("#site-nav");
-  var viewButtons = [...document.querySelectorAll("[data-view]")];
+  var viewButtons = [...document.querySelectorAll(".view-tab[data-view]")];
   var viewTabs = [...document.querySelectorAll(".view-tab")];
   var viewPanels = [...document.querySelectorAll("[data-view-panel]")];
   var scheduleList = document.querySelector("[data-schedule-list]");
