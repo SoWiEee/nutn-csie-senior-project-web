@@ -4419,6 +4419,7 @@ void main() {
       const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>Break \u{1F634}</strong></article>` : ""}
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light>
+        <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>

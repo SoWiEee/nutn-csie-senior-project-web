@@ -142,6 +142,7 @@ const renderSchedule = () => {
     const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>Break 😴</strong></article>` : ''}
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light>
+        <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">↗</span>
