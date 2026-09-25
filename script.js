@@ -215,8 +215,10 @@ const renderProjects = () => {
   </article>`).join('');
 };
 
+let menuOpenedAtScrollY = 0;
 const setMenuState = (isOpen) => {
   const restoreFocus = !isOpen && siteNav?.contains(document.activeElement) && window.matchMedia('(max-width: 48rem)').matches;
+  if (isOpen) menuOpenedAtScrollY = window.scrollY;
   menuToggle?.setAttribute('aria-expanded', String(isOpen));
   siteNav?.classList.toggle('is-open', isOpen);
   if (restoreFocus) menuToggle?.focus();
@@ -255,7 +257,11 @@ const closeProjectDialog = () => {
 projectDialogClose?.addEventListener('click', closeProjectDialog);
 projectDialog?.addEventListener('click', (event) => { if (event.target === projectDialog) closeProjectDialog(); });
 
-const headerState = () => header?.classList.toggle('is-scrolled', window.scrollY > 24);
+const headerState = () => {
+  header?.classList.toggle('is-scrolled', window.scrollY > 24);
+  const mobileMenuOpen = menuToggle?.getAttribute('aria-expanded') === 'true' && window.matchMedia('(max-width: 48rem)').matches;
+  if (mobileMenuOpen && window.scrollY - menuOpenedAtScrollY >= 72) setMenuState(false);
+};
 menuToggle?.addEventListener('click', () => setMenuState(menuToggle.getAttribute('aria-expanded') !== 'true'));
 viewButtons.forEach((control) => control.addEventListener('click', (event) => {
   if (control.tagName === 'A') event.preventDefault();

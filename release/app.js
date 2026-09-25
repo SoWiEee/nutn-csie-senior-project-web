@@ -4491,8 +4491,10 @@ void main() {
     <span class="project-card__arrow" aria-hidden="true">\u2197</span>
   </article>`).join("");
   };
+  var menuOpenedAtScrollY = 0;
   var setMenuState = (isOpen) => {
     const restoreFocus = !isOpen && siteNav?.contains(document.activeElement) && window.matchMedia("(max-width: 48rem)").matches;
+    if (isOpen) menuOpenedAtScrollY = window.scrollY;
     menuToggle?.setAttribute("aria-expanded", String(isOpen));
     siteNav?.classList.toggle("is-open", isOpen);
     if (restoreFocus) menuToggle?.focus();
@@ -4541,7 +4543,11 @@ void main() {
   projectDialog?.addEventListener("click", (event) => {
     if (event.target === projectDialog) closeProjectDialog();
   });
-  var headerState = () => header?.classList.toggle("is-scrolled", window.scrollY > 24);
+  var headerState = () => {
+    header?.classList.toggle("is-scrolled", window.scrollY > 24);
+    const mobileMenuOpen = menuToggle?.getAttribute("aria-expanded") === "true" && window.matchMedia("(max-width: 48rem)").matches;
+    if (mobileMenuOpen && window.scrollY - menuOpenedAtScrollY >= 72) setMenuState(false);
+  };
   menuToggle?.addEventListener("click", () => setMenuState(menuToggle.getAttribute("aria-expanded") !== "true"));
   viewButtons.forEach((control) => control.addEventListener("click", (event) => {
     if (control.tagName === "A") event.preventDefault();
