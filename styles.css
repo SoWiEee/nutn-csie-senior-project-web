@@ -1290,7 +1290,7 @@ body .site-footer {
   content: "";
   background:
     linear-gradient(180deg, color-mix(in oklch, var(--color-void) 68%, transparent), color-mix(in oklch, var(--color-panel) 62%, transparent)),
-    url("assets/campus-lineart-background-v3.png") center 54% / cover;
+    url("assets/home-key-visual-diagonal-v1.png") center 54% / cover;
   filter: blur(0.85rem) saturate(0.72) brightness(0.78);
   transform: scale(1.035);
 }
@@ -1421,7 +1421,7 @@ body[data-view="home"] .site-backdrop::before {
   z-index: 2;
   inset: -1.5rem;
   content: "";
-  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 34%, transparent), color-mix(in oklch, var(--color-void) 52%, transparent)), url("assets/campus-lineart-background-v3.png") center / cover no-repeat;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 34%, transparent), color-mix(in oklch, var(--color-void) 52%, transparent)), url("assets/home-key-visual-diagonal-v1.png") center / cover no-repeat;
   filter: blur(0.5rem) saturate(0.78) brightness(0.68) contrast(1.08);
   opacity: var(--home-backdrop-progress);
   pointer-events: none;
