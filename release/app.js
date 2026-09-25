@@ -4376,6 +4376,8 @@ void main() {
   var projectDialogGroup = document.querySelector("#project-dialog-group");
   var projectDialogMembers = document.querySelector("#project-dialog-members");
   var projectDialogTags = document.querySelector("#project-dialog-tags");
+  var projectDialogSummary = document.querySelector("#project-dialog-summary");
+  var projectDialogSummaryContent = document.querySelector("#project-dialog-summary-content");
   var projectDialogClose = document.querySelector("[data-project-dialog-close]");
   var projects = [
     { id: "01", code: "NUTN-CSIE-PRJ-116-001", group: "sense", title: "\u7B2C 01 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u4FCA\u4EA6\u3001\u5433\u8A8C\u8ED2", studentIds: "S11259001\u3001S11259009", advisor: "\u6731\u660E\u6BC5", time: "13:00 ~ 13:15", conferenceTags: [] },
@@ -4393,7 +4395,21 @@ void main() {
     { id: "13", code: "NUTN-CSIE-PRJ-116-013", group: "decision", title: "\u7B2C 13 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u6B66\u660E\u4E56\u3001\u856D\u9E97\u9E97", studentIds: "S11259020\u3001S11259021", advisor: "\u674E\u5065\u8208", time: "13:45 ~ 14:00", conferenceTags: [] },
     { id: "14", code: "NUTN-CSIE-PRJ-116-014", group: "decision", title: "\u7B2C 14 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5955\u777F\u3001\u6797\u79C9\u9054\u3001\u8449\u82A2\u6770", studentIds: "S11259024\u3001S11259027\u3001S11259041", advisor: "\u9AD8\u555F\u6D32", time: "14:00 ~ 14:15", conferenceTags: [] },
     { id: "15", code: "NUTN-CSIE-PRJ-116-015", group: "decision", title: "\u7B2C 15 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u77F3\u7693\u5B87", studentIds: "S11259032", advisor: "\u6731\u660E\u6BC5", time: "14:25 ~ 14:40", conferenceTags: [] },
-    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "\u57FA\u65BCSlurm\u8207Kubernetes\u67B6\u69CB\u4E0BAI\u4F3A\u670D\u5668GPU\u5DE5\u4F5C\u8CA0\u8F09\u667A\u6167\u6392\u7A0B", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"] },
+    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"], summary: [
+      {
+        paragraph: "近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：",
+        bullets: [
+          "異質 GPU 的運算能力與記憶體容量不同，工作放置不能只看 GPU 數量。",
+          "MPS 配額會影響共置工作數、可用容量與實際完成時間。"
+        ]
+      },
+      {
+        paragraph: "目前常見的系統大多只擅長其中一件事。傳統高效能運算排程器 Slurm 雖然擅長批次工作、佇列與資源管理，但傳統 FCFS 與 Backfill 主要依固定規則運作，難以同時感知 GPU 型號、MPS 配額、工作特徵與佇列狀態，也對彈性擴縮與雲端式管理不夠方便；相對地，容器平台如 Kubernetes 適合容器部署、自動擴縮與健康監控，並不直接提供 Slurm 的批次排程語意。現有研究較少在真實 Slurm 提交流程中，聯合處理異質 GPU、MPS 配額與學習式工作排序。"
+      },
+      {
+        paragraph: "因此，本專題希望結合兩者優點，建立一套既能保有研究者熟悉的工作提交流程，又能做到動態分配 CPU、GPU 與儲存資源的系統。進一步地，我們也希望導入深度強化學習策略，讓系統可以根據工作佇列狀態與叢集狀態，自動做出更合理的資源分配決策。"
+      }
+    ] },
     { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u904B\u52D5\u6559\u7DF4", titleEn: "Sports Coach", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"] }
   ];
   var groupMeta = {
@@ -4402,6 +4418,7 @@ void main() {
   };
   var escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
   var tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? " conference-tag--accent" : ""}">${escapeHTML(tag)}</span>`).join("") : "";
+  var projectSummaryMarkup = (blocks = []) => blocks.map(({ paragraph, bullets = [] }) => `<p>${escapeHTML(paragraph)}</p>${bullets.length ? `<ul>${bullets.map((bullet) => `<li>${escapeHTML(bullet)}</li>`).join("")}</ul>` : ""}`).join("");
   var timePointMarkup = (time, className = "") => {
     const [start] = time.split(" ~ ");
     return `<time class="schedule-time${className ? ` ${className}` : ""}">${escapeHTML(start)}</time>`;
@@ -4441,6 +4458,8 @@ void main() {
     projectDialogMembers.textContent = project.members;
     projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
     projectDialogTags.innerHTML = tagMarkup(project.conferenceTags);
+    projectDialogSummary.hidden = !project.summary?.length;
+    projectDialogSummaryContent.innerHTML = projectSummaryMarkup(project.summary || []);
     if (typeof projectDialog.showModal === "function") {
       projectDialog.showModal();
     } else {

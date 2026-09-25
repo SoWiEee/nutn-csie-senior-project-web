@@ -476,7 +476,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card__number { position: absolute; top: 50%; left: var(--space-sm); z-index: 1; color: var(--color-meta-code); font-family: var(--font-display); font-size: 5rem; font-weight: 700; letter-spacing: -0.14em; line-height: 1; pointer-events: none; transform: translateY(-50%); }
 .schedule-card--signal .schedule-card__trigger { z-index: 2; }
 .schedule-card--signal .schedule-card__toggle { position: relative; z-index: 3; background: oklch(15% 0.032 258 / 0.68); }
-.project-dialog { width: min(calc(100% - 2rem), 42rem); max-width: none; padding: 0; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.5rem 4rem var(--color-shadow-strong); -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); color: var(--color-ink); opacity: 0; transform: scale(0.97); transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out); }
+.project-dialog { width: min(calc(100% - 2rem), 42rem); max-width: none; max-height: calc(100vh - 2rem); max-height: calc(100dvh - 2rem); overflow-y: auto; overscroll-behavior: contain; padding: 0; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.5rem 4rem var(--color-shadow-strong); -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); color: var(--color-ink); opacity: 0; transform: scale(0.97); transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out); }
 .project-dialog[open] { opacity: 1; transform: scale(1); }
 .project-dialog::backdrop { background: oklch(5% 0.02 260 / 0.72); -webkit-backdrop-filter: blur(0.35rem); backdrop-filter: blur(0.35rem); }
 .project-dialog__shell { padding: var(--space-xl); }
@@ -497,6 +497,15 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .project-dialog__label { color: var(--color-faint); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.08em; }
 .project-dialog__field--tags { align-items: center; }
 .project-dialog__field--tags .tag-row { margin-top: 0; }
+.project-dialog__summary { margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: var(--rule-thin) solid var(--color-line-strong); }
+.project-dialog__summary h3 { margin: 0 0 var(--space-md); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); font-weight: 700; line-height: 1.3; }
+.project-dialog__summary-content { max-width: 72ch; color: var(--color-muted); font-size: var(--text-md); line-height: 1.6; overflow-wrap: break-word; }
+.project-dialog__summary-content p { margin: 0; text-indent: 1em; }
+.project-dialog__summary-content p + p,
+.project-dialog__summary-content ul + p { margin-top: var(--space-md); }
+.project-dialog__summary-content p + ul { margin-top: var(--space-sm); }
+.project-dialog__summary-content ul { margin-bottom: 0; padding-inline-start: 1.35rem; }
+.project-dialog__summary-content li + li { margin-top: var(--space-xs); }
 .project-grid--archive { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .project-card--archive { grid-row: auto; }
 .project-card--archive .project-card__visual { height: 8.75rem; }
