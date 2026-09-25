@@ -4538,6 +4538,10 @@ void main() {
       }
     }
   }));
+  document.querySelectorAll('a[href="#top"]').forEach((link) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    setView("home");
+  }));
   window.addEventListener("scroll", headerState, { passive: true });
   window.addEventListener("hashchange", () => setView(window.location.hash.slice(1), { updateHash: false }));
   var scheduleFilters = [...document.querySelectorAll("[data-schedule-filter]")];
