@@ -1279,7 +1279,7 @@ body .site-footer {
   isolation: isolate;
   overflow: clip;
   border-top: var(--rule-thin) solid var(--color-line);
-  border-bottom: var(--rule-thin) solid var(--color-line);
+  border-bottom: 0;
   background: transparent;
 }
 
@@ -1303,7 +1303,7 @@ body .site-footer {
 #view-home .home-intro__heading h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 650;
   letter-spacing: -0.09em;
   line-height: 0.95;
@@ -1315,10 +1315,11 @@ body .site-footer {
 
 #view-home .home-intro__copy {
   max-width: 68ch;
-  margin: var(--space-2xl) 0 0 clamp(0rem, 10vw, 9rem);
+  margin-block-start: var(--space-2xl);
+  margin-inline-start: 0;
   color: var(--color-muted);
-  font-size: var(--text-md);
-  line-height: 1.9;
+  font-size: var(--text-xl);
+  line-height: 1.6;
 }
 
 #view-home .home-intro__copy p {
@@ -1379,13 +1380,14 @@ body .site-footer {
   }
 
   #view-home .home-intro__heading h2 {
-    font-size: clamp(3.25rem, 16vw, 5rem);
+    font-size: clamp(2.25rem, 8vw, 4rem);
   }
 
   #view-home .home-intro__copy {
-    margin: var(--space-xl) 0 0;
-    font-size: var(--text-md);
-    line-height: 1.8;
+    margin-block-start: var(--space-xl);
+    margin-inline-start: 0;
+    font-size: var(--text-xl);
+    line-height: 1.6;
   }
 
   #view-home .home-intro__copy p + p {
@@ -1395,6 +1397,14 @@ body .site-footer {
   #view-home .home-intro::before {
     filter: blur(0.55rem) saturate(0.72) brightness(0.78);
   }
+}
+
+#view-home .home-venue {
+  border-top: 0;
+}
+
+#view-home .home-venue::before {
+  display: none;
 }
 
 /* Homepage: reveal the classroom clearly, then soften it with scroll progress. */
@@ -1411,8 +1421,8 @@ body[data-view="home"] .site-backdrop::before {
   z-index: 2;
   inset: -1.5rem;
   content: "";
-  background: linear-gradient(180deg, rgba(5, 12, 25, 0.22), rgba(5, 12, 25, 0.34)), url("assets/campus-lineart-background-v3.png") center / cover no-repeat;
-  filter: blur(0.5rem) saturate(0.82) brightness(0.94);
+  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 34%, transparent), color-mix(in oklch, var(--color-void) 52%, transparent)), url("assets/campus-lineart-background-v3.png") center / cover no-repeat;
+  filter: blur(0.5rem) saturate(0.78) brightness(0.68) contrast(1.08);
   opacity: var(--home-backdrop-progress);
   pointer-events: none;
   transform: scale(1.04);
