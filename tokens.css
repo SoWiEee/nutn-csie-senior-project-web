@@ -40,6 +40,11 @@
   src: url("assets/fonts/line-seed-tw-bold.woff2") format("woff2");
 }
 
+@font-face { font-family: "NUTN LINE Seed TW Glyph Supplement"; font-style: normal; font-display: swap; font-weight: 400; src: url("assets/fonts/line-seed-tw-supplement-regular.woff2") format("woff2"); unicode-range: U+4FE5, U+5A81; }
+@font-face { font-family: "NUTN LINE Seed TW Glyph Supplement"; font-style: normal; font-display: swap; font-weight: 500; src: url("assets/fonts/line-seed-tw-supplement-regular.woff2") format("woff2"); unicode-range: U+4FE5, U+5A81; }
+@font-face { font-family: "NUTN LINE Seed TW Glyph Supplement"; font-style: normal; font-display: swap; font-weight: 600; src: url("assets/fonts/line-seed-tw-supplement-bold.woff2") format("woff2"); unicode-range: U+4FE5, U+5A81; }
+@font-face { font-family: "NUTN LINE Seed TW Glyph Supplement"; font-style: normal; font-display: swap; font-weight: 700; src: url("assets/fonts/line-seed-tw-supplement-bold.woff2") format("woff2"); unicode-range: U+4FE5, U+5A81; }
+
 :root {
   --color-void: oklch(12% 0.018 260);
   --color-ink: oklch(96% 0.012 255);
@@ -57,7 +62,7 @@
   --color-meta-panel: var(--color-panel);
   --color-meta-border: var(--color-line-strong);
   --color-meta-ink: var(--color-ink);
-  --color-meta-code: var(--color-ghost);
+  --color-meta-code: oklch(100% 0.005 255 / 0.10);
   --color-glass-panel: oklch(20% 0.025 258 / 0.68);
   --color-glass-line: oklch(100% 0.005 255 / 0.25);
   --color-glass-highlight: oklch(100% 0.005 255 / 0.1);
@@ -96,9 +101,9 @@
   --color-border-ghost: oklch(100% 0.005 255 / 0.13);
   --color-line-shadow: oklch(100% 0.005 255 / 0.12);
 
-  --font-display: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Variable", "LINE Seed TW", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;

@@ -8,7 +8,6 @@ async (page) => {
     const backToTop = page.locator('footer a[href="#top"]');
     await backToTop.scrollIntoViewIfNeeded();
     await backToTop.click();
-    await page.waitForFunction(() => document.body.dataset.view === 'home');
 
     try {
       await page.waitForFunction(() => window.scrollY <= 1, { timeout: 2000 });
@@ -22,7 +21,7 @@ async (page) => {
       scrollY: Math.round(window.scrollY),
     }));
 
-    if (results[view].view !== 'home' || results[view].scrollY > 1) {
+    if (results[view].view !== view || results[view].hash !== `#${view}` || results[view].scrollY > 1) {
       throw new Error(`Back-to-top failed from ${view}: ${JSON.stringify(results[view])}`);
     }
   }

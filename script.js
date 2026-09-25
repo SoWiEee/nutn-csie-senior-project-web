@@ -278,7 +278,7 @@ viewButtons.forEach((control) => control.addEventListener('click', (event) => {
 }));
 document.querySelectorAll('a[href="#top"]').forEach((link) => link.addEventListener('click', (event) => {
   event.preventDefault();
-  setView('home');
+  scrollToTopImmediately();
 }));
 window.addEventListener('scroll', headerState, { passive: true });
 window.addEventListener('hashchange', () => setView(window.location.hash.slice(1), { updateHash: false }));

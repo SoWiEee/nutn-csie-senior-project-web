@@ -110,7 +110,7 @@ Copy-Item .\app.js .\release\app.js -Force
 | Edge | 114+ | ✅ | ✅ | ✅* |
 | Safari | 17.5+ | ✅ | ✅ | ✅* |
 | Firefox | 121+ | ✅ | ✅ | ✅* |
-| Zen Browser | 最新穩定版（Firefox engine 121+） | ✅ | ✅ | ✓*† |
+| Zen Browser | 最新穩定版（Firefox engine 121+） | ✅ | ✅ | ✅* |
 
 Lenis 僅在精細指標（例如滑鼠／觸控板）且系統未要求減少動態效果時啟用；觸控捲動維持原生行為。
 
@@ -124,6 +124,9 @@ Liquid Glass 會取樣 `images.jpg` 作為背景場景，因此部署時請透�
 
 - [國立臺南大學](https://www.nutn.edu.tw/)
 - [國立臺南大學資訊工程學系](https://csie.nutn.edu.tw/)
+- [LINE Seed TW Font](https://seed.line.me/index_tw.html)
+- [Geist Font](https://fonts.google.com/specimen/Geist)
+- [Glyphs 4](https://glyphsapp.com/)
 - [LiquidGlass library](https://github.com/ybouane/liquidglass)
 - [Lenis smooth scroll](https://github.com/darkroomengineering/lenis)
 - [emilkowalski/skills](https://github.com/emilkowalski/skills)
