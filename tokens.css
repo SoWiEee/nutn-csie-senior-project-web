@@ -92,12 +92,12 @@
   --color-shadow-strong: oklch(10% 0.005 260 / 0.3);
   --color-header: oklch(12% 0.018 260 / 0.78);
   --color-header-scrolled: oklch(17% 0.022 258 / 0.92);
-  --color-project-a-start: oklch(20% 0.05 270);
-  --color-project-a-end: oklch(12% 0.022 260);
-  --color-project-b-start: oklch(17% 0.04 272);
-  --color-project-c-start: oklch(17% 0.04 245);
-  --color-project-c-end: oklch(11% 0.018 260);
-  --color-project-violet: var(--color-accent-soft);
+  --color-project-a-start: oklch(18% 0.03 255);
+  --color-project-a-end: oklch(12% 0.02 258);
+  --color-project-b-start: oklch(18% 0.03 255);
+  --color-project-c-start: oklch(18% 0.03 255);
+  --color-project-c-end: oklch(12% 0.02 258);
+  --color-project-violet: oklch(66% 0.055 250 / 0.1);
   --color-border-ghost: oklch(100% 0.005 255 / 0.13);
   --color-line-shadow: oklch(100% 0.005 255 / 0.12);
 

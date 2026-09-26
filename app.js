@@ -4439,7 +4439,7 @@ void main() {
       const groupProjects = projects.filter((project) => project.group === group);
       const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>Break \u{1F634}</strong></article>` : ""}
       ${timePointMarkup(project.time)}
-      <article class="schedule-card schedule-card--signal" data-card-light>
+      <article class="schedule-card schedule-card--signal" data-card-light data-card-proximity>
         <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
           <strong>${escapeHTML(project.title)}</strong>
@@ -4483,7 +4483,7 @@ void main() {
   };
   var renderProjects = () => {
     if (!projectList) return;
-    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
+    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light data-card-proximity>
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
     <div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <span class="project-card__shine" aria-hidden="true"></span>
@@ -4618,49 +4618,106 @@ void main() {
   }));
   var bindCardPointerLight = () => {
     const cardSelector = "[data-card-light]";
+    const proximitySelector = "[data-card-proximity]";
+    const proximityCards = [...document.querySelectorAll(proximitySelector)];
+    const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize || "16");
+    const proximityRadius = 24 * rootFontSize;
+    const warmRadius = 12 * rootFontSize;
     let activeCard = null;
+    let activeProximityCards = new Set();
     let pointerFrame = 0;
     let pendingPointer = null;
+    let lastPointer = null;
     const clearCard = (card) => {
       if (!card) return;
       card.style.setProperty("--card-light-opacity", "0");
     };
+    const clearPointer = () => {
+      pendingPointer = null;
+      lastPointer = null;
+      if (pointerFrame) window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = 0;
+      clearCard(activeCard);
+      activeCard = null;
+      activeProximityCards.forEach((card) => {
+        card.style.setProperty("--card-proximity-opacity", "0%");
+        card.style.setProperty("--card-warm-opacity", "0%");
+      });
+      activeProximityCards.clear();
+    };
     const flushPointer = () => {
       pointerFrame = 0;
       if (!pendingPointer) return;
-      const { card, event } = pendingPointer;
+      const { clientX, clientY } = pendingPointer;
       pendingPointer = null;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--card-pointer-x", `${event.clientX - rect.left}px`);
-      card.style.setProperty("--card-pointer-y", `${event.clientY - rect.top}px`);
-      card.style.setProperty("--card-light-opacity", "1");
+      const updates = [];
+      const nextActiveProximityCards = new Set();
+      proximityCards.forEach((card) => {
+        if (card.hidden || card.closest("[data-view-panel]")?.hidden) return;
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const dx = Math.max(rect.left - clientX, 0, clientX - rect.right);
+        const dy = Math.max(rect.top - clientY, 0, clientY - rect.bottom);
+        const proximity = Math.max(0, 1 - Math.hypot(dx, dy) / proximityRadius);
+        const intensity = proximity * proximity * (3 - 2 * proximity);
+        if (!intensity) return;
+        const cornerDistance = Math.hypot(clientX - rect.right, clientY - rect.bottom);
+        const warmProximity = Math.max(0, 1 - cornerDistance / warmRadius);
+        const warmIntensity = warmProximity * warmProximity * (3 - 2 * warmProximity);
+        nextActiveProximityCards.add(card);
+        updates.push({
+          card,
+          x: `${clientX - rect.left}px`,
+          y: `${clientY - rect.top}px`,
+          opacity: `${(intensity * 100).toFixed(2)}%`,
+          warmOpacity: `${(warmIntensity * 100).toFixed(2)}%`
+        });
+      });
+      activeProximityCards.forEach((card) => {
+        if (!nextActiveProximityCards.has(card)) {
+          card.style.setProperty("--card-proximity-opacity", "0%");
+          card.style.setProperty("--card-warm-opacity", "0%");
+        }
+      });
+      updates.forEach(({ card, x, y, opacity, warmOpacity }) => {
+        card.style.setProperty("--card-pointer-x", x);
+        card.style.setProperty("--card-pointer-y", y);
+        card.style.setProperty("--card-proximity-opacity", opacity);
+        card.style.setProperty("--card-warm-opacity", warmOpacity);
+      });
+      activeProximityCards = nextActiveProximityCards;
+
+      const hit = document.elementFromPoint(clientX, clientY);
+      const card = hit instanceof Element ? hit.closest(cardSelector) : null;
+      const directCard = card?.hasAttribute("data-card-proximity") ? null : card;
+      if (activeCard !== directCard) clearCard(activeCard);
+      activeCard = directCard;
+      if (activeCard) {
+        const rect = activeCard.getBoundingClientRect();
+        activeCard.style.setProperty("--card-pointer-x", `${clientX - rect.left}px`);
+        activeCard.style.setProperty("--card-pointer-y", `${clientY - rect.top}px`);
+        activeCard.style.setProperty("--card-light-opacity", "1");
+      }
+    };
+    const schedulePointerUpdate = (clientX, clientY) => {
+      pendingPointer = { clientX, clientY };
+      lastPointer = pendingPointer;
+      if (!pointerFrame) pointerFrame = window.requestAnimationFrame(flushPointer);
     };
     document.addEventListener("pointermove", (event) => {
       if (event.pointerType && event.pointerType !== "mouse") return;
-      const target = event.target instanceof Element ? event.target.closest(cardSelector) : null;
-      if (!target) {
-        clearCard(activeCard);
-        activeCard = null;
-        return;
-      }
-      if (activeCard && activeCard !== target) clearCard(activeCard);
-      activeCard = target;
-      pendingPointer = { card: target, event };
-      if (!pointerFrame) pointerFrame = window.requestAnimationFrame(flushPointer);
+      schedulePointerUpdate(event.clientX, event.clientY);
     }, { passive: true });
     document.addEventListener("pointerout", (event) => {
-      if (!(event.target instanceof Element)) return;
-      const card = event.target.closest(cardSelector);
-      const related = event.relatedTarget instanceof Node ? event.relatedTarget : null;
-      if (card && (!related || !card.contains(related))) {
-        clearCard(card);
-        if (activeCard === card) activeCard = null;
-      }
+      if (event.relatedTarget === null) clearPointer();
     }, { passive: true });
-    window.addEventListener("blur", () => {
-      clearCard(activeCard);
-      activeCard = null;
+    window.addEventListener("scroll", () => {
+      if (lastPointer) schedulePointerUpdate(lastPointer.clientX, lastPointer.clientY);
     }, { passive: true });
+    window.addEventListener("resize", () => {
+      if (lastPointer) schedulePointerUpdate(lastPointer.clientX, lastPointer.clientY);
+    }, { passive: true });
+    window.addEventListener("blur", clearPointer, { passive: true });
   };
   var backdropElement = document.querySelector("[data-site-backdrop]");
   var backdropCanvas = document.querySelector("[data-site-backdrop-canvas]");
@@ -5025,14 +5082,14 @@ void main() {
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
-        blurAmount: 0.16,
+        blurAmount: 0.12,
         refraction: 0.84,
         chromAberration: 0.05,
         edgeHighlight: 0.1,
         specular: 0.02,
         fresnel: 0.88,
         distortion: 6e-3,
-        opacity: 0.72,
+        opacity: 0.66,
         saturation: 0.02,
         tintStrength: 0.025,
         brightness: -0.06,
