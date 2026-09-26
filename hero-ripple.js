@@ -160,9 +160,10 @@ export const initHeroRipple = () => {
 
   const capture = async () => {
     const version = ++captureVersion;
-    ready = false;
-    root.classList.remove('is-ripple-ready');
-    root.classList.remove('is-ripple-active');
+    if (!ready) {
+      root.classList.remove('is-ripple-ready');
+      root.classList.remove('is-ripple-active');
+    }
     try {
       await document.fonts.ready;
       const rect = title.getBoundingClientRect();
