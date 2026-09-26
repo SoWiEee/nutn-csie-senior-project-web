@@ -398,7 +398,6 @@ const BACKDROP_FRAGMENT_SHADER = `
   uniform sampler2D u_image;
   uniform vec2 u_image_size;
   uniform vec2 u_view_size;
-  uniform vec2 u_pointer;
   uniform float u_time;
 
   vec2 cover_uv(vec2 uv) {
@@ -414,66 +413,26 @@ const BACKDROP_FRAGMENT_SHADER = `
     return 1.0 - smoothstep(0.0, width, abs(fract(value) - 0.5));
   }
 
-  float segment(vec2 p, vec2 a, vec2 b, float width) {
-    vec2 pa = p - a;
-    vec2 ba = b - a;
-    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-    return 1.0 - smoothstep(width, width * 1.8, length(pa - ba * h));
-  }
-
-  float pointGlow(vec2 p, vec2 center, float radius) {
-    vec2 ratio = vec2(u_view_size.x / max(u_view_size.y, 1.0), 1.0);
-    return exp(-length((p - center) * ratio) / radius);
-  }
-
   void main() {
     vec2 uv = v_uv;
-    vec2 image_uv = cover_uv(uv);
-    vec3 photo = texture2D(u_image, image_uv).rgb;
+    vec3 photo = texture2D(u_image, cover_uv(uv)).rgb;
     vec3 midnight = vec3(0.018, 0.034, 0.066);
-    vec3 blue = vec3(0.22, 0.48, 1.0);
-    vec3 ice = vec3(0.68, 0.84, 1.0);
-    vec3 color = photo * 0.85;
+    vec3 color = mix(midnight, photo * vec3(0.78, 0.84, 0.94), 0.4);
 
-    // Tracers run along the perspective paths already drawn in the artwork.
-    float routeA = max(segment(image_uv, vec2(0.25, 0.31), vec2(0.73, 0.67), 0.0025),
-                       segment(image_uv, vec2(0.73, 0.67), vec2(0.86, 0.86), 0.0025));
-    float routeB = segment(image_uv, vec2(0.36, 0.29), vec2(0.78, 0.68), 0.0022);
-    float routePhase = fract(u_time * 0.075);
-    float routePulse = exp(-abs(image_uv.x - mix(0.25, 0.84, routePhase)) * 75.0);
-    color += ice * (routeA + routeB * 0.75) * routePulse * 0.72;
+    float grid_x = line(uv.x * 7.0, 0.016);
+    float grid_y = line(uv.y * 5.0, 0.016);
+    float grid = max(grid_x, grid_y) * 0.032;
+    color += vec3(0.12, 0.31, 0.7) * grid;
 
-    // The signal waveform breathes without shifting the underlying composition.
-    float waveEnvelope = 1.0 - smoothstep(0.0, 0.12, abs(image_uv.x - 0.43));
-    float waveY = 0.265 + sin((image_uv.x * 92.0) + u_time * 2.2) * 0.012 * waveEnvelope;
-    float waveform = (1.0 - smoothstep(0.002, 0.006, abs(image_uv.y - waveY)))
-      * smoothstep(0.29, 0.35, image_uv.x) * smoothstep(0.57, 0.50, image_uv.x);
-    color += ice * waveform * (0.18 + waveEnvelope * 0.38);
-
-    // Pulsing joints and a scanning ring animate the analysis motifs at right.
-    vec2 joints[6];
-    joints[0] = vec2(0.692, 0.430); joints[1] = vec2(0.683, 0.333);
-    joints[2] = vec2(0.716, 0.270); joints[3] = vec2(0.640, 0.214);
-    joints[4] = vec2(0.705, 0.155); joints[5] = vec2(0.660, 0.170);
-    float jointLight = 0.0;
-    for (int i = 0; i < 6; i++) {
-      float beat = 0.55 + 0.45 * sin(u_time * 2.0 - float(i) * 0.65);
-      jointLight += pointGlow(image_uv, joints[i], 0.012) * beat;
-    }
-    color += blue * jointLight * 0.16;
-
-    vec2 scanCenter = vec2(0.865, 0.43);
-    float scanRadius = 0.035 + fract(u_time * 0.18) * 0.16;
-    float scanDistance = length((image_uv - scanCenter) * vec2(0.62, 1.0));
-    float scanRing = 1.0 - smoothstep(0.004, 0.012, abs(scanDistance - scanRadius));
-    color += ice * scanRing * (1.0 - smoothstep(0.18, 0.29, scanDistance)) * 0.22;
-
-    // Pointer response remains local and subtle.
-    color += blue * pointGlow(uv, u_pointer, 0.105) * 0.055;
+    float drift = fract(u_time * 0.018);
+    float beam = exp(-abs(uv.x + uv.y * 0.42 - drift * 1.65 - 0.12) * 42.0);
+    float pulse = exp(-abs(uv.y - (0.56 + sin(u_time * 0.11) * 0.08)) * 72.0);
+    color += vec3(0.08, 0.25, 0.62) * beam * 0.085;
+    color += vec3(0.18, 0.4, 0.92) * pulse * 0.035;
 
     float vignette = smoothstep(0.3, 0.92, distance(uv, vec2(0.5)));
-    color *= 1.0 - vignette * 0.18;
-    color = mix(color, midnight, 0.05);
+    color *= 1.0 - vignette * 0.34;
+    color = mix(color, midnight, 0.16);
     gl_FragColor = vec4(color, 1.0);
   }
 `;
@@ -556,9 +515,8 @@ const initSiteBackdrop = async () => {
   const imageLocation = gl.getUniformLocation(program, 'u_image');
   const imageSizeLocation = gl.getUniformLocation(program, 'u_image_size');
   const viewSizeLocation = gl.getUniformLocation(program, 'u_view_size');
-  const pointerLocation = gl.getUniformLocation(program, 'u_pointer');
   const timeLocation = gl.getUniformLocation(program, 'u_time');
-  if (!position || !texture || positionLocation < 0 || !imageLocation || !imageSizeLocation || !viewSizeLocation || !pointerLocation || !timeLocation) {
+  if (!position || !texture || positionLocation < 0 || !imageLocation || !imageSizeLocation || !viewSizeLocation || !timeLocation) {
     gl.deleteProgram(program);
     backdropElement.classList.add('is-static-fallback');
     return null;
@@ -582,7 +540,6 @@ const initSiteBackdrop = async () => {
 
   let frame = 0;
   let disposed = false;
-  const pointer = { x: 0.72, y: 0.54, targetX: 0.72, targetY: 0.54 };
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -598,9 +555,6 @@ const initSiteBackdrop = async () => {
     resize();
     gl.useProgram(program);
     gl.uniform2f(viewSizeLocation, backdropCanvas.width, backdropCanvas.height);
-    pointer.x += (pointer.targetX - pointer.x) * 0.075;
-    pointer.y += (pointer.targetY - pointer.y) * 0.075;
-    gl.uniform2f(pointerLocation, pointer.x, pointer.y);
     gl.uniform1f(timeLocation, time * 0.001);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
@@ -609,16 +563,11 @@ const initSiteBackdrop = async () => {
     if (!reducedMotion.matches && !document.hidden) frame = window.requestAnimationFrame(render);
   };
   const onResize = () => draw(0);
-  const onPointerMove = (event) => {
-    pointer.targetX = event.clientX / Math.max(window.innerWidth, 1);
-    pointer.targetY = 1 - event.clientY / Math.max(window.innerHeight, 1);
-  };
   const onVisibility = () => {
     window.cancelAnimationFrame(frame);
     if (!document.hidden) render(performance.now());
   };
   window.addEventListener('resize', onResize, { passive: true });
-  window.addEventListener('pointermove', onPointerMove, { passive: true });
   document.addEventListener('visibilitychange', onVisibility, { passive: true });
   backdropElement.classList.remove('is-static-fallback');
   render(0);

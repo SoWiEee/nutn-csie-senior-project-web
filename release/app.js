@@ -3828,6 +3828,9 @@ void main() {
       } else {
         this._sceneCtx.clearRect(0, 0, width, height);
       }
+      // A viewport-backed scene can be smaller than a partly offscreen glass
+      // panel. Keep its uncovered sample area on-brand instead of letting the
+      // white clear color bleed through the refraction as a gray flash.
       this._sceneCtx.fillStyle = "#0b162b";
       this._sceneCtx.fillRect(0, 0, width, height);
     }
@@ -4392,22 +4395,26 @@ void main() {
     { id: "13", code: "NUTN-CSIE-PRJ-116-013", group: "decision", title: "\u7B2C 13 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u6B66\u660E\u4E56\u3001\u856D\u9E97\u9E97", studentIds: "S11259020\u3001S11259021", advisor: "\u674E\u5065\u8208", time: "13:45 ~ 14:00", conferenceTags: [] },
     { id: "14", code: "NUTN-CSIE-PRJ-116-014", group: "decision", title: "\u7B2C 14 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5955\u777F\u3001\u6797\u79C9\u9054\u3001\u8449\u82A2\u6770", studentIds: "S11259024\u3001S11259027\u3001S11259041", advisor: "\u9AD8\u555F\u6D32", time: "14:00 ~ 14:15", conferenceTags: [] },
     { id: "15", code: "NUTN-CSIE-PRJ-116-015", group: "decision", title: "\u7B2C 15 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u77F3\u7693\u5B87", studentIds: "S11259032", advisor: "\u6731\u660E\u6BC5", time: "14:25 ~ 14:40", conferenceTags: [] },
-    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "\u57FA\u65BC Slurm \u8207 Kubernetes \u67B6\u69CB\u4E0B AI \u4F3A\u670D\u5668 GPU \u5DE5\u4F5C\u8CA0\u8F09\u667A\u6167\u6392\u7A0B", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"], summary: [
+    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"], summary: [
       {
-        paragraph: "\u8FD1\u5E74\u4F86\uFF0C\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u8207\u751F\u6210\u5F0F AI \u5FEB\u901F\u767C\u5C55\uFF0CGPU \u5DF2\u6210\u70BA\u8A13\u7DF4\u3001\u63A8\u8AD6\u8207\u8CC7\u6599\u8655\u7406\u7684\u4E3B\u8981\u904B\u7B97\u8CC7\u6E90\u3002\u7136\u800C\u5927\u5B78\u5BE6\u9A57\u5BA4\u8207\u4E2D\u5C0F\u578B\u53E2\u96C6\u5E38\u7531\u4E0D\u540C\u4E16\u4EE3 GPU \u7D44\u6210\uFF0C\u4E14 NVIDIA MPS \u5141\u8A31\u591A\u500B\u5DE5\u4F5C\u5171\u4EAB\u540C\u4E00\u5F35 GPU\uFF0C\u4F7F GPU \u5229\u7528\u7387\u3001\u5DE5\u4F5C\u5B8C\u6210\u6642\u9593\u8207\u6279\u6B21\u4F47\u5217\u7BA1\u7406\u96E3\u4EE5\u540C\u6642\u6700\u4F73\u5316\uFF0C\u5E38\u5E38\u9762\u81E8\u4EE5\u4E0B\u56F0\u5883\uFF1A",
+        paragraph: "近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：",
         bullets: [
-          "\u7570\u8CEA GPU \u7684\u904B\u7B97\u80FD\u529B\u8207\u8A18\u61B6\u9AD4\u5BB9\u91CF\u4E0D\u540C\uFF0C\u5DE5\u4F5C\u653E\u7F6E\u4E0D\u80FD\u53EA\u770B GPU \u6578\u91CF\u3002",
-          "MPS \u914D\u984D\u6703\u5F71\u97FF\u5171\u7F6E\u5DE5\u4F5C\u6578\u3001\u53EF\u7528\u5BB9\u91CF\u8207\u5BE6\u969B\u5B8C\u6210\u6642\u9593\u3002"
+          "異質 GPU 的運算能力與記憶體容量不同，工作放置不能只看 GPU 數量。",
+          "MPS 配額會影響共置工作數、可用容量與實際完成時間。"
         ]
       },
       {
-        paragraph: "\u76EE\u524D\u5E38\u898B\u7684\u7CFB\u7D71\u5927\u591A\u53EA\u64C5\u9577\u5176\u4E2D\u4E00\u4EF6\u4E8B\u3002\u50B3\u7D71\u9AD8\u6548\u80FD\u904B\u7B97\u6392\u7A0B\u5668 Slurm \u96D6\u7136\u64C5\u9577\u6279\u6B21\u5DE5\u4F5C\u3001\u4F47\u5217\u8207\u8CC7\u6E90\u7BA1\u7406\uFF0C\u4F46\u50B3\u7D71 FCFS \u8207 Backfill \u4E3B\u8981\u4F9D\u56FA\u5B9A\u898F\u5247\u904B\u4F5C\uFF0C\u96E3\u4EE5\u540C\u6642\u611F\u77E5 GPU \u578B\u865F\u3001MPS \u914D\u984D\u3001\u5DE5\u4F5C\u7279\u5FB5\u8207\u4F47\u5217\u72C0\u614B\uFF0C\u4E5F\u5C0D\u5F48\u6027\u64F4\u7E2E\u8207\u96F2\u7AEF\u5F0F\u7BA1\u7406\u4E0D\u5920\u65B9\u4FBF\uFF1B\u76F8\u5C0D\u5730\uFF0C\u5BB9\u5668\u5E73\u53F0\u5982 Kubernetes \u9069\u5408\u5BB9\u5668\u90E8\u7F72\u3001\u81EA\u52D5\u64F4\u7E2E\u8207\u5065\u5EB7\u76E3\u63A7\uFF0C\u4E26\u4E0D\u76F4\u63A5\u63D0\u4F9B Slurm \u7684\u6279\u6B21\u6392\u7A0B\u8A9E\u610F\u3002\u73FE\u6709\u7814\u7A76\u8F03\u5C11\u5728\u771F\u5BE6 Slurm \u63D0\u4EA4\u6D41\u7A0B\u4E2D\uFF0C\u806F\u5408\u8655\u7406\u7570\u8CEA GPU\u3001MPS \u914D\u984D\u8207\u5B78\u7FD2\u5F0F\u5DE5\u4F5C\u6392\u5E8F\u3002"
+        paragraph: "目前常見的系統大多只擅長其中一件事。傳統高效能運算排程器 Slurm 雖然擅長批次工作、佇列與資源管理，但傳統 FCFS 與 Backfill 主要依固定規則運作，難以同時感知 GPU 型號、MPS 配額、工作特徵與佇列狀態，也對彈性擴縮與雲端式管理不夠方便；相對地，容器平台如 Kubernetes 適合容器部署、自動擴縮與健康監控，並不直接提供 Slurm 的批次排程語意。現有研究較少在真實 Slurm 提交流程中，聯合處理異質 GPU、MPS 配額與學習式工作排序。"
       },
       {
-        paragraph: "\u56E0\u6B64\uFF0C\u672C\u5C08\u984C\u5E0C\u671B\u7D50\u5408\u5169\u8005\u512A\u9EDE\uFF0C\u5EFA\u7ACB\u4E00\u5957\u65E2\u80FD\u4FDD\u6709\u7814\u7A76\u8005\u719F\u6089\u7684\u5DE5\u4F5C\u63D0\u4EA4\u6D41\u7A0B\uFF0C\u53C8\u80FD\u505A\u5230\u52D5\u614B\u5206\u914D CPU\u3001GPU \u8207\u5132\u5B58\u8CC7\u6E90\u7684\u7CFB\u7D71\u3002\u9032\u4E00\u6B65\u5730\uFF0C\u6211\u5011\u4E5F\u5E0C\u671B\u5C0E\u5165\u6DF1\u5EA6\u5F37\u5316\u5B78\u7FD2\u7B56\u7565\uFF0C\u8B93\u7CFB\u7D71\u53EF\u4EE5\u6839\u64DA\u5DE5\u4F5C\u4F47\u5217\u72C0\u614B\u8207\u53E2\u96C6\u72C0\u614B\uFF0C\u81EA\u52D5\u505A\u51FA\u66F4\u5408\u7406\u7684\u8CC7\u6E90\u5206\u914D\u6C7A\u7B56\u3002"
+        paragraph: "因此，本專題希望結合兩者優點，建立一套既能保有研究者熟悉的工作提交流程，又能做到動態分配 CPU、GPU 與儲存資源的系統。進一步地，我們也希望導入深度強化學習策略，讓系統可以根據工作佇列狀態與叢集狀態，自動做出更合理的資源分配決策。"
       }
     ] },
-    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u904B\u52D5\u6559\u7DF4", titleEn: "Sports Coach", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"] }
+    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u7D50\u5408\u9AA8\u67B6\u5E8F\u5217\u8207\u6DF1\u5EA6\u5B78\u7FD2\u4E4B\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u8A55\u4F30\u67B6\u69CB", titleEn: "A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"], summary: [
+      {
+        paragraph: "本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。"
+      }
+    ] }
   ];
   var groupMeta = {
     sense: { title: "\u667A\u6167\u611F\u77E5\u8207\u8A0A\u865F\u5206\u6790\u7D44", label: "SENSE / SIGNAL ANALYSIS" },
@@ -4505,6 +4512,7 @@ void main() {
   };
   var setView = (view, { updateHash = true } = {}) => {
     const nextView = ["home", "schedule", "projects"].includes(view) ? view : "home";
+    const viewChanged = document.body.dataset.view !== nextView;
     viewPanels.forEach((panel) => {
       panel.hidden = panel.dataset.viewPanel !== nextView;
       panel.classList.toggle("is-active", panel.dataset.viewPanel === nextView);
@@ -4515,12 +4523,13 @@ void main() {
       tab.setAttribute("aria-selected", String(active));
     });
     document.body.dataset.view = nextView;
+    updateHomeBackdropFocus();
     setMenuState(false);
     if (updateHash) {
       history.replaceState(null, "", `#${nextView}`);
-      scrollToTopImmediately();
+      if (viewChanged) scrollToTopImmediately();
     }
-    scheduleLiquidGlassForCurrentView("view");
+    scheduleLiquidGlassForCurrentView('view');
   };
   var setFilterState = (buttons, activeButton) => buttons.forEach((button) => {
     const active = button === activeButton;
@@ -4575,7 +4584,7 @@ void main() {
     document.querySelectorAll("[data-schedule-group]").forEach((group) => {
       group.hidden = group.dataset.scheduleGroup !== filter;
     });
-    scheduleLiquidGlassForCurrentView("schedule-filter");
+    scheduleLiquidGlassForCurrentView('schedule-filter');
   };
   scheduleFilters.forEach((button) => button.addEventListener("click", () => applyScheduleFilter(button.dataset.scheduleFilter)));
   var projectFilters = [...document.querySelectorAll("[data-project-filter]")];
@@ -4655,6 +4664,22 @@ void main() {
   var backdropElement = document.querySelector("[data-site-backdrop]");
   var backdropCanvas = document.querySelector("[data-site-backdrop-canvas]");
   var backdropImage = document.querySelector("[data-site-backdrop-source]");
+  var homeHero = document.querySelector("#view-home .hero");
+  var homeBackdropFrame = 0;
+  var updateHomeBackdropFocus = () => {
+    if (homeBackdropFrame) return;
+    homeBackdropFrame = window.requestAnimationFrame(() => {
+      homeBackdropFrame = 0;
+      if (!backdropElement) return;
+      const isHomeView = document.body.dataset.view === "home";
+      const heroHeight = Math.max(1, homeHero?.getBoundingClientRect().height || window.innerHeight);
+      const progress = isHomeView ? Math.min(1, Math.max(0, window.scrollY / heroHeight)) : 0;
+      backdropElement.style.setProperty("--home-backdrop-progress", progress.toFixed(3));
+    });
+  };
+  window.addEventListener("scroll", updateHomeBackdropFocus, { passive: true });
+  window.addEventListener("resize", updateHomeBackdropFocus, { passive: true });
+  updateHomeBackdropFocus();
   var backdropGl = null;
   var BACKDROP_VERTEX_SHADER = `
   attribute vec2 a_position;
@@ -4670,7 +4695,6 @@ void main() {
   uniform sampler2D u_image;
   uniform vec2 u_image_size;
   uniform vec2 u_view_size;
-  uniform vec2 u_pointer;
   uniform float u_time;
 
   vec2 cover_uv(vec2 uv) {
@@ -4686,66 +4710,26 @@ void main() {
     return 1.0 - smoothstep(0.0, width, abs(fract(value) - 0.5));
   }
 
-  float segment(vec2 p, vec2 a, vec2 b, float width) {
-    vec2 pa = p - a;
-    vec2 ba = b - a;
-    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-    return 1.0 - smoothstep(width, width * 1.8, length(pa - ba * h));
-  }
-
-  float pointGlow(vec2 p, vec2 center, float radius) {
-    vec2 ratio = vec2(u_view_size.x / max(u_view_size.y, 1.0), 1.0);
-    return exp(-length((p - center) * ratio) / radius);
-  }
-
   void main() {
     vec2 uv = v_uv;
-    vec2 image_uv = cover_uv(uv);
-    vec3 photo = texture2D(u_image, image_uv).rgb;
+    vec3 photo = texture2D(u_image, cover_uv(uv)).rgb;
     vec3 midnight = vec3(0.018, 0.034, 0.066);
-    vec3 blue = vec3(0.22, 0.48, 1.0);
-    vec3 ice = vec3(0.68, 0.84, 1.0);
-    vec3 color = photo * 0.85;
+    vec3 color = mix(midnight, photo * vec3(0.78, 0.84, 0.94), 0.4);
 
-    // Tracers run along the perspective paths already drawn in the artwork.
-    float routeA = max(segment(image_uv, vec2(0.25, 0.31), vec2(0.73, 0.67), 0.0025),
-                       segment(image_uv, vec2(0.73, 0.67), vec2(0.86, 0.86), 0.0025));
-    float routeB = segment(image_uv, vec2(0.36, 0.29), vec2(0.78, 0.68), 0.0022);
-    float routePhase = fract(u_time * 0.075);
-    float routePulse = exp(-abs(image_uv.x - mix(0.25, 0.84, routePhase)) * 75.0);
-    color += ice * (routeA + routeB * 0.75) * routePulse * 0.72;
+    float grid_x = line(uv.x * 7.0, 0.016);
+    float grid_y = line(uv.y * 5.0, 0.016);
+    float grid = max(grid_x, grid_y) * 0.032;
+    color += vec3(0.12, 0.31, 0.7) * grid;
 
-    // The signal waveform breathes without shifting the underlying composition.
-    float waveEnvelope = 1.0 - smoothstep(0.0, 0.12, abs(image_uv.x - 0.43));
-    float waveY = 0.265 + sin((image_uv.x * 92.0) + u_time * 2.2) * 0.012 * waveEnvelope;
-    float waveform = (1.0 - smoothstep(0.002, 0.006, abs(image_uv.y - waveY)))
-      * smoothstep(0.29, 0.35, image_uv.x) * smoothstep(0.57, 0.50, image_uv.x);
-    color += ice * waveform * (0.18 + waveEnvelope * 0.38);
-
-    // Pulsing joints and a scanning ring animate the analysis motifs at right.
-    vec2 joints[6];
-    joints[0] = vec2(0.692, 0.430); joints[1] = vec2(0.683, 0.333);
-    joints[2] = vec2(0.716, 0.270); joints[3] = vec2(0.640, 0.214);
-    joints[4] = vec2(0.705, 0.155); joints[5] = vec2(0.660, 0.170);
-    float jointLight = 0.0;
-    for (int i = 0; i < 6; i++) {
-      float beat = 0.55 + 0.45 * sin(u_time * 2.0 - float(i) * 0.65);
-      jointLight += pointGlow(image_uv, joints[i], 0.012) * beat;
-    }
-    color += blue * jointLight * 0.16;
-
-    vec2 scanCenter = vec2(0.865, 0.43);
-    float scanRadius = 0.035 + fract(u_time * 0.18) * 0.16;
-    float scanDistance = length((image_uv - scanCenter) * vec2(0.62, 1.0));
-    float scanRing = 1.0 - smoothstep(0.004, 0.012, abs(scanDistance - scanRadius));
-    color += ice * scanRing * (1.0 - smoothstep(0.18, 0.29, scanDistance)) * 0.22;
-
-    // Pointer response remains local and subtle.
-    color += blue * pointGlow(uv, u_pointer, 0.105) * 0.055;
+    float drift = fract(u_time * 0.018);
+    float beam = exp(-abs(uv.x + uv.y * 0.42 - drift * 1.65 - 0.12) * 42.0);
+    float pulse = exp(-abs(uv.y - (0.56 + sin(u_time * 0.11) * 0.08)) * 72.0);
+    color += vec3(0.08, 0.25, 0.62) * beam * 0.085;
+    color += vec3(0.18, 0.4, 0.92) * pulse * 0.035;
 
     float vignette = smoothstep(0.3, 0.92, distance(uv, vec2(0.5)));
-    color *= 1.0 - vignette * 0.18;
-    color = mix(color, midnight, 0.05);
+    color *= 1.0 - vignette * 0.34;
+    color = mix(color, midnight, 0.16);
     gl_FragColor = vec4(color, 1.0);
   }
 `;
@@ -4823,9 +4807,8 @@ void main() {
     const imageLocation = gl.getUniformLocation(program, "u_image");
     const imageSizeLocation = gl.getUniformLocation(program, "u_image_size");
     const viewSizeLocation = gl.getUniformLocation(program, "u_view_size");
-    const pointerLocation = gl.getUniformLocation(program, "u_pointer");
     const timeLocation = gl.getUniformLocation(program, "u_time");
-    if (!position || !texture || positionLocation < 0 || !imageLocation || !imageSizeLocation || !viewSizeLocation || !pointerLocation || !timeLocation) {
+    if (!position || !texture || positionLocation < 0 || !imageLocation || !imageSizeLocation || !viewSizeLocation || !timeLocation) {
       gl.deleteProgram(program);
       backdropElement.classList.add("is-static-fallback");
       return null;
@@ -4847,7 +4830,6 @@ void main() {
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
     let frame = 0;
     let disposed = false;
-    const pointer = { x: 0.72, y: 0.54, targetX: 0.72, targetY: 0.54 };
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -4863,9 +4845,6 @@ void main() {
       resize();
       gl.useProgram(program);
       gl.uniform2f(viewSizeLocation, backdropCanvas.width, backdropCanvas.height);
-      pointer.x += (pointer.targetX - pointer.x) * 0.075;
-      pointer.y += (pointer.targetY - pointer.y) * 0.075;
-      gl.uniform2f(pointerLocation, pointer.x, pointer.y);
       gl.uniform1f(timeLocation, time * 1e-3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
@@ -4874,16 +4853,11 @@ void main() {
       if (!reducedMotion.matches && !document.hidden) frame = window.requestAnimationFrame(render);
     };
     const onResize = () => draw(0);
-    const onPointerMove = (event) => {
-      pointer.targetX = event.clientX / Math.max(window.innerWidth, 1);
-      pointer.targetY = 1 - event.clientY / Math.max(window.innerHeight, 1);
-    };
     const onVisibility = () => {
       window.cancelAnimationFrame(frame);
       if (!document.hidden) render(performance.now());
     };
     window.addEventListener("resize", onResize, { passive: true });
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
     document.addEventListener("visibilitychange", onVisibility, { passive: true });
     backdropElement.classList.remove("is-static-fallback");
     render(0);
@@ -5081,7 +5055,7 @@ void main() {
         defaults
       });
       glassElements.forEach((element) => {
-        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.22)", "important");
+        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.15)", "important");
         element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
       });
       root.dataset.liquidGlassReady = "true";
@@ -5100,20 +5074,20 @@ void main() {
     liquidGlassPending.set(root, pending);
     return pending;
   };
-  var scheduleLiquidGlassForCurrentView = (reason = "manual") => {
+  var scheduleLiquidGlassForCurrentView = (reason = 'manual') => {
     if (!liquidGlassConstructor) return;
     for (const root of getLiquidGlassRoots()) {
       const active = isLiquidGlassRootEligible(root);
       const instance = liquidGlassInstances.get(root);
       if (glassDebugEnabled && instance && instance._active !== active) {
         const rect = root.getBoundingClientRect();
-        recordGlassDebug("liquidglass-active-change", {
+        recordGlassDebug('liquidglass-active-change', {
           reason,
           active,
-          view: document.body.dataset.view || "home",
-          hidden: Boolean(root.closest("[hidden]")),
+          view: document.body.dataset.view || 'home',
+          hidden: Boolean(root.closest('[hidden]')),
           rect: [Math.round(rect.top), Math.round(rect.bottom), Math.round(rect.width), Math.round(rect.height)],
-          viewport: [window.innerWidth, window.innerHeight]
+          viewport: [window.innerWidth, window.innerHeight],
         });
       }
       instance?.setActive(active);
@@ -5126,18 +5100,18 @@ void main() {
     if (!liquidGlassScrollFrame) {
       liquidGlassScrollFrame = window.requestAnimationFrame(() => {
         liquidGlassScrollFrame = 0;
-        scheduleLiquidGlassForCurrentView("scroll");
+        scheduleLiquidGlassForCurrentView('scroll');
       });
     }
     window.clearTimeout(liquidGlassScrollIdleTimer);
     liquidGlassScrollIdleTimer = window.setTimeout(() => {
       liquidGlassScrollIdleTimer = 0;
-      scheduleLiquidGlassForCurrentView("scroll-idle");
+      scheduleLiquidGlassForCurrentView('scroll-idle');
     }, 180);
   };
   window.addEventListener("resize", () => {
     window.clearTimeout(liquidGlassResizeTimer);
-    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView("resize"), 120);
+    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
   }, { passive: true });
   window.addEventListener("scroll", scheduleLiquidGlassDuringScroll, { passive: true });
   var initLiquidGlass = () => {
