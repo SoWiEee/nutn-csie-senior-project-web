@@ -513,7 +513,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .project-dialog__close:focus-visible { border-color: var(--color-danger); background: var(--color-danger-soft); color: var(--color-danger); }
 .project-dialog__close:active { border-color: var(--color-danger); background: var(--color-danger-soft); color: var(--color-danger); transform: scale(0.96); }
 .project-dialog__close-icon { display: block; font-size: 1.55rem; font-weight: 400; line-height: 1; transform: translateY(-0.04em); }
-.project-dialog__group { flex: 1; min-width: 0; margin: 0; color: var(--color-accent-strong); font-family: var(--font-body); font-size: var(--text-md); font-weight: 700; line-height: 1.35; }
+.project-dialog__group { flex: 1; min-width: 0; margin: 0; color: var(--color-accent-strong); font-family: var(--font-body); font-size: var(--text-md); font-weight: 700; line-height: 1.35; word-break: keep-all; }
 .project-dialog h2 { max-width: 34ch; margin: var(--space-md) 0 0; font-family: var(--font-display); font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
 .project-dialog__title-en { max-width: 62ch; margin: var(--space-sm) 0 0; color: var(--color-muted); font-family: var(--font-body); font-size: var(--text-lg); font-weight: 400; line-height: 1.55; overflow-wrap: anywhere; }
 .project-dialog__title-en[hidden] { display: none; }
@@ -1544,11 +1544,12 @@ body:not([data-view="home"]) .site-backdrop::before {
 
 @media (max-width: 48rem) {
   #view-home .hero {
-    min-height: 0;
+    min-height: 100vh;
+    min-height: 100svh;
   }
 
   #view-home .hero h1 {
-    font-size: clamp(2rem, 9.5vw, 4rem);
+    font-size: clamp(1.8rem, 9.5vw, 4rem);
   }
 
   #view-home .hero__content {
