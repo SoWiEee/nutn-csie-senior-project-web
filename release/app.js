@@ -4698,29 +4698,6 @@ void main() {
     return exp(-length((p - center) * ratio) / radius);
   }
 
-  float ellipseMask(vec2 p, vec2 center, vec2 radius) {
-    return 1.0 - smoothstep(0.86, 1.0, length((p - center) / radius));
-  }
-
-  float boxOutline(vec2 p, vec2 center, vec2 halfSize, float width) {
-    vec2 edge = abs(abs(p - center) - halfSize);
-    float outline = min(edge.x, edge.y);
-    float inside = step(abs(p.x - center.x), halfSize.x + width)
-      * step(abs(p.y - center.y), halfSize.y + width);
-    return (1.0 - smoothstep(width, width * 2.0, outline)) * inside;
-  }
-
-  float hash21(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-  }
-
-  float travelPulse(float distanceFromOrigin, float phase) {
-    float position = fract(u_time * 0.055 + phase);
-    return exp(-abs(distanceFromOrigin - position * 1.18) * 32.0);
-  }
-
   void main() {
     vec2 uv = v_uv;
     vec2 image_uv = cover_uv(uv);
@@ -4729,27 +4706,6 @@ void main() {
     vec3 blue = vec3(0.22, 0.48, 1.0);
     vec3 ice = vec3(0.68, 0.84, 1.0);
     vec3 color = photo * 0.85;
-    vec2 pointerImage = cover_uv(u_pointer);
-
-    // One source fans out into the artwork's separate sensing domains.
-    vec2 fanOrigin = vec2(0.165, 0.315);
-    float fanDistance = length((image_uv - fanOrigin) * vec2(0.72, 1.0));
-    float fanA = segment(image_uv, fanOrigin, vec2(0.665, 1.040), 0.0018);
-    float fanB = segment(image_uv, fanOrigin, vec2(1.030, 0.865), 0.0018);
-    float fanC = segment(image_uv, fanOrigin, vec2(1.030, 0.595), 0.0016);
-    float fanD = segment(image_uv, fanOrigin, vec2(1.030, 0.225), 0.0018);
-    float fanE = segment(image_uv, fanOrigin, vec2(0.720, -0.040), 0.0018);
-    float fanLines = fanA + fanB + fanC + fanD + fanE;
-    float fanSignals = fanA * travelPulse(fanDistance, 0.00)
-      + fanB * travelPulse(fanDistance, 0.16)
-      + fanC * travelPulse(fanDistance, 0.31)
-      + fanD * travelPulse(fanDistance, 0.47)
-      + fanE * travelPulse(fanDistance, 0.63);
-    float sourcePulse = pointGlow(image_uv, fanOrigin, 0.018)
-      * (0.55 + 0.45 * sin(u_time * 1.65));
-    color += blue * fanLines * 0.065;
-    color += ice * fanSignals * 0.48;
-    color += ice * sourcePulse * 0.11;
 
     // Tracers run along the perspective paths already drawn in the artwork.
     float routeA = max(segment(image_uv, vec2(0.25, 0.31), vec2(0.73, 0.67), 0.0025),
@@ -4757,29 +4713,11 @@ void main() {
     float routeB = segment(image_uv, vec2(0.36, 0.29), vec2(0.78, 0.68), 0.0022);
     float routePhase = fract(u_time * 0.075);
     float routePulse = exp(-abs(image_uv.x - mix(0.25, 0.84, routePhase)) * 75.0);
-    float trackingHover = 1.0 - smoothstep(0.08, 0.24, distance(pointerImage, vec2(0.61, 0.69)));
-    color += ice * (routeA + routeB * 0.75) * routePulse * (0.72 + trackingHover * 0.42);
-
-    // Detection boxes lock onto pedestrians as the tracer reaches each target.
-    float boxes = 0.0;
-    boxes += boxOutline(image_uv, vec2(0.425, 0.555), vec2(0.018, 0.075), 0.0015)
-      * exp(-abs(routePhase - 0.27) * 22.0);
-    boxes += boxOutline(image_uv, vec2(0.520, 0.625), vec2(0.021, 0.088), 0.0015)
-      * exp(-abs(routePhase - 0.44) * 22.0);
-    boxes += boxOutline(image_uv, vec2(0.610, 0.690), vec2(0.024, 0.092), 0.0015)
-      * exp(-abs(routePhase - 0.60) * 22.0);
-    boxes += boxOutline(image_uv, vec2(0.700, 0.755), vec2(0.022, 0.086), 0.0015)
-      * exp(-abs(routePhase - 0.77) * 22.0);
-    color += ice * boxes * (0.76 + trackingHover * 0.55);
+    color += ice * (routeA + routeB * 0.75) * routePulse * 0.72;
 
     // The signal waveform breathes without shifting the underlying composition.
-    float waveHover = 1.0 - smoothstep(0.055, 0.19, distance(pointerImage, vec2(0.43, 0.265)));
     float waveEnvelope = 1.0 - smoothstep(0.0, 0.12, abs(image_uv.x - 0.43));
-    float waveEnergy = 1.0 + waveHover * 2.5;
-    float waveY = 0.265
-      + sin((image_uv.x * (92.0 + waveHover * 38.0)) + u_time * (2.2 + waveHover * 3.0))
-        * 0.012 * waveEnvelope * waveEnergy
-      + sin(image_uv.x * 205.0 - u_time * 3.7) * 0.0035 * waveEnvelope * waveHover;
+    float waveY = 0.265 + sin((image_uv.x * 92.0) + u_time * 2.2) * 0.012 * waveEnvelope;
     float waveform = (1.0 - smoothstep(0.002, 0.006, abs(image_uv.y - waveY)))
       * smoothstep(0.29, 0.35, image_uv.x) * smoothstep(0.57, 0.50, image_uv.x);
     color += ice * waveform * (0.18 + waveEnvelope * 0.38);
@@ -4801,33 +4739,6 @@ void main() {
     float scanDistance = length((image_uv - scanCenter) * vec2(0.62, 1.0));
     float scanRing = 1.0 - smoothstep(0.004, 0.012, abs(scanDistance - scanRadius));
     color += ice * scanRing * (1.0 - smoothstep(0.18, 0.29, scanDistance)) * 0.22;
-
-    // A solid tree silhouette dissolves into sampled points as the pointer approaches.
-    float treeCanopy = ellipseMask(image_uv, vec2(0.895, 0.610), vec2(0.040, 0.090));
-    treeCanopy = max(treeCanopy, ellipseMask(image_uv, vec2(0.858, 0.570), vec2(0.038, 0.075)));
-    treeCanopy = max(treeCanopy, ellipseMask(image_uv, vec2(0.930, 0.575), vec2(0.040, 0.080)));
-    treeCanopy = max(treeCanopy, ellipseMask(image_uv, vec2(0.883, 0.530), vec2(0.046, 0.082)));
-    treeCanopy = max(treeCanopy, ellipseMask(image_uv, vec2(0.920, 0.645), vec2(0.032, 0.060)));
-    float treeTrunk = segment(image_uv, vec2(0.885, 0.355), vec2(0.894, 0.555), 0.012);
-    float treeBranches = segment(image_uv, vec2(0.891, 0.470), vec2(0.858, 0.565), 0.005);
-    treeBranches = max(treeBranches, segment(image_uv, vec2(0.892, 0.500), vec2(0.928, 0.585), 0.0045));
-    treeBranches = max(treeBranches, segment(image_uv, vec2(0.894, 0.535), vec2(0.902, 0.635), 0.004));
-    float treeMask = max(treeCanopy, treeTrunk);
-    float treeHover = 1.0 - smoothstep(0.09, 0.23, distance(pointerImage, vec2(0.890, 0.525)));
-    float leafTone = hash21(floor(image_uv * vec2(190.0, 108.0)));
-    vec3 treeInk = mix(vec3(0.055, 0.15, 0.25), vec3(0.16, 0.34, 0.48), image_uv.y + leafTone * 0.22);
-    vec3 trunkInk = vec3(0.10, 0.20, 0.29);
-    color = mix(color, treeInk, treeCanopy * (1.0 - treeHover) * 0.94);
-    color = mix(color, trunkInk, treeTrunk * (1.0 - treeHover) * 0.98);
-    color = mix(color, trunkInk * 1.18, treeBranches * treeCanopy * (1.0 - treeHover) * 0.88);
-
-    vec2 cloudGrid = image_uv * vec2(310.0, 176.0);
-    vec2 cloudCell = floor(cloudGrid);
-    float cloudDot = 1.0 - smoothstep(0.05, 0.18, length(fract(cloudGrid) - 0.5));
-    float cloudKeep = step(0.54, hash21(cloudCell));
-    float cloudTwinkle = 0.55 + 0.45 * sin(u_time * 2.4 + hash21(cloudCell + 7.0) * 6.283);
-    color += ice * cloudDot * cloudKeep * treeCanopy * (1.0 - treeHover) * 0.08;
-    color += ice * cloudDot * cloudKeep * treeMask * treeHover * cloudTwinkle * 0.72;
 
     // Pointer response remains local and subtle.
     color += blue * pointGlow(uv, u_pointer, 0.105) * 0.055;
@@ -4936,7 +4847,7 @@ void main() {
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
     let frame = 0;
     let disposed = false;
-    const pointer = { x: 0.08, y: 0.88, targetX: 0.08, targetY: 0.88 };
+    const pointer = { x: 0.72, y: 0.54, targetX: 0.72, targetY: 0.54 };
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
