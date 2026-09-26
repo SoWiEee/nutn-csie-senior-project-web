@@ -4572,6 +4572,7 @@ void main() {
   }));
   document.querySelectorAll('a[href="#top"]').forEach((link) => link.addEventListener("click", (event) => {
     event.preventDefault();
+    if (link.matches(".brand")) setView("home");
     scrollToTopImmediately();
   }));
   window.addEventListener("scroll", headerState, { passive: true });
