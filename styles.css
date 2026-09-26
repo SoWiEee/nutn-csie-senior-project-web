@@ -1438,12 +1438,13 @@ body[data-view="home"] .site-backdrop::before {
 }
 
 body[data-view="home"] .site-backdrop__canvas {
-  opacity: 0;
+  z-index: 1;
+  opacity: 1;
 }
 
 body[data-view="home"] .site-backdrop__source {
-  z-index: 1;
-  opacity: 0.85;
+  z-index: 0;
+  opacity: 0;
   filter: none;
 }
 
@@ -1459,6 +1460,17 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source 
   z-index: 1;
   opacity: 0.85;
   filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-view="home"] .site-backdrop__canvas {
+    opacity: 0;
+  }
+
+  body[data-view="home"] .site-backdrop__source {
+    z-index: 1;
+    opacity: 0.85;
+  }
 }
 
 /* Let schedule and project content sit over the same softened campus image
