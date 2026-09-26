@@ -7,7 +7,7 @@
     <meta name="description" content="NUTN CSIE 116｜國立臺南大學資訊工程學系 116 級畢業專題成果展。" />
     <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
   <link rel="stylesheet" href="tokens.css?v=1.1.6" />
-  <link rel="stylesheet" href="styles.css?v=1.1.78" />
+  <link rel="stylesheet" href="styles.css?v=1.1.81" />
   </head>
   <body data-view="home">
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
@@ -41,14 +41,14 @@
                 <canvas class="hero__title-ripple" aria-hidden="true"></canvas>
               </div>
               <div class="hero__meta" aria-label="展覽資訊" data-liquid-glass-root>
-                <button class="hero__meta-card hero__meta-card--date" type="button" data-view="schedule" data-liquid-glass data-card-light aria-label="查看 2026 年 12 月 12 日星期六的展覽時程">
+                <article class="hero__meta-card hero__meta-card--date" data-liquid-glass data-card-light aria-label="展覽日期">
                   <p>2026 年 12 月 12 日</p>
                   <span class="hero__meta-card-code" aria-hidden="true">DATE</span>
-                </button>
-                <button class="hero__meta-card hero__meta-card--venue" type="button" data-view="home" data-scroll-target="home-venue-title" data-liquid-glass data-card-light aria-label="前往展場與交通資訊">
+                </article>
+                <article class="hero__meta-card hero__meta-card--venue" data-liquid-glass data-card-light aria-label="展覽地點">
                   <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
                   <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
-                </button>
+                </article>
               </div>
             </div>
           </div>
@@ -82,14 +82,14 @@
             <p class="section-head__aside">府城校區・文薈樓地下一樓<br />2026 展場交通資訊</p>
           </div>
           <div class="venue-grid">
-            <figure class="venue-figure" data-card-light>
+            <figure class="venue-figure" data-card-light data-card-proximity>
               <div class="venue-artwork venue-artwork--campus">
                 <img src="assets/images/campus-map-2026.png?v=2" alt="以藍色道路網絡與地標標示國立臺南大學府城校區位置的示意圖" loading="lazy" />
                 <div class="venue-artwork__callout" aria-hidden="true"><span class="venue-artwork__pin"></span><strong>國立臺南大學</strong><small>樹林街二段 33 號</small></div>
               </div>
               <figcaption>國立臺南大學校址示意圖</figcaption>
             </figure>
-            <figure class="venue-figure" data-card-light>
+            <figure class="venue-figure" data-card-light data-card-proximity>
               <div class="venue-artwork venue-artwork--floorplan">
                 <img src="assets/images/exhibition-floorplan-2026.png?v=2" alt="文薈樓地下一樓畢業專題展場示意圖，包含 JB104 至 JB101、JB106、JB110、JB109、洗手間、簽到桌與入口" loading="lazy" />
                 <span class="venue-artwork__label venue-artwork__label--jb104" aria-hidden="true">JB104</span>
@@ -256,6 +256,6 @@
       </div>
     </footer>
 
-  <script src="app.js?v=1.1.52"></script>
+  <script src="app.js?v=1.1.57"></script>
   </body>
 </html>

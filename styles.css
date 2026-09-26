@@ -128,8 +128,8 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   /* Keep a quiet blue substrate behind the WebGL surface. The upstream
    * renderer paints the canvas with transparency, so removing this layer
    * makes the same glass look pale and flat against a photo. */
-  background-color: rgba(18, 36, 70, 0.07) !important;
-  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 42%) !important;
+  background-color: rgba(18, 36, 70, 0.03) !important;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.025), transparent 42%) !important;
   overflow: hidden !important;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
@@ -236,8 +236,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .hero__note p + p { margin-top: var(--space-md); }
 .hero__meta { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); width: 100%; margin-top: var(--space-md); }
 .hero__meta-card { position: relative; display: grid; align-content: start; gap: var(--space-xs); min-height: 12rem; padding: var(--space-lg); overflow: clip; isolation: isolate; border: var(--rule-thin) solid var(--color-meta-border); border-radius: var(--radius-md); background: var(--color-meta-panel); }
-.hero__meta-card:is(button) { width: 100%; color: inherit; font: inherit; text-align: left; cursor: pointer; appearance: none; }
-.hero__meta-card:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.hero__meta-card { width: 100%; color: inherit; text-align: left; }
 .hero__meta-card > strong { position: relative; z-index: 1; margin: 0 0 var(--space-xs); color: var(--color-meta-ink); font-size: clamp(1.35rem, 2.4vw, 2rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.2; }
 .hero__meta-card > p { position: relative; z-index: 1; max-width: 84%; margin: 0; color: var(--color-faint); font-family: var(--font-mono); font-size: var(--text-md); font-weight: 500; line-height: 1.55; overflow-wrap: anywhere; }
 .hero__meta-card--date > p { color: var(--color-faint); font-family: var(--font-display); font-size: clamp(1.35rem, 2.8vw, 2.35rem); letter-spacing: -0.05em; line-height: 1.1; }
@@ -756,6 +755,11 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 
 #view-home .hero__meta-card-code {
   font-size: 6.6rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #view-home .hero__meta-card { cursor: grab; user-select: none; -webkit-user-select: none; }
+  #view-home .hero__meta-card[data-dragging] { cursor: grabbing; touch-action: none; will-change: transform; }
 }
 
 #view-home .home-venue {

@@ -84,7 +84,7 @@ if (glassDebugEnabled) {
 const header = document.querySelector('[data-header]');
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('#site-nav');
-const viewButtons = [...document.querySelectorAll('[data-view]')];
+const viewButtons = [...document.querySelectorAll('button[data-view], a[data-view]')];
 const viewTabs = [...document.querySelectorAll('.view-tab')];
 const viewPanels = [...document.querySelectorAll('[data-view-panel]')];
 const scheduleList = document.querySelector('[data-schedule-list]');
@@ -158,7 +158,7 @@ const renderSchedule = () => {
     const groupProjects = projects.filter((project) => project.group === group);
     const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup('14:15', 'schedule-time--break')}<article class="schedule-card schedule-card--break" role="separator"><strong>Break 😴</strong></article>` : ''}
       ${timePointMarkup(project.time)}
-      <article class="schedule-card schedule-card--signal" data-card-light>
+      <article class="schedule-card schedule-card--signal" data-card-light data-card-proximity>
         <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊">
           <strong>${escapeHTML(project.title)}</strong>
@@ -206,7 +206,7 @@ const bindProjectLinks = () => {
 
 const renderProjects = () => {
   if (!projectList) return;
-  projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
+  projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light data-card-proximity>
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊"></button>
     <div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <span class="project-card__shine" aria-hidden="true"></span>
@@ -236,13 +236,31 @@ const scrollToTopImmediately = () => {
   root.style.scrollBehavior = previousBehavior;
 };
 
+let homeBackdropFrame = 0;
+const scheduleHomeBackdropProgress = () => {
+  if (homeBackdropFrame) return;
+  homeBackdropFrame = window.requestAnimationFrame(() => {
+    homeBackdropFrame = 0;
+    const backdrop = document.querySelector('[data-site-backdrop]');
+    const hero = document.querySelector('#view-home .hero');
+    if (!backdrop || !hero) return;
+    const progress = Math.min(1, Math.max(0, window.scrollY / Math.max(hero.offsetHeight, 1)));
+    backdrop.style.setProperty('--home-backdrop-progress', progress.toFixed(3));
+  });
+};
+
 const setView = (view, { updateHash = true } = {}) => {
   const nextView = ['home', 'schedule', 'projects'].includes(view) ? view : 'home';
+  const viewChanged = document.body.dataset.view !== nextView;
   viewPanels.forEach((panel) => { panel.hidden = panel.dataset.viewPanel !== nextView; panel.classList.toggle('is-active', panel.dataset.viewPanel === nextView); });
   viewTabs.forEach((tab) => { const active = tab.dataset.view === nextView; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', String(active)); });
   document.body.dataset.view = nextView;
   setMenuState(false);
-  if (updateHash) { history.replaceState(null, '', `#${nextView}`); scrollToTopImmediately(); }
+  if (updateHash) {
+    history.replaceState(null, '', `#${nextView}`);
+    if (viewChanged) scrollToTopImmediately();
+  }
+  scheduleHomeBackdropProgress();
   scheduleLiquidGlassForCurrentView('view');
 };
 
@@ -286,7 +304,11 @@ document.querySelectorAll('a[href="#top"]').forEach((link) => link.addEventListe
   event.preventDefault();
   scrollToTopImmediately();
 }));
-window.addEventListener('scroll', headerState, { passive: true });
+window.addEventListener('scroll', () => {
+  headerState();
+  scheduleHomeBackdropProgress();
+}, { passive: true });
+window.addEventListener('resize', scheduleHomeBackdropProgress, { passive: true });
 window.addEventListener('hashchange', () => setView(window.location.hash.slice(1), { updateHash: false }));
 
 const scheduleFilters = [...document.querySelectorAll('[data-schedule-filter]')];
@@ -326,56 +348,67 @@ projectFilters.forEach((button) => button.addEventListener('click', () => {
   document.querySelectorAll('[data-project-group]').forEach((card) => { card.hidden = filter !== 'all' && card.dataset.projectGroup !== filter; });
 }));
 
-const bindCardPointerLight = () => {
-  const cardSelector = '[data-card-light]';
-  let activeCard = null;
+const bindCardProximityLight = () => {
+  const cards = [...document.querySelectorAll('[data-card-proximity]')];
+  const hoverCardsSelector = '[data-card-light]:not([data-card-proximity])';
+  const influenceRadius = 18 * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
   let pointerFrame = 0;
   let pendingPointer = null;
+  let activeCard = null;
 
-  const clearCard = (card) => {
-    if (!card) return;
-    card.style.setProperty('--card-light-opacity', '0');
+  const clearGlow = () => {
+    cards.forEach((card) => {
+      card.style.setProperty('--card-proximity-opacity', '0%');
+      card.style.setProperty('--card-warm-opacity', '0%');
+    });
+    activeCard?.style.setProperty('--card-light-opacity', '0');
+    activeCard = null;
   };
 
   const flushPointer = () => {
     pointerFrame = 0;
     if (!pendingPointer) return;
-    const { card, event } = pendingPointer;
+    const { x, y } = pendingPointer;
     pendingPointer = null;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--card-pointer-x', `${event.clientX - rect.left}px`);
-    card.style.setProperty('--card-pointer-y', `${event.clientY - rect.top}px`);
-    card.style.setProperty('--card-light-opacity', '1');
+    cards.forEach((card) => {
+      const rect = card.getBoundingClientRect();
+      if (!rect.width || !rect.height) {
+        card.style.setProperty('--card-proximity-opacity', '0%');
+        card.style.setProperty('--card-warm-opacity', '0%');
+        return;
+      }
+      const localX = Math.min(rect.width, Math.max(0, x - rect.left));
+      const localY = Math.min(rect.height, Math.max(0, y - rect.top));
+      const distance = Math.hypot(x - (rect.left + localX), y - (rect.top + localY));
+      const intensity = Math.max(0, 1 - distance / influenceRadius);
+      const glow = intensity * intensity * 58;
+      card.style.setProperty('--card-pointer-x', `${localX}px`);
+      card.style.setProperty('--card-pointer-y', `${localY}px`);
+      card.style.setProperty('--card-proximity-opacity', `${glow.toFixed(1)}%`);
+      card.style.setProperty('--card-warm-opacity', `${(glow * 0.8).toFixed(1)}%`);
+    });
   };
 
   document.addEventListener('pointermove', (event) => {
     if (event.pointerType && event.pointerType !== 'mouse') return;
-    const target = event.target instanceof Element ? event.target.closest(cardSelector) : null;
-    if (!target) {
-      clearCard(activeCard);
-      activeCard = null;
-      return;
+    const hoverCard = event.target?.closest?.(hoverCardsSelector) || null;
+    if (activeCard && activeCard !== hoverCard) activeCard.style.setProperty('--card-light-opacity', '0');
+    activeCard = hoverCard;
+    if (hoverCard) {
+      const rect = hoverCard.getBoundingClientRect();
+      hoverCard.style.setProperty('--card-pointer-x', `${event.clientX - rect.left}px`);
+      hoverCard.style.setProperty('--card-pointer-y', `${event.clientY - rect.top}px`);
+      hoverCard.style.setProperty('--card-light-opacity', '1');
     }
-    if (activeCard && activeCard !== target) clearCard(activeCard);
-    activeCard = target;
-    pendingPointer = { card: target, event };
+    pendingPointer = { x: event.clientX, y: event.clientY };
     if (!pointerFrame) pointerFrame = window.requestAnimationFrame(flushPointer);
   }, { passive: true });
 
   document.addEventListener('pointerout', (event) => {
-    if (!(event.target instanceof Element)) return;
-    const card = event.target.closest(cardSelector);
-    const related = event.relatedTarget instanceof Node ? event.relatedTarget : null;
-    if (card && (!related || !card.contains(related))) {
-      clearCard(card);
-      if (activeCard === card) activeCard = null;
-    }
+    if (!event.relatedTarget) clearGlow();
   }, { passive: true });
 
-  window.addEventListener('blur', () => {
-    clearCard(activeCard);
-    activeCard = null;
-  }, { passive: true });
+  window.addEventListener('blur', clearGlow, { passive: true });
 };
 
 const backdropElement = document.querySelector('[data-site-backdrop]');
@@ -745,24 +778,24 @@ const initializeLiquidGlassRoot = async (root) => {
     const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
     if (!glassElements.length) return null;
     const defaults = {
-      blurAmount: 0.20,
-      refraction: 0.84,
-      chromAberration: 0.05,
-      edgeHighlight: 0.1,
-      specular: 0.02,
-      fresnel: 0.88,
-      distortion: 0.006,
-      opacity: 0.82,
-      saturation: 0.02,
-      tintStrength: 0.025,
-      brightness: -0.06,
+      blurAmount: 0.08,
+      refraction: 1.08,
+      chromAberration: 0.025,
+      edgeHighlight: 0.15,
+      specular: 0.035,
+      fresnel: 0.62,
+      distortion: 0.002,
+      opacity: 0.86,
+      saturation: 0.08,
+      tintStrength: 0.008,
+      brightness: 0,
       cornerRadius: 8,
       zRadius: 22,
       shadowOpacity: 0.24,
       shadowSpread: 4,
       shadowOffsetY: 1,
-      pointerRadius: 175,
-      pointerStrength: 0.92,
+      pointerRadius: 140,
+      pointerStrength: 1.16,
     };
     const instance = await liquidGlassConstructor.init({
       root,
@@ -776,8 +809,8 @@ const initializeLiquidGlassRoot = async (root) => {
       defaults,
     });
     glassElements.forEach((element) => {
-      element.style.setProperty('background-color', 'rgba(18, 36, 70, 0.22)', 'important');
-      element.style.setProperty('background-image', 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)', 'important');
+      element.style.setProperty('background-color', 'rgba(18, 36, 70, 0.06)', 'important');
+      element.style.setProperty('background-image', 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 42%)', 'important');
     });
     root.dataset.liquidGlassReady = 'true';
     instance.setActive(isLiquidGlassRootEligible(root));
@@ -855,13 +888,75 @@ const initLiquidGlass = () => {
   }, { once: true });
 };
 
+const bindHeroMetaDrag = () => {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const cards = [...document.querySelectorAll('#view-home .hero__meta-card')];
+  let activePointer = null;
+
+  const markGlass = (card) => liquidGlassInstances.get(card.parentElement)?.markChanged(card);
+
+  cards.forEach((card) => {
+    card.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || event.pointerType !== 'mouse' || event.isPrimary === false) return;
+      event.preventDefault();
+      activePointer = { card, id: event.pointerId, x: event.clientX, y: event.clientY };
+      card.dataset.dragging = '';
+      card.style.transition = 'none';
+      card.setPointerCapture(event.pointerId);
+    });
+
+    card.addEventListener('pointermove', (event) => {
+      if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
+      event.preventDefault();
+      const x = event.clientX - activePointer.x;
+      const y = event.clientY - activePointer.y;
+      card.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      markGlass(card);
+    });
+
+    const returnToRest = (event) => {
+      if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
+      activePointer = null;
+      delete card.dataset.dragging;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        card.style.transform = '';
+        card.style.transition = '';
+        markGlass(card);
+        return;
+      }
+
+      card.style.transition = 'transform 480ms cubic-bezier(0.22, 1.45, 0.36, 1)';
+      card.style.transform = 'translate3d(0, 0, 0)';
+      const settleAt = performance.now() + 520;
+      const refreshReturn = () => {
+        if (!card.isConnected || card.hasAttribute('data-dragging')) return;
+        markGlass(card);
+        if (performance.now() < settleAt) window.requestAnimationFrame(refreshReturn);
+      };
+      window.requestAnimationFrame(refreshReturn);
+    };
+
+    card.addEventListener('pointerup', returnToRest);
+    card.addEventListener('pointercancel', returnToRest);
+    card.addEventListener('lostpointercapture', returnToRest);
+    card.addEventListener('transitionend', (event) => {
+      if (event.propertyName !== 'transform' || card.hasAttribute('data-dragging')) return;
+      card.style.transform = '';
+      card.style.transition = '';
+      markGlass(card);
+    });
+  });
+};
+
 renderSchedule();
 renderProjects();
 bindScheduleProjectLinks();
 bindProjectLinks();
-bindCardPointerLight();
+bindCardProximityLight();
+bindHeroMetaDrag();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();
 setView(window.location.hash.slice(1), { updateHash: false });
+scheduleHomeBackdropProgress();
 initGlassDiagnostics();
 void initLiquidGlass();

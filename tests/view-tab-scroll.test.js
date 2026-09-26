@@ -14,4 +14,11 @@ for (const scriptFile of ['app.js', 'release/app.js']) {
     assert.match(setView[1], /const viewChanged = document\.body\.dataset\.view !== nextView;/);
     assert.match(setView[1], /if \(viewChanged\) scrollToTopImmediately\(\);/);
   });
+
+  test(`${scriptFile} only binds view changes to navigation controls`, () => {
+    const script = readFileSync(resolve(root, scriptFile), 'utf8');
+
+    assert.match(script, /querySelectorAll\(["']button\[data-view\], a\[data-view\]["']\)/);
+    assert.doesNotMatch(script, /querySelectorAll\(["']\[data-view\]["']\)/);
+  });
 }

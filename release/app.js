@@ -2362,7 +2362,7 @@ void main() {
 	// \u2500\u2500 Edge-weighted blur mix \u2500\u2500
 	// Centre of the panel uses the blurred sample; the rim blends
 	// toward the sharp sample so refraction edges stay crisp.
-	float edgeMix = (1.0 - edge * 0.15);
+	float edgeMix = 0.06 + edge * 0.34;
 	vec3 col = mix(sharp, blur, edgeMix);
 
 	// \u2500\u2500 Brightness \u2500\u2500
@@ -3828,9 +3828,6 @@ void main() {
       } else {
         this._sceneCtx.clearRect(0, 0, width, height);
       }
-      // A viewport-backed scene can be smaller than a partly offscreen glass
-      // panel. Keep its uncovered sample area on-brand instead of letting the
-      // white clear color bleed through the refraction as a gray flash.
       this._sceneCtx.fillStyle = "#0b162b";
       this._sceneCtx.fillRect(0, 0, width, height);
     }
@@ -4365,7 +4362,7 @@ void main() {
   var header = document.querySelector("[data-header]");
   var menuToggle = document.querySelector(".menu-toggle");
   var siteNav = document.querySelector("#site-nav");
-  var viewButtons = [...document.querySelectorAll("[data-view]")];
+  var viewButtons = [...document.querySelectorAll("button[data-view], a[data-view]")];
   var viewTabs = [...document.querySelectorAll(".view-tab")];
   var viewPanels = [...document.querySelectorAll("[data-view-panel]")];
   var scheduleList = document.querySelector("[data-schedule-list]");
@@ -4395,26 +4392,22 @@ void main() {
     { id: "13", code: "NUTN-CSIE-PRJ-116-013", group: "decision", title: "\u7B2C 13 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u6B66\u660E\u4E56\u3001\u856D\u9E97\u9E97", studentIds: "S11259020\u3001S11259021", advisor: "\u674E\u5065\u8208", time: "13:45 ~ 14:00", conferenceTags: [] },
     { id: "14", code: "NUTN-CSIE-PRJ-116-014", group: "decision", title: "\u7B2C 14 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9EC3\u5955\u777F\u3001\u6797\u79C9\u9054\u3001\u8449\u82A2\u6770", studentIds: "S11259024\u3001S11259027\u3001S11259041", advisor: "\u9AD8\u555F\u6D32", time: "14:00 ~ 14:15", conferenceTags: [] },
     { id: "15", code: "NUTN-CSIE-PRJ-116-015", group: "decision", title: "\u7B2C 15 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u77F3\u7693\u5B87", studentIds: "S11259032", advisor: "\u6731\u660E\u6BC5", time: "14:25 ~ 14:40", conferenceTags: [] },
-    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"], summary: [
+    { id: "16", code: "NUTN-CSIE-PRJ-116-016", group: "decision", title: "\u57FA\u65BC Slurm \u8207 Kubernetes \u67B6\u69CB\u4E0B AI \u4F3A\u670D\u5668 GPU \u5DE5\u4F5C\u8CA0\u8F09\u667A\u6167\u6392\u7A0B", titleEn: "Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture", members: "\u856D\u53CB\u7FF0\u3001\u912D\u73FD\u5347", studentIds: "S11259033\u3001S11259043", advisor: "\u9673\u5B97\u79A7", time: "14:40 ~ 14:55", conferenceTags: ["TANET 2026"], summary: [
       {
-        paragraph: "近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：",
+        paragraph: "\u8FD1\u5E74\u4F86\uFF0C\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u8207\u751F\u6210\u5F0F AI \u5FEB\u901F\u767C\u5C55\uFF0CGPU \u5DF2\u6210\u70BA\u8A13\u7DF4\u3001\u63A8\u8AD6\u8207\u8CC7\u6599\u8655\u7406\u7684\u4E3B\u8981\u904B\u7B97\u8CC7\u6E90\u3002\u7136\u800C\u5927\u5B78\u5BE6\u9A57\u5BA4\u8207\u4E2D\u5C0F\u578B\u53E2\u96C6\u5E38\u7531\u4E0D\u540C\u4E16\u4EE3 GPU \u7D44\u6210\uFF0C\u4E14 NVIDIA MPS \u5141\u8A31\u591A\u500B\u5DE5\u4F5C\u5171\u4EAB\u540C\u4E00\u5F35 GPU\uFF0C\u4F7F GPU \u5229\u7528\u7387\u3001\u5DE5\u4F5C\u5B8C\u6210\u6642\u9593\u8207\u6279\u6B21\u4F47\u5217\u7BA1\u7406\u96E3\u4EE5\u540C\u6642\u6700\u4F73\u5316\uFF0C\u5E38\u5E38\u9762\u81E8\u4EE5\u4E0B\u56F0\u5883\uFF1A",
         bullets: [
-          "異質 GPU 的運算能力與記憶體容量不同，工作放置不能只看 GPU 數量。",
-          "MPS 配額會影響共置工作數、可用容量與實際完成時間。"
+          "\u7570\u8CEA GPU \u7684\u904B\u7B97\u80FD\u529B\u8207\u8A18\u61B6\u9AD4\u5BB9\u91CF\u4E0D\u540C\uFF0C\u5DE5\u4F5C\u653E\u7F6E\u4E0D\u80FD\u53EA\u770B GPU \u6578\u91CF\u3002",
+          "MPS \u914D\u984D\u6703\u5F71\u97FF\u5171\u7F6E\u5DE5\u4F5C\u6578\u3001\u53EF\u7528\u5BB9\u91CF\u8207\u5BE6\u969B\u5B8C\u6210\u6642\u9593\u3002"
         ]
       },
       {
-        paragraph: "目前常見的系統大多只擅長其中一件事。傳統高效能運算排程器 Slurm 雖然擅長批次工作、佇列與資源管理，但傳統 FCFS 與 Backfill 主要依固定規則運作，難以同時感知 GPU 型號、MPS 配額、工作特徵與佇列狀態，也對彈性擴縮與雲端式管理不夠方便；相對地，容器平台如 Kubernetes 適合容器部署、自動擴縮與健康監控，並不直接提供 Slurm 的批次排程語意。現有研究較少在真實 Slurm 提交流程中，聯合處理異質 GPU、MPS 配額與學習式工作排序。"
+        paragraph: "\u76EE\u524D\u5E38\u898B\u7684\u7CFB\u7D71\u5927\u591A\u53EA\u64C5\u9577\u5176\u4E2D\u4E00\u4EF6\u4E8B\u3002\u50B3\u7D71\u9AD8\u6548\u80FD\u904B\u7B97\u6392\u7A0B\u5668 Slurm \u96D6\u7136\u64C5\u9577\u6279\u6B21\u5DE5\u4F5C\u3001\u4F47\u5217\u8207\u8CC7\u6E90\u7BA1\u7406\uFF0C\u4F46\u50B3\u7D71 FCFS \u8207 Backfill \u4E3B\u8981\u4F9D\u56FA\u5B9A\u898F\u5247\u904B\u4F5C\uFF0C\u96E3\u4EE5\u540C\u6642\u611F\u77E5 GPU \u578B\u865F\u3001MPS \u914D\u984D\u3001\u5DE5\u4F5C\u7279\u5FB5\u8207\u4F47\u5217\u72C0\u614B\uFF0C\u4E5F\u5C0D\u5F48\u6027\u64F4\u7E2E\u8207\u96F2\u7AEF\u5F0F\u7BA1\u7406\u4E0D\u5920\u65B9\u4FBF\uFF1B\u76F8\u5C0D\u5730\uFF0C\u5BB9\u5668\u5E73\u53F0\u5982 Kubernetes \u9069\u5408\u5BB9\u5668\u90E8\u7F72\u3001\u81EA\u52D5\u64F4\u7E2E\u8207\u5065\u5EB7\u76E3\u63A7\uFF0C\u4E26\u4E0D\u76F4\u63A5\u63D0\u4F9B Slurm \u7684\u6279\u6B21\u6392\u7A0B\u8A9E\u610F\u3002\u73FE\u6709\u7814\u7A76\u8F03\u5C11\u5728\u771F\u5BE6 Slurm \u63D0\u4EA4\u6D41\u7A0B\u4E2D\uFF0C\u806F\u5408\u8655\u7406\u7570\u8CEA GPU\u3001MPS \u914D\u984D\u8207\u5B78\u7FD2\u5F0F\u5DE5\u4F5C\u6392\u5E8F\u3002"
       },
       {
-        paragraph: "因此，本專題希望結合兩者優點，建立一套既能保有研究者熟悉的工作提交流程，又能做到動態分配 CPU、GPU 與儲存資源的系統。進一步地，我們也希望導入深度強化學習策略，讓系統可以根據工作佇列狀態與叢集狀態，自動做出更合理的資源分配決策。"
+        paragraph: "\u56E0\u6B64\uFF0C\u672C\u5C08\u984C\u5E0C\u671B\u7D50\u5408\u5169\u8005\u512A\u9EDE\uFF0C\u5EFA\u7ACB\u4E00\u5957\u65E2\u80FD\u4FDD\u6709\u7814\u7A76\u8005\u719F\u6089\u7684\u5DE5\u4F5C\u63D0\u4EA4\u6D41\u7A0B\uFF0C\u53C8\u80FD\u505A\u5230\u52D5\u614B\u5206\u914D CPU\u3001GPU \u8207\u5132\u5B58\u8CC7\u6E90\u7684\u7CFB\u7D71\u3002\u9032\u4E00\u6B65\u5730\uFF0C\u6211\u5011\u4E5F\u5E0C\u671B\u5C0E\u5165\u6DF1\u5EA6\u5F37\u5316\u5B78\u7FD2\u7B56\u7565\uFF0C\u8B93\u7CFB\u7D71\u53EF\u4EE5\u6839\u64DA\u5DE5\u4F5C\u4F47\u5217\u72C0\u614B\u8207\u53E2\u96C6\u72C0\u614B\uFF0C\u81EA\u52D5\u505A\u51FA\u66F4\u5408\u7406\u7684\u8CC7\u6E90\u5206\u914D\u6C7A\u7B56\u3002"
       }
     ] },
-    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u7D50\u5408\u9AA8\u67B6\u5E8F\u5217\u8207\u6DF1\u5EA6\u5B78\u7FD2\u4E4B\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u8A55\u4F30\u67B6\u69CB", titleEn: "A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"], summary: [
-      {
-        paragraph: "本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。"
-      }
-    ] }
+    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u904B\u52D5\u6559\u7DF4", titleEn: "Sports Coach", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"] }
   ];
   var groupMeta = {
     sense: { title: "\u667A\u6167\u611F\u77E5\u8207\u8A0A\u865F\u5206\u6790\u7D44", label: "SENSE / SIGNAL ANALYSIS" },
@@ -4439,7 +4432,7 @@ void main() {
       const groupProjects = projects.filter((project) => project.group === group);
       const rows = groupProjects.map((project, index) => `${index === 5 ? `${timePointMarkup("14:15", "schedule-time--break")}<article class="schedule-card schedule-card--break" role="separator"><strong>Break \u{1F634}</strong></article>` : ""}
       ${timePointMarkup(project.time)}
-      <article class="schedule-card schedule-card--signal" data-card-light>
+      <article class="schedule-card schedule-card--signal" data-card-light data-card-proximity>
         <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
         <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
           <strong>${escapeHTML(project.title)}</strong>
@@ -4483,7 +4476,7 @@ void main() {
   };
   var renderProjects = () => {
     if (!projectList) return;
-    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light>
+    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light data-card-proximity>
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
     <div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <span class="project-card__shine" aria-hidden="true"></span>
@@ -4510,6 +4503,18 @@ void main() {
     window.scrollTo(0, 0);
     root.style.scrollBehavior = previousBehavior;
   };
+  var homeBackdropFrame = 0;
+  var scheduleHomeBackdropProgress = () => {
+    if (homeBackdropFrame) return;
+    homeBackdropFrame = window.requestAnimationFrame(() => {
+      homeBackdropFrame = 0;
+      const backdrop = document.querySelector("[data-site-backdrop]");
+      const hero = document.querySelector("#view-home .hero");
+      if (!backdrop || !hero) return;
+      const progress = Math.min(1, Math.max(0, window.scrollY / Math.max(hero.offsetHeight, 1)));
+      backdrop.style.setProperty("--home-backdrop-progress", progress.toFixed(3));
+    });
+  };
   var setView = (view, { updateHash = true } = {}) => {
     const nextView = ["home", "schedule", "projects"].includes(view) ? view : "home";
     const viewChanged = document.body.dataset.view !== nextView;
@@ -4523,13 +4528,13 @@ void main() {
       tab.setAttribute("aria-selected", String(active));
     });
     document.body.dataset.view = nextView;
-    updateHomeBackdropFocus();
     setMenuState(false);
     if (updateHash) {
       history.replaceState(null, "", `#${nextView}`);
       if (viewChanged) scrollToTopImmediately();
     }
-    scheduleLiquidGlassForCurrentView('view');
+    scheduleHomeBackdropProgress();
+    scheduleLiquidGlassForCurrentView("view");
   };
   var setFilterState = (buttons, activeButton) => buttons.forEach((button) => {
     const active = button === activeButton;
@@ -4574,7 +4579,11 @@ void main() {
     event.preventDefault();
     scrollToTopImmediately();
   }));
-  window.addEventListener("scroll", headerState, { passive: true });
+  window.addEventListener("scroll", () => {
+    headerState();
+    scheduleHomeBackdropProgress();
+  }, { passive: true });
+  window.addEventListener("resize", scheduleHomeBackdropProgress, { passive: true });
   window.addEventListener("hashchange", () => setView(window.location.hash.slice(1), { updateHash: false }));
   var scheduleFilters = [...document.querySelectorAll("[data-schedule-filter]")];
   var applyScheduleFilter = (filter) => {
@@ -4584,7 +4593,7 @@ void main() {
     document.querySelectorAll("[data-schedule-group]").forEach((group) => {
       group.hidden = group.dataset.scheduleGroup !== filter;
     });
-    scheduleLiquidGlassForCurrentView('schedule-filter');
+    scheduleLiquidGlassForCurrentView("schedule-filter");
   };
   scheduleFilters.forEach((button) => button.addEventListener("click", () => applyScheduleFilter(button.dataset.scheduleFilter)));
   var projectFilters = [...document.querySelectorAll("[data-project-filter]")];
@@ -4615,71 +4624,66 @@ void main() {
       card.hidden = filter !== "all" && card.dataset.projectGroup !== filter;
     });
   }));
-  var bindCardPointerLight = () => {
-    const cardSelector = "[data-card-light]";
-    let activeCard = null;
+  var bindCardProximityLight = () => {
+    const cards = [...document.querySelectorAll("[data-card-proximity]")];
+    const hoverCardsSelector = "[data-card-light]:not([data-card-proximity])";
+    const influenceRadius = 18 * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
     let pointerFrame = 0;
     let pendingPointer = null;
-    const clearCard = (card) => {
-      if (!card) return;
-      card.style.setProperty("--card-light-opacity", "0");
+    let activeCard = null;
+    const clearGlow = () => {
+      cards.forEach((card) => {
+        card.style.setProperty("--card-proximity-opacity", "0%");
+        card.style.setProperty("--card-warm-opacity", "0%");
+      });
+      activeCard?.style.setProperty("--card-light-opacity", "0");
+      activeCard = null;
     };
     const flushPointer = () => {
       pointerFrame = 0;
       if (!pendingPointer) return;
-      const { card, event } = pendingPointer;
+      const { x, y } = pendingPointer;
       pendingPointer = null;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--card-pointer-x", `${event.clientX - rect.left}px`);
-      card.style.setProperty("--card-pointer-y", `${event.clientY - rect.top}px`);
-      card.style.setProperty("--card-light-opacity", "1");
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) {
+          card.style.setProperty("--card-proximity-opacity", "0%");
+          card.style.setProperty("--card-warm-opacity", "0%");
+          return;
+        }
+        const localX = Math.min(rect.width, Math.max(0, x - rect.left));
+        const localY = Math.min(rect.height, Math.max(0, y - rect.top));
+        const distance = Math.hypot(x - (rect.left + localX), y - (rect.top + localY));
+        const intensity = Math.max(0, 1 - distance / influenceRadius);
+        const glow = intensity * intensity * 58;
+        card.style.setProperty("--card-pointer-x", `${localX}px`);
+        card.style.setProperty("--card-pointer-y", `${localY}px`);
+        card.style.setProperty("--card-proximity-opacity", `${glow.toFixed(1)}%`);
+        card.style.setProperty("--card-warm-opacity", `${(glow * 0.8).toFixed(1)}%`);
+      });
     };
     document.addEventListener("pointermove", (event) => {
       if (event.pointerType && event.pointerType !== "mouse") return;
-      const target = event.target instanceof Element ? event.target.closest(cardSelector) : null;
-      if (!target) {
-        clearCard(activeCard);
-        activeCard = null;
-        return;
+      const hoverCard = event.target?.closest?.(hoverCardsSelector) || null;
+      if (activeCard && activeCard !== hoverCard) activeCard.style.setProperty("--card-light-opacity", "0");
+      activeCard = hoverCard;
+      if (hoverCard) {
+        const rect = hoverCard.getBoundingClientRect();
+        hoverCard.style.setProperty("--card-pointer-x", `${event.clientX - rect.left}px`);
+        hoverCard.style.setProperty("--card-pointer-y", `${event.clientY - rect.top}px`);
+        hoverCard.style.setProperty("--card-light-opacity", "1");
       }
-      if (activeCard && activeCard !== target) clearCard(activeCard);
-      activeCard = target;
-      pendingPointer = { card: target, event };
+      pendingPointer = { x: event.clientX, y: event.clientY };
       if (!pointerFrame) pointerFrame = window.requestAnimationFrame(flushPointer);
     }, { passive: true });
     document.addEventListener("pointerout", (event) => {
-      if (!(event.target instanceof Element)) return;
-      const card = event.target.closest(cardSelector);
-      const related = event.relatedTarget instanceof Node ? event.relatedTarget : null;
-      if (card && (!related || !card.contains(related))) {
-        clearCard(card);
-        if (activeCard === card) activeCard = null;
-      }
+      if (!event.relatedTarget) clearGlow();
     }, { passive: true });
-    window.addEventListener("blur", () => {
-      clearCard(activeCard);
-      activeCard = null;
-    }, { passive: true });
+    window.addEventListener("blur", clearGlow, { passive: true });
   };
   var backdropElement = document.querySelector("[data-site-backdrop]");
   var backdropCanvas = document.querySelector("[data-site-backdrop-canvas]");
   var backdropImage = document.querySelector("[data-site-backdrop-source]");
-  var homeHero = document.querySelector("#view-home .hero");
-  var homeBackdropFrame = 0;
-  var updateHomeBackdropFocus = () => {
-    if (homeBackdropFrame) return;
-    homeBackdropFrame = window.requestAnimationFrame(() => {
-      homeBackdropFrame = 0;
-      if (!backdropElement) return;
-      const isHomeView = document.body.dataset.view === "home";
-      const heroHeight = Math.max(1, homeHero?.getBoundingClientRect().height || window.innerHeight);
-      const progress = isHomeView ? Math.min(1, Math.max(0, window.scrollY / heroHeight)) : 0;
-      backdropElement.style.setProperty("--home-backdrop-progress", progress.toFixed(3));
-    });
-  };
-  window.addEventListener("scroll", updateHomeBackdropFocus, { passive: true });
-  window.addEventListener("resize", updateHomeBackdropFocus, { passive: true });
-  updateHomeBackdropFocus();
   var backdropGl = null;
   var BACKDROP_VERTEX_SHADER = `
   attribute vec2 a_position;
@@ -5024,24 +5028,24 @@ void main() {
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
-        blurAmount: 0.2,
-        refraction: 0.84,
-        chromAberration: 0.05,
-        edgeHighlight: 0.1,
-        specular: 0.02,
-        fresnel: 0.88,
-        distortion: 6e-3,
-        opacity: 0.82,
-        saturation: 0.02,
-        tintStrength: 0.025,
-        brightness: -0.06,
+        blurAmount: 0.08,
+        refraction: 1.08,
+        chromAberration: 0.025,
+        edgeHighlight: 0.15,
+        specular: 0.035,
+        fresnel: 0.62,
+        distortion: 2e-3,
+        opacity: 0.86,
+        saturation: 0.08,
+        tintStrength: 8e-3,
+        brightness: 0,
         cornerRadius: 8,
         zRadius: 22,
         shadowOpacity: 0.24,
         shadowSpread: 4,
         shadowOffsetY: 1,
-        pointerRadius: 175,
-        pointerStrength: 0.92
+        pointerRadius: 140,
+        pointerStrength: 1.16
       };
       const instance = await liquidGlassConstructor.init({
         root,
@@ -5055,8 +5059,8 @@ void main() {
         defaults
       });
       glassElements.forEach((element) => {
-        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.15)", "important");
-        element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 42%)", "important");
+        element.style.setProperty("background-color", "rgba(18, 36, 70, 0.06)", "important");
+        element.style.setProperty("background-image", "linear-gradient(135deg, rgba(255, 255, 255, 0.03), transparent 42%)", "important");
       });
       root.dataset.liquidGlassReady = "true";
       instance.setActive(isLiquidGlassRootEligible(root));
@@ -5074,20 +5078,20 @@ void main() {
     liquidGlassPending.set(root, pending);
     return pending;
   };
-  var scheduleLiquidGlassForCurrentView = (reason = 'manual') => {
+  var scheduleLiquidGlassForCurrentView = (reason = "manual") => {
     if (!liquidGlassConstructor) return;
     for (const root of getLiquidGlassRoots()) {
       const active = isLiquidGlassRootEligible(root);
       const instance = liquidGlassInstances.get(root);
       if (glassDebugEnabled && instance && instance._active !== active) {
         const rect = root.getBoundingClientRect();
-        recordGlassDebug('liquidglass-active-change', {
+        recordGlassDebug("liquidglass-active-change", {
           reason,
           active,
-          view: document.body.dataset.view || 'home',
-          hidden: Boolean(root.closest('[hidden]')),
+          view: document.body.dataset.view || "home",
+          hidden: Boolean(root.closest("[hidden]")),
           rect: [Math.round(rect.top), Math.round(rect.bottom), Math.round(rect.width), Math.round(rect.height)],
-          viewport: [window.innerWidth, window.innerHeight],
+          viewport: [window.innerWidth, window.innerHeight]
         });
       }
       instance?.setActive(active);
@@ -5100,18 +5104,18 @@ void main() {
     if (!liquidGlassScrollFrame) {
       liquidGlassScrollFrame = window.requestAnimationFrame(() => {
         liquidGlassScrollFrame = 0;
-        scheduleLiquidGlassForCurrentView('scroll');
+        scheduleLiquidGlassForCurrentView("scroll");
       });
     }
     window.clearTimeout(liquidGlassScrollIdleTimer);
     liquidGlassScrollIdleTimer = window.setTimeout(() => {
       liquidGlassScrollIdleTimer = 0;
-      scheduleLiquidGlassForCurrentView('scroll-idle');
+      scheduleLiquidGlassForCurrentView("scroll-idle");
     }, 180);
   };
   window.addEventListener("resize", () => {
     window.clearTimeout(liquidGlassResizeTimer);
-    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
+    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView("resize"), 120);
   }, { passive: true });
   window.addEventListener("scroll", scheduleLiquidGlassDuringScroll, { passive: true });
   var initLiquidGlass = () => {
@@ -5127,14 +5131,69 @@ void main() {
       }
     }, { once: true });
   };
+  var bindHeroMetaDrag = () => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const cards = [...document.querySelectorAll("#view-home .hero__meta-card")];
+    let activePointer = null;
+    const markGlass = (card) => liquidGlassInstances.get(card.parentElement)?.markChanged(card);
+    cards.forEach((card) => {
+      card.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || event.pointerType !== "mouse" || event.isPrimary === false) return;
+        event.preventDefault();
+        activePointer = { card, id: event.pointerId, x: event.clientX, y: event.clientY };
+        card.dataset.dragging = "";
+        card.style.transition = "none";
+        card.setPointerCapture(event.pointerId);
+      });
+      card.addEventListener("pointermove", (event) => {
+        if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
+        event.preventDefault();
+        const x = event.clientX - activePointer.x;
+        const y = event.clientY - activePointer.y;
+        card.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        markGlass(card);
+      });
+      const returnToRest = (event) => {
+        if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
+        activePointer = null;
+        delete card.dataset.dragging;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          card.style.transform = "";
+          card.style.transition = "";
+          markGlass(card);
+          return;
+        }
+        card.style.transition = "transform 480ms cubic-bezier(0.22, 1.45, 0.36, 1)";
+        card.style.transform = "translate3d(0, 0, 0)";
+        const settleAt = performance.now() + 520;
+        const refreshReturn = () => {
+          if (!card.isConnected || card.hasAttribute("data-dragging")) return;
+          markGlass(card);
+          if (performance.now() < settleAt) window.requestAnimationFrame(refreshReturn);
+        };
+        window.requestAnimationFrame(refreshReturn);
+      };
+      card.addEventListener("pointerup", returnToRest);
+      card.addEventListener("pointercancel", returnToRest);
+      card.addEventListener("lostpointercapture", returnToRest);
+      card.addEventListener("transitionend", (event) => {
+        if (event.propertyName !== "transform" || card.hasAttribute("data-dragging")) return;
+        card.style.transform = "";
+        card.style.transition = "";
+        markGlass(card);
+      });
+    });
+  };
   renderSchedule();
   renderProjects();
   bindScheduleProjectLinks();
   bindProjectLinks();
-  bindCardPointerLight();
+  bindCardProximityLight();
+  bindHeroMetaDrag();
   applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || "sense");
   headerState();
   setView(window.location.hash.slice(1), { updateHash: false });
+  scheduleHomeBackdropProgress();
   initGlassDiagnostics();
   void initLiquidGlass();
 

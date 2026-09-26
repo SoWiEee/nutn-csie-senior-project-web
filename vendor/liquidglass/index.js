@@ -1421,7 +1421,7 @@ void main() {
 	// \u2500\u2500 Edge-weighted blur mix \u2500\u2500
 	// Centre of the panel uses the blurred sample; the rim blends
 	// toward the sharp sample so refraction edges stay crisp.
-	float edgeMix = (1.0 - edge * 0.15);
+	float edgeMix = 0.06 + edge * 0.34;
 	vec3 col = mix(sharp, blur, edgeMix);
 
 	// \u2500\u2500 Brightness \u2500\u2500
