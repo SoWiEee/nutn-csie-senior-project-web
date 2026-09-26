@@ -4363,8 +4363,6 @@ void main() {
     });
   }
   var header = document.querySelector("[data-header]");
-  var menuToggle = document.querySelector(".menu-toggle");
-  var siteNav = document.querySelector("#site-nav");
   var viewButtons = [...document.querySelectorAll(".view-tab[data-view]")];
   var viewTabs = [...document.querySelectorAll(".view-tab")];
   var viewPanels = [...document.querySelectorAll("[data-view-panel]")];
@@ -4491,14 +4489,6 @@ void main() {
     <span class="project-card__arrow" aria-hidden="true">\u2197</span>
   </article>`).join("");
   };
-  var menuOpenedAtScrollY = 0;
-  var setMenuState = (isOpen) => {
-    const restoreFocus = !isOpen && siteNav?.contains(document.activeElement) && window.matchMedia("(max-width: 48rem)").matches;
-    if (isOpen) menuOpenedAtScrollY = window.scrollY;
-    menuToggle?.setAttribute("aria-expanded", String(isOpen));
-    siteNav?.classList.toggle("is-open", isOpen);
-    if (restoreFocus) menuToggle?.focus();
-  };
   var scrollToTopImmediately = () => {
     if (window.NutnLenis) {
       window.NutnLenis.scrollTo(0, { immediate: true });
@@ -4524,7 +4514,6 @@ void main() {
     });
     document.body.dataset.view = nextView;
     updateHomeBackdropFocus();
-    setMenuState(false);
     if (updateHash) {
       history.replaceState(null, "", `#${nextView}`);
       if (viewChanged) scrollToTopImmediately();
@@ -4547,10 +4536,7 @@ void main() {
   });
   var headerState = () => {
     header?.classList.toggle("is-scrolled", window.scrollY > 24);
-    const mobileMenuOpen = menuToggle?.getAttribute("aria-expanded") === "true" && window.matchMedia("(max-width: 48rem)").matches;
-    if (mobileMenuOpen && window.scrollY - menuOpenedAtScrollY >= 72) setMenuState(false);
   };
-  menuToggle?.addEventListener("click", () => setMenuState(menuToggle.getAttribute("aria-expanded") !== "true"));
   viewButtons.forEach((control) => control.addEventListener("click", (event) => {
     if (control.tagName === "A") event.preventDefault();
     setView(control.dataset.view);
@@ -4927,6 +4913,7 @@ void main() {
     return null;
   });
   var getLiquidGlassRoots = () => [...document.querySelectorAll("[data-liquid-glass-root]")];
+  var usesLiquidGlassEnhancement = !window.matchMedia("(pointer: coarse)").matches;
   var liquidGlassInstances = /* @__PURE__ */ new Map();
   var liquidGlassPending = /* @__PURE__ */ new Map();
   var liquidGlassConstructor = null;
@@ -5133,7 +5120,7 @@ void main() {
     return pending;
   };
   var scheduleLiquidGlassForCurrentView = (reason = 'manual') => {
-    if (!liquidGlassConstructor) return;
+    if (!usesLiquidGlassEnhancement || !liquidGlassConstructor) return;
     for (const root of getLiquidGlassRoots()) {
       const active = isLiquidGlassRootEligible(root);
       const instance = liquidGlassInstances.get(root);
@@ -5167,12 +5154,18 @@ void main() {
       scheduleLiquidGlassForCurrentView('scroll-idle');
     }, 180);
   };
-  window.addEventListener("resize", () => {
-    window.clearTimeout(liquidGlassResizeTimer);
-    liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
-  }, { passive: true });
-  window.addEventListener("scroll", scheduleLiquidGlassDuringScroll, { passive: true });
+  if (usesLiquidGlassEnhancement) {
+    window.addEventListener("resize", () => {
+      window.clearTimeout(liquidGlassResizeTimer);
+      liquidGlassResizeTimer = window.setTimeout(() => scheduleLiquidGlassForCurrentView('resize'), 120);
+    }, { passive: true });
+    window.addEventListener("scroll", scheduleLiquidGlassDuringScroll, { passive: true });
+  }
   var initLiquidGlass = () => {
+    if (!usesLiquidGlassEnhancement) {
+      document.documentElement.dataset.liquidGlassFallback = "coarse-pointer";
+      return;
+    }
     if (window.NutnLiquidGlass) {
       liquidGlassConstructor = window.NutnLiquidGlass;
       scheduleLiquidGlassForCurrentView();
