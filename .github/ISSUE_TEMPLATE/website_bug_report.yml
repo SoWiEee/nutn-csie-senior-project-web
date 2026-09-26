@@ -1,0 +1,105 @@
+name: 網站問題回報
+description: 回報網站的顯示、操作、內容或效能問題
+title: "[問題回報] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感謝協助改善網站。送出前請先搜尋是否已有相同回報；公開 Issue 請勿包含學號、個人資料、未公開專題內容或密碼、Token 等敏感資訊。
+
+        填寫範例請參考 [issue-report-example.md](https://github.com/SoWiEee/nutn-csie-senior-project-web/blob/main/docs/issue-report-example.md)。
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: 問題簡述
+      description: 用一兩句話說明遇到什麼問題。
+      placeholder: 例如：手機版時程表中，議程卡片標題被截斷。
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 問題類型
+      options:
+        - 顯示／排版
+        - 按鈕／操作
+        - 文字／資料
+        - 效能／動畫
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: page_url
+    attributes:
+      label: 發生問題的頁面網址
+      placeholder: https://example.com/#schedule
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 裝置類型
+      options:
+        - 桌上型電腦／筆記型電腦
+        - iPhone／iPad
+        - Android 手機／平板
+        - 其他／不確定
+    validations:
+      required: true
+
+  - type: input
+    id: browser_os
+    attributes:
+      label: 瀏覽器與系統版本
+      description: 例如 Safari 18、iOS 18；不確定版本可留白。
+      placeholder: Chrome 140、Windows 11
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重現步驟
+      description: 請依序列出操作方式；若無法穩定重現，也請描述當時情況。
+      placeholder: |
+        1. 開啟……
+        2. 切換到……
+        3. 點選／捲動……
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: 預期結果與實際結果
+      description: 說明你原本預期看到什麼，以及實際發生什麼。
+      placeholder: |
+        預期：……
+        實際：……
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: 發生頻率
+      options:
+        - 每次都會發生
+        - 偶爾發生
+        - 只發生過一次
+        - 尚未確認
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截圖、錄影或錯誤訊息（選填）
+      description: 附件有助於定位問題。上傳前請遮蔽姓名、帳號、通知內容及其他私人資訊；錯誤訊息也請先移除 Token、Cookie 等敏感資料。
+      placeholder: 拖曳附件到此處，或貼上不含私人資料的錯誤訊息。
+    validations:
+      required: false
