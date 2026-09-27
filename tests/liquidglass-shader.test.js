@@ -38,9 +38,10 @@ test('edge blur is weighted toward the center and the clear refraction preset di
 
 test('checked-in browser bundles contain the shader fix and match each other', () => {
   assert.equal(bundles[0], bundles[1]);
-  for (const html of htmlPages) assert.match(html, /app\.js\?v=1\.1\.63/);
+  for (const html of htmlPages) assert.match(html, /app\.js\?v=1\.1\.65/);
   for (const bundle of bundles) {
     assert.ok(bundle.includes('float edge = 1.0 - smoothstep(0.0, maxD * 0.35, inside);'));
+    assert.ok(bundle.includes('float caS = u_chroma * 36.0 * edge * edge;'));
     assert.ok(bundle.includes('float innerGlow = (1.0 - smoothstep(0.0, 5.0, inside))'));
     assert.match(bundle, /blurAmount: 0(?:\.0)?/);
   }

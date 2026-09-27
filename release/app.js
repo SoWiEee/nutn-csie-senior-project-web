@@ -2345,7 +2345,7 @@ void main() {
 	vec2 micro = (vec2(hash(ns), hash(ns + vec2(37.0))) - 0.5) * u_distort * 4.0 * absPxToUV;
 
 	// \u2500\u2500 Chromatic aberration \u2500\u2500
-	float caS = u_chroma * 18.0 * (edge * 0.7 + 0.3) * 2.0;
+	float caS = u_chroma * 36.0 * edge * edge;
 	vec2 caD = N.xy * caS * pxToUV;
 	vec2 base = v_screenUV + refr + micro;
 
@@ -2792,11 +2792,10 @@ void main() {
       "cover",
       "50% 50%"
     );
-    ctx.fillStyle = "rgb(15, 17, 27)";
+    ctx.fillStyle = getComputedStyle(image.parentElement).backgroundColor;
     ctx.fillRect(0, 0, width, height);
     ctx.save();
-    ctx.globalAlpha = 0.64;
-    ctx.filter = "saturate(0.78) brightness(0.68) contrast(1.08)";
+    ctx.globalAlpha = Number(getComputedStyle(image).opacity);
     ctx.drawImage(image, fitted.sx, fitted.sy, fitted.sw, fitted.sh, 0, 0, width, height);
     ctx.restore();
     sharedBackdropRaster = { key, canvas };
@@ -3808,17 +3807,6 @@ void main() {
       const globalY = rootRect.top * dpr + sampleRect.y;
       const ctx = this._sceneCtx;
       ctx.drawImage(backdrop, globalX, globalY, sampleRect.w, sampleRect.h, 0, 0, sampleRect.w, sampleRect.h);
-      const overlay = ctx.createLinearGradient(0, 0, 0, sampleRect.h);
-      overlay.addColorStop(0, "rgba(8, 10, 20, 0.2)");
-      overlay.addColorStop(1, "rgba(10, 12, 24, 0.58)");
-      ctx.fillStyle = overlay;
-      ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
-      const tint = ctx.createLinearGradient(0, 0, sampleRect.w, sampleRect.h);
-      tint.addColorStop(0, "rgba(24, 48, 88, 0.16)");
-      tint.addColorStop(0.52, "rgba(18, 32, 66, 0.09)");
-      tint.addColorStop(1, "rgba(8, 18, 40, 0.2)");
-      ctx.fillStyle = tint;
-      ctx.fillRect(0, 0, sampleRect.w, sampleRect.h);
     }
     _prepareSceneCanvas(width, height) {
       if (this._sceneCanvas.width !== width || this._sceneCanvas.height !== height) {
@@ -5029,13 +5017,12 @@ void main() {
     const initialize = async () => {
       const backdrop = await siteBackdropReady;
       const sourceImage = backdrop?.image || backdropImage;
-      const sourceCanvas = backdrop?.canvas;
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
         blurAmount: 0,
         refraction: 1.08,
-        chromAberration: 0.025,
+        chromAberration: 0.07,
         edgeHighlight: 0.15,
         specular: 0.035,
         fresnel: 0.62,
@@ -5056,7 +5043,6 @@ void main() {
         root,
         glassElements,
         backgroundImage: sourceImage,
-        backgroundCanvas: sourceCanvas,
         renderScale: getLiquidGlassRenderScale(),
         active: true,
         captureGlassContent: false,

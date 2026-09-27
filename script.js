@@ -779,13 +779,12 @@ const initializeLiquidGlassRoot = async (root) => {
   const initialize = async () => {
     const backdrop = await siteBackdropReady;
     const sourceImage = backdrop?.image || backdropImage;
-    const sourceCanvas = backdrop?.canvas;
     const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
     if (!glassElements.length) return null;
     const defaults = {
       blurAmount: 0.0,
       refraction: 1.08,
-      chromAberration: 0.025,
+      chromAberration: 0.07,
       edgeHighlight: 0.15,
       specular: 0.035,
       fresnel: 0.62,
@@ -806,7 +805,6 @@ const initializeLiquidGlassRoot = async (root) => {
       root,
       glassElements,
       backgroundImage: sourceImage,
-      backgroundCanvas: sourceCanvas,
       renderScale: getLiquidGlassRenderScale(),
       active: true,
       captureGlassContent: false,
