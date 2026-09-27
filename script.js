@@ -130,7 +130,11 @@ const projects = [
       paragraph: '因此，本專題希望結合兩者優點，建立一套既能保有研究者熟悉的工作提交流程，又能做到動態分配 CPU、GPU 與儲存資源的系統。進一步地，我們也希望導入深度強化學習策略，讓系統可以根據工作佇列狀態與叢集狀態，自動做出更合理的資源分配決策。',
     },
   ] },
-  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '運動教練', titleEn: 'Sports Coach', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'] },
+  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'], summary: [
+    {
+      paragraph: '本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。',
+    },
+  ] },
 ];
 
 const groupMeta = {
