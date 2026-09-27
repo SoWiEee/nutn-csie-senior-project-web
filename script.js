@@ -783,14 +783,14 @@ const initializeLiquidGlassRoot = async (root) => {
     const glassElements = [...root.children].filter((element) => element.hasAttribute('data-liquid-glass'));
     if (!glassElements.length) return null;
     const defaults = {
-      blurAmount: 0.06,
+      blurAmount: 0.0,
       refraction: 1.08,
       chromAberration: 0.025,
       edgeHighlight: 0.15,
       specular: 0.035,
       fresnel: 0.62,
       distortion: 0.002,
-      opacity: 0.7,
+      opacity: 0.65,
       saturation: 0.08,
       tintStrength: 0.008,
       brightness: 0.06,

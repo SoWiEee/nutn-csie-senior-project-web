@@ -2278,7 +2278,7 @@ void main() {
 
 	float maxD = min(half_.x, half_.y);
 	float inside = -sdf;
-	float edge = smoothstep(maxD * 0.35, 0.0, inside);
+	float edge = 1.0 - smoothstep(0.0, maxD * 0.35, inside);
 
 	// \u2500\u2500 Surface normal (top surface) via bevel height field \u2500\u2500
 	float zR = u_zRadius;
@@ -2362,7 +2362,7 @@ void main() {
 	// \u2500\u2500 Edge-weighted blur mix \u2500\u2500
 	// Centre of the panel uses the blurred sample; the rim blends
 	// toward the sharp sample so refraction edges stay crisp.
-	float edgeMix = 0.06 + edge * 0.34;
+	float edgeMix = 0.06 + (1.0 - edge) * 0.34;
 	vec3 col = mix(sharp, blur, edgeMix);
 
 	// \u2500\u2500 Brightness \u2500\u2500
@@ -2403,7 +2403,7 @@ void main() {
 
 	// \u2500\u2500 Edge highlight & inner glow \u2500\u2500
 	float rim = edge * u_edgeHL * 0.22;
-	float innerGlow = smoothstep(5.0, 0.0, -sdf) * u_edgeHL * 0.15;
+	float innerGlow = (1.0 - smoothstep(0.0, 5.0, inside)) * u_edgeHL * 0.15;
 
 	// \u2500\u2500 Environment-like reflection (fake) \u2500\u2500
 	float envRefl = (N.y * 0.5 + 0.5) * fres * 0.08;
@@ -2414,7 +2414,6 @@ void main() {
 	fin += vec3(rim + innerGlow);
 	fin += vec3(innerStroke * u_edgeHL * 0.55);
 	fin += vec3(envRefl);
-	fin += vec3(pointerInfluence * 0.045);
 	fin = mix(fin, vec3(1.0), fres * 0.2);
 
 	gl_FragColor = vec4(fin, mask * u_alpha);
@@ -5034,14 +5033,14 @@ void main() {
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
-        blurAmount: 0.06,
+        blurAmount: 0,
         refraction: 1.08,
         chromAberration: 0.025,
         edgeHighlight: 0.15,
         specular: 0.035,
         fresnel: 0.62,
         distortion: 2e-3,
-        opacity: 0.7,
+        opacity: 0.65,
         saturation: 0.08,
         tintStrength: 8e-3,
         brightness: 0.06,
