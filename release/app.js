@@ -4408,7 +4408,11 @@ void main() {
         paragraph: "\u56E0\u6B64\uFF0C\u672C\u5C08\u984C\u5E0C\u671B\u7D50\u5408\u5169\u8005\u512A\u9EDE\uFF0C\u5EFA\u7ACB\u4E00\u5957\u65E2\u80FD\u4FDD\u6709\u7814\u7A76\u8005\u719F\u6089\u7684\u5DE5\u4F5C\u63D0\u4EA4\u6D41\u7A0B\uFF0C\u53C8\u80FD\u505A\u5230\u52D5\u614B\u5206\u914D CPU\u3001GPU \u8207\u5132\u5B58\u8CC7\u6E90\u7684\u7CFB\u7D71\u3002\u9032\u4E00\u6B65\u5730\uFF0C\u6211\u5011\u4E5F\u5E0C\u671B\u5C0E\u5165\u6DF1\u5EA6\u5F37\u5316\u5B78\u7FD2\u7B56\u7565\uFF0C\u8B93\u7CFB\u7D71\u53EF\u4EE5\u6839\u64DA\u5DE5\u4F5C\u4F47\u5217\u72C0\u614B\u8207\u53E2\u96C6\u72C0\u614B\uFF0C\u81EA\u52D5\u505A\u51FA\u66F4\u5408\u7406\u7684\u8CC7\u6E90\u5206\u914D\u6C7A\u7B56\u3002"
       }
     ] },
-    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "結合骨架序列與深度學習之健身動作品質評估架構", titleEn: "A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"], summary: [{ paragraph: "本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。" }] }
+    { id: "17", code: "NUTN-CSIE-PRJ-116-017", group: "decision", title: "\u7D50\u5408\u9AA8\u67B6\u5E8F\u5217\u8207\u6DF1\u5EA6\u5B78\u7FD2\u4E4B\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u8A55\u4F30\u67B6\u69CB", titleEn: "A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques", members: "\u9EC3\u5B50\u52C1", studentIds: "S11259048", advisor: "\u9673\u5B97\u79A7", time: "14:55 ~ 15:10", conferenceTags: ["CVGIP 2026"], summary: [
+      {
+        paragraph: "\u672C\u5C08\u984C\u65E8\u5728\u5EFA\u7ACB\u4E00\u5957\u667A\u6167\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u8A55\u4F30\u7CFB\u7D71\uFF0C\u5354\u52A9\u4F7F\u7528\u8005\u5728\u5C45\u5BB6\u6216\u7F3A\u4E4F\u6559\u7DF4\u6307\u5C0E\u7684\u74B0\u5883\u4E0B\uFF0C\u7372\u5F97\u5373\u6642\u4E14\u5BA2\u89C0\u7684\u52D5\u4F5C\u56DE\u994B\u3002\u7CFB\u7D71\u4EE5\u4E00\u822C\u7DB2\u8DEF\u651D\u5F71\u6A5F\u4F5C\u70BA\u8F38\u5165\uFF0C\u64F7\u53D6\u4F7F\u7528\u8005\u904B\u52D5\u904E\u7A0B\u4E2D\u7684\u4EBA\u9AD4\u59FF\u614B\u8CC7\u8A0A\uFF0C\u4E26\u5C07\u9023\u7E8C\u9AA8\u67B6\u5E8F\u5217\u8F49\u63DB\u70BA\u53EF\u4F9B\u6A21\u578B\u5206\u6790\u7684\u52D5\u4F5C\u7279\u5FB5\u3002\u70BA\u4E86\u8655\u7406\u4F7F\u7528\u8005\u8207\u6A19\u6E96\u793A\u7BC4\u52D5\u4F5C\u4E4B\u9593\u52D5\u4F5C\u901F\u5EA6\u4E0D\u4E00\u81F4\u7684\u554F\u984C\uFF0C\u672C\u7CFB\u7D71\u52A0\u5165\u5C40\u90E8\u6642\u9593\u5C0D\u9F4A\u6A5F\u5236\uFF0C\u4F7F\u8A55\u5206\u904E\u7A0B\u80FD\u6BD4\u8F03\u76F8\u8FD1\u7684\u52D5\u4F5C\u968E\u6BB5\uFF0C\u800C\u975E\u50C5\u4F9D\u7167\u76F8\u540C\u64AD\u653E\u6642\u9593\u9032\u884C\u5224\u65B7\u3002\u8A55\u5206\u65B9\u6CD5\u5247\u7D50\u5408\u6574\u9AD4\u52D5\u4F5C\u7279\u5FB5\u76F8\u4F3C\u5EA6\u8207\u7279\u5B9A\u5065\u8EAB\u52D5\u4F5C\u7684\u59FF\u52E2\u7D50\u69CB\u5206\u6578\uFF0C\u4EE5\u8A55\u4F30\u4F7F\u7528\u8005\u52D5\u4F5C\u8207\u6A19\u6E96\u793A\u7BC4\u4E4B\u9593\u7684\u5DEE\u7570\u3002\u671F\u671B\u672C\u7CFB\u7D71\u80FD\u964D\u4F4E\u5C45\u5BB6\u5065\u8EAB\u6642\u56E0\u7F3A\u4E4F\u59FF\u52E2\u76E3\u7763\u6240\u9020\u6210\u7684\u932F\u8AA4\u52D5\u4F5C\u8207\u904B\u52D5\u50B7\u5BB3\u98A8\u96AA\uFF0C\u4E26\u63D0\u5347\u4F7F\u7528\u8005\u81EA\u6211\u8A13\u7DF4\u7684\u5B89\u5168\u6027\u8207\u6709\u6548\u6027\u3002"
+      }
+    ] }
   ];
   var groupMeta = {
     sense: { title: "\u667A\u6167\u611F\u77E5\u8207\u8A0A\u865F\u5206\u6790\u7D44", label: "SENSE / SIGNAL ANALYSIS" },
@@ -5030,17 +5034,17 @@ void main() {
       const glassElements = [...root.children].filter((element) => element.hasAttribute("data-liquid-glass"));
       if (!glassElements.length) return null;
       const defaults = {
-        blurAmount: 0.08,
+        blurAmount: 0.06,
         refraction: 1.08,
         chromAberration: 0.025,
         edgeHighlight: 0.15,
         specular: 0.035,
         fresnel: 0.62,
         distortion: 2e-3,
-        opacity: 0.86,
+        opacity: 0.7,
         saturation: 0.08,
         tintStrength: 8e-3,
-        brightness: 0,
+        brightness: 0.06,
         cornerRadius: 8,
         zRadius: 22,
         shadowOpacity: 0.24,
