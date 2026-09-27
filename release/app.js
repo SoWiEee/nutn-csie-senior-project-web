@@ -5011,6 +5011,7 @@ void main() {
     return lowPower ? 0.86 : 1;
   };
   var isLiquidGlassRootEligible = (root) => {
+    if (root.matches("#view-home .hero__meta") && window.matchMedia("(pointer: coarse)").matches) return false;
     const activeView = document.body.dataset.view || "home";
     const panel = root.closest("[data-view-panel]");
     if (panel && panel.dataset.viewPanel !== activeView || root.closest("[hidden]")) return false;
