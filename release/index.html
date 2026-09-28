@@ -6,8 +6,9 @@
     <meta name="theme-color" content="#0f111b" />
     <meta name="description" content="NUTN CSIE 116｜國立臺南大學資訊工程學系 116 級畢業專題成果展。" />
     <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
-  <link rel="stylesheet" href="tokens.css?v=1.1.6" />
-  <link rel="stylesheet" href="styles.css?v=1.1.85" />
+    <link rel="icon" type="image/png" href="assets/images/csie_icon.png" />
+    <link rel="stylesheet" href="tokens.css?v=1.1.6" />
+    <link rel="stylesheet" href="styles.css?v=1.1.87" />
   </head>
   <body data-view="home">
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
@@ -61,11 +62,12 @@
             <h2 id="intro-title">介紹 <span aria-hidden="true">_</span></h2>
           </div>
           <div class="home-intro__copy">
-            <p>「就讓我們開始吧。」</p>
+            <p class="home-intro__quote">就讓我們開始吧。</p>
             <p>資訊工程，正從螢幕裡的運算走向真實世界。影像、空間、生醫資料與環境感測，從被讀取開始，經過理解，成為能回應真實需求的技術。</p>
-            <p>「為了畢業專題，我什麼都願意做。」</p>
+            <p class="home-intro__quote">為了畢業專題，我什麼都願意做。</p>
             <p>南大資工 116 級畢業專題成果展，集結 17 組作品，分為「智慧感知與訊號分析」與「智慧推論與決策系統」兩組。從 Video-LM 解析道路影像、以 VGGT 重建多視角空間，到心電圖、單細胞資料、AIoT 與行動感測；也有作品探索聯邦學習與資安防禦，思考資料如何在被使用的同時保持安全。</p>
-            <p>從交通、醫療到校園、室內與野外，學生嘗試把技術帶進真實場景，在資料、延遲與運算資源等限制下，完成能被看見、驗證，也能實際運作的系統。</p>
+            <p class="home-intro__quote">最短的捷徑就是繞遠路，繞遠路才是我的最短捷徑。</p>
+            <p>從交通、醫療到校園、室內與野外，學生嘗試把技術帶進真實場景。面對資料、延遲與運算資源等限制，透過一次次嘗試、調整與驗證，讓想法逐步成為能被看見、被驗證，也能實際運作的系統。</p>
             <p>歡迎來到展場，看看我們如何把各種訊號，轉化為對世界的理解與下一步行動。</p>
           </div>
         </div>
@@ -75,13 +77,12 @@
         <div class="shell">
           <div class="section-head">
             <div>
-              <p class="eyebrow">VENUE / 2026</p>
               <div class="section-head__title-row">
                 <h2 id="home-venue-title">展場資訊</h2>
                 <span class="section-head__signal section-head__signal--route" aria-hidden="true"><svg viewBox="0 0 96 32" focusable="false"><path d="M3 25c12-1 13-17 25-17 10 0 11 14 21 14 11 0 13-15 23-15 7 0 10 5 21 5" /><circle cx="28" cy="8" r="2.5" /><circle cx="72" cy="7" r="2.5" /></svg></span>
               </div>
             </div>
-            <p class="section-head__aside">府城校區・文薈樓地下一樓<br />2026 展場交通資訊</p>
+            <p class="section-head__aside"><strong>別問，問就是文薈樓 B1</strong><br />人都來了，順便看完 17 組</p>
           </div>
           <div class="venue-grid">
             <figure class="venue-figure" data-card-light data-card-proximity>
@@ -135,10 +136,10 @@
                 <span class="section-head__signal section-head__signal--wave" aria-hidden="true"><svg viewBox="0 0 96 32" focusable="false"><path d="M3 17h14l6-10 9 19 9-17 8 11h13l7-8 8 10h16" /></svg></span>
               </div>
             </div>
-            <p class="section-head__aside">2026 展覽・單日議程<br />13:00 — 15:25</p>
+            <p class="section-head__aside">「我只看十分鐘。」<br />抬頭一看，已經在和作者聊研究方法。</p>
           </div>
 
-          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>兩組議程同步進行，請依展場分區前往。</span></div>
+          <div class="agenda-notice"><span class="signal-card__dot" aria-hidden="true"></span><span>單執行緒與會者注意，兩組議程同步進行，請選擇你的路線。</span></div>
           <div class="filter-bar filter-bar--tracks" role="tablist" aria-label="議程組別切換">
             <button class="filter-chip filter-chip--track is-active" type="button" role="tab" aria-selected="true" data-schedule-filter="sense"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 4 10 2-5h7" /></svg></span><span class="filter-chip__label">智慧感知與訊號分析組</span></button>
             <button class="filter-chip filter-chip--track" type="button" role="tab" aria-selected="false" data-schedule-filter="decision"><span class="filter-chip__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="18" cy="18" r="2" /><path d="m8 11 8-4M8 13l8 4" /></svg></span><span class="filter-chip__label">智慧推論與決策系統組</span></button>
@@ -159,6 +160,7 @@
                 <span class="section-head__signal section-head__signal--network" aria-hidden="true"><svg viewBox="0 0 96 32" focusable="false"><path d="M18 16h24M54 8l-12 8 12 8M66 8h12M66 24h12" /><circle cx="18" cy="16" r="4" /><circle cx="54" cy="8" r="4" /><circle cx="54" cy="24" r="4" /><circle cx="84" cy="8" r="3" /><circle cx="84" cy="24" r="3" /></svg></span>
               </div>
             </div>
+            <p class="section-head__aside"><strong>迷子でもいい。</strong><br />17 組作品裡，找到你的本命專題。</p>
           </div>
           <div class="filter-bar" role="tablist" aria-label="專題組別篩選">
             <button class="filter-chip is-active" type="button" role="tab" aria-selected="true" data-project-filter="all">全部 <span>17 組</span></button>
