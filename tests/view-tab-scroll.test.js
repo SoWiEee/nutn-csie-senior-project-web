@@ -7,7 +7,7 @@ const root = resolve(__dirname, '..');
 
 for (const scriptFile of ['app.js', 'release/app.js']) {
   test(`${scriptFile} does not scroll to the top when the active view tab is clicked`, () => {
-    const script = readFileSync(resolve(root, scriptFile), 'utf8');
+    const script = readFileSync(resolve(root, scriptFile), 'utf8').replace(/\r\n/g, '\n');
     const setView = script.match(/var setView = \(view, \{ updateHash = true \} = \{\}\) => \{([\s\S]*?)\n  \};\n  var setFilterState/);
 
     assert.ok(setView, 'view switching handler should exist');
