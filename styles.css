@@ -1497,6 +1497,29 @@ body[data-view="home"] .site-backdrop__source {
   .home-artwork__layer--people { clip-path: polygon(30% 10%, 78% 10%, 78% 57%, 30% 57%); }
   .home-artwork__layer--signal { clip-path: polygon(23% 62%, 57% 62%, 57% 86%, 23% 86%); }
   .home-artwork__layer--tree { clip-path: polygon(82% 27%, 100% 27%, 100% 71%, 82% 71%); }
+
+  /* A signal crosses the extracted subjects in the artwork's own diagonal direction. */
+  .home-artwork__surge {
+    position: absolute;
+    inset: 0;
+    background: url("assets/home-key-visual-motion-foreground.png") center / cover no-repeat;
+    filter: brightness(1.7) saturate(1.15);
+    -webkit-mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
+    mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
+    -webkit-mask-size: 280% 100%;
+    mask-size: 280% 100%;
+    opacity: 0;
+    animation: home-artwork-surge 6.4s ease-in-out infinite paused;
+  }
+
+  body[data-view="home"] .home-artwork.is-ready.is-active .home-artwork__surge { animation-play-state: running; }
+
+  @keyframes home-artwork-surge {
+    0%, 12% { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0; }
+    20% { opacity: 0.85; }
+    67% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0.85; }
+    74%, 100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0; }
+  }
 }
 
 body[data-view="home"] .site-backdrop.is-static-fallback::after {

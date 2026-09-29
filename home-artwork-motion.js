@@ -26,6 +26,7 @@ if (artwork && hero && backdrop) {
   const update = () => { if (!frame && artwork.classList.contains('is-ready')) frame = requestAnimationFrame(paint); };
   const onScroll = () => {
     target.scroll = Math.min(1, Math.max(0, window.scrollY / Math.max(hero.offsetHeight, 1)));
+    artwork.classList.toggle('is-active', document.visibilityState === 'visible' && window.scrollY < hero.offsetHeight);
     update();
   };
 
@@ -56,6 +57,7 @@ if (artwork && hero && backdrop) {
     update();
   }, { passive: true });
   window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('visibilitychange', onScroll);
   window.addEventListener('blur', () => { target.x = 0; target.y = 0; update(); });
   motionMedia.addEventListener('change', load);
   load();
