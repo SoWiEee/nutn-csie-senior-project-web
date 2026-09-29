@@ -1594,233 +1594,44 @@ body:not([data-view="home"]) .site-backdrop::before {
   }
 }
 
-/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 */
-/* Home exploration: the diagonal artwork becomes an active signal, then settles into an editorial reading surface. */
-#view-home .hero {
-  isolation: isolate;
-  min-height: max(48rem, 100svh);
-}
-
-#view-home .hero::after {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  content: "";
-  background: linear-gradient(135deg, var(--color-void), color-mix(in oklch, var(--color-panel-strong) 90%, var(--color-void)));
-  clip-path: polygon(0 0, 54% 0, 37% 100%, 0 100%);
-  pointer-events: none;
-}
-
-#view-home .hero__content {
-  z-index: 2;
-  width: min(calc(100% - 3rem), 84rem);
-  margin-inline: auto;
-  padding-block: clamp(8.5rem, 17vh, 12rem) clamp(5rem, 11vh, 8rem);
-}
-
-#view-home .hero__copy {
-  width: min(100%, 58rem);
-}
-
-#view-home .hero h1 {
-  max-width: none;
-  font-size: clamp(2.55rem, 4.1vw, 3.7rem);
-  line-height: 1.14;
-  letter-spacing: -0.035em;
-  text-wrap: nowrap;
-}
-
-#view-home .hero h1 span {
-  display: inline-block;
-  margin-top: 0.18em;
-}
-
-#view-home .hero__meta {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 56rem);
-  margin-top: clamp(2.5rem, 6vh, 4.25rem);
-}
-
-#view-home .hero__meta-card {
-  min-height: 8.75rem;
-  padding: clamp(1.25rem, 2.2vw, 1.75rem);
-}
-
-#view-home .hero__signal {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  width: 62%;
-  height: 100%;
-  overflow: hidden;
-  opacity: 0.72;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-#view-home .hero__signal svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-#view-home .hero__signal-guide,
-#view-home .hero__signal-trace {
-  fill: none;
-  stroke-linecap: round;
-}
-
-#view-home .hero__signal-guide {
-  stroke: var(--color-signal-line-soft);
-  stroke-width: 1.4;
-}
-
-#view-home .hero__signal-trace {
-  stroke: var(--color-signal-node);
-  stroke-width: 3.5;
-}
-
-#view-home .hero__signal-origin,
-#view-home .hero__signal-target {
-  fill: var(--color-signal-node);
-}
-
-#view-home .hero__edition-mark {
-  position: absolute;
-  z-index: 1;
-  top: 0.22em;
-  right: 0.12em;
-  bottom: auto;
-  color: color-mix(in oklch, var(--color-ink) 9%, transparent);
-  font-family: var(--font-display);
-  font-size: clamp(10rem, 18vw, 18rem);
-  font-weight: 700;
-  letter-spacing: -0.13em;
-  line-height: 1;
-  opacity: 0.6;
-  -webkit-text-stroke: 1px var(--color-line-strong);
-  pointer-events: none;
-}
-
-#view-home .home-intro {
-  padding-block: clamp(6rem, 12vw, 11rem);
-  border-top: 0;
-  background: color-mix(in oklch, var(--color-void) 76%, transparent);
-  -webkit-backdrop-filter: blur(0.6rem);
-  backdrop-filter: blur(0.6rem);
-}
-
-#view-home .home-intro__layout {
-  display: grid;
-  grid-template-columns: minmax(13rem, 0.7fr) minmax(0, 1.3fr);
-  gap: clamp(3rem, 7vw, 8rem);
-  align-items: start;
-}
-
-#view-home .home-intro__heading {
-  position: sticky;
-  top: 27vh;
-  padding-block: 0.25rem 2rem;
-  border-top: 1px solid var(--color-line-strong);
-}
-
-#view-home .home-intro__heading h2 {
-  margin-top: 1.5rem;
-  font-size: clamp(3.5rem, 7vw, 6rem);
-}
-
-#view-home .home-intro__copy {
-  max-width: 38ch;
-  margin: 0;
-  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
-  line-height: 1.7;
-}
-
-#view-home .home-intro__copy .home-intro__quote {
-  max-width: 28ch;
-  font-size: clamp(1.65rem, 2.3vw, 2.35rem);
-  line-height: 1.35;
-  letter-spacing: -0.025em;
-}
-
-#view-home .home-intro__copy p + .home-intro__quote {
-  margin-top: clamp(3rem, 6vw, 5rem);
-}
-
-#view-home .home-venue {
-  padding-top: clamp(5rem, 9vw, 8rem);
-}
-
-@media (max-width: 48rem) {
-  #view-home .hero {
-    min-height: 100svh;
+/* Project filtering keeps spatial continuity; the art reacts only on desktop. */
+@media (min-width: 48.01rem) {
+  #view-projects .project-card__visual::before,
+  #view-projects .project-card__visual::after,
+  #view-projects .project-card__visual > i {
+    transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), scale 650ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  #view-home .hero::after {
-    background: linear-gradient(180deg, color-mix(in oklch, var(--color-void) 80%, transparent), color-mix(in oklch, var(--color-void) 36%, transparent) 52%, color-mix(in oklch, var(--color-void) 84%, transparent));
-    clip-path: none;
+  #view-projects .project-card:hover .project-card__visual::before,
+  #view-projects .project-card:focus-within .project-card__visual::before {
+    transform: rotate(-3deg) translateY(-0.35rem);
   }
 
-  #view-home .hero__content {
-    padding-block: 7.5rem 6rem;
+  #view-projects .project-card:hover .project-card__visual::after,
+  #view-projects .project-card:focus-within .project-card__visual::after {
+    scale: 1.15;
   }
 
-  #view-home .hero h1 {
-    font-size: clamp(1.9rem, 8.8vw, 3.4rem);
-    text-wrap: wrap;
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(1),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(1) { transform: translate(0.4rem, -0.3rem); }
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(2),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(2) { transform: translate(-0.3rem, 0.25rem); }
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(3),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(3) { transform: translate(0.2rem, -0.4rem); }
+
+  ::view-transition-group(*) {
+    animation-duration: 440ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  #view-home .hero__signal {
-    top: 2rem;
-    width: 100%;
-    height: 50%;
-    opacity: 0.3;
-  }
-
-  #view-home .hero__edition-mark {
-    right: 0.15em;
-    bottom: 0.02em;
-    top: auto;
-    font-size: 52vw;
-    opacity: 0.38;
-  }
-
-  #view-home .hero__meta {
-    grid-template-columns: 1fr;
-    width: min(100%, 24rem);
-  }
-
-  #view-home .home-intro {
-    padding-block: 5rem;
-  }
-
-  #view-home .home-intro__layout {
-    display: block;
-  }
-
-  #view-home .home-intro__heading {
-    position: static;
-    margin-bottom: 3rem;
-  }
-
-  #view-home .home-intro__heading h2 {
-    font-size: clamp(3rem, 13vw, 4.25rem);
-  }
-
-  #view-home .home-intro__copy {
-    max-width: 100%;
-    font-size: 1.1rem;
-  }
-
-  #view-home .home-intro__copy .home-intro__quote {
-    font-size: 1.55rem;
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #view-home .hero__signal-trace {
-    filter: none;
-  }
+  #view-projects .project-card__visual::before,
+  #view-projects .project-card__visual::after,
+  #view-projects .project-card__visual > i { transition: none; }
 }

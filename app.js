@@ -4468,7 +4468,7 @@ void main() {
   };
   var renderProjects = () => {
     if (!projectList) return;
-    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light data-card-proximity>
+    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" data-card-light data-card-proximity style="view-transition-name: project-${escapeHTML(project.id)}">
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
     <div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
     <span class="project-card__shine" aria-hidden="true"></span>
@@ -4610,11 +4610,25 @@ void main() {
   }
   projectFilters.forEach((button) => button.addEventListener("click", () => {
     const filter = button.dataset.projectFilter;
-    setFilterState(projectFilters, button);
-    updateProjectFilterIndicator();
-    document.querySelectorAll("[data-project-group]").forEach((card) => {
-      card.hidden = filter !== "all" && card.dataset.projectGroup !== filter;
-    });
+    if (button.classList.contains("is-active")) return;
+    const update = () => {
+      setFilterState(projectFilters, button);
+      updateProjectFilterIndicator();
+      document.querySelectorAll("[data-project-group]").forEach((card) => {
+        card.hidden = filter !== "all" && card.dataset.projectGroup !== filter;
+      });
+    };
+    if (document.startViewTransition && window.matchMedia("(min-width: 48.01rem) and (prefers-reduced-motion: no-preference)").matches) {
+      document.startViewTransition(update);
+    } else {
+      update();
+      if (window.matchMedia("(min-width: 48.01rem) and (prefers-reduced-motion: no-preference)").matches) {
+        [...projectList.querySelectorAll(".project-card:not([hidden])")].filter((card) => card.getBoundingClientRect().top < window.innerHeight).forEach((card, index) => card.animate(
+          [{ opacity: 0.55, clipPath: "inset(0 0 8% 0)" }, { opacity: 1, clipPath: "inset(0)" }],
+          { duration: 360, delay: Math.min(index, 5) * 35, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
+        ));
+      }
+    }
   }));
   var bindCardProximityLight = () => {
     const cards = [...document.querySelectorAll("[data-card-proximity]")];
