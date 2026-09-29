@@ -1,5 +1,10 @@
 async (page) => {
   await page.waitForFunction(() => document.querySelector('[data-liquid-glass-root]')?.dataset.liquidGlassReady === 'true');
+  await page.waitForFunction(() => document.querySelector('[data-home-artwork]')?.classList.contains('is-ready'));
+  const sourceOpacity = await page.evaluate(() => Number(getComputedStyle(document.querySelector('[data-site-backdrop-source]')).opacity));
+  if (sourceOpacity < 0.8) {
+    throw new Error(`Glass is sampling a transparent source image while layered artwork is visible: opacity=${sourceOpacity}`);
+  }
 
   const result = await page.evaluate(async () => {
     const cards = [...document.querySelectorAll('[data-liquid-glass]')];
