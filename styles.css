@@ -1463,6 +1463,65 @@ body[data-view="home"] .site-backdrop__source {
   filter: none;
 }
 
+/* The three moving pieces share the plate's exact crop; the unaltered art remains the fallback. */
+.home-artwork { display: none; }
+
+@media (min-width: 48.01rem) and (prefers-reduced-motion: no-preference) {
+  /* LiquidGlass reads this image's computed opacity; hide its pixels without zeroing its sample. */
+  body[data-view="home"] .site-backdrop.has-home-artwork .site-backdrop__source {
+    opacity: 0.85;
+    visibility: hidden;
+  }
+
+  body[data-view="home"] .home-artwork {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    display: block;
+    opacity: 0;
+  }
+
+  body[data-view="home"] .home-artwork.is-ready { opacity: 0.85; }
+
+  .home-artwork__plate,
+  .home-artwork__layer {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .home-artwork__plate { background-image: url("assets/home-key-visual-motion-plate.png"); }
+  .home-artwork__layer { background-image: url("assets/home-key-visual-motion-foreground.png"); will-change: transform; }
+  .home-artwork__layer--people { clip-path: polygon(30% 10%, 78% 10%, 78% 57%, 30% 57%); }
+  .home-artwork__layer--signal { clip-path: polygon(23% 62%, 57% 62%, 57% 86%, 23% 86%); }
+  .home-artwork__layer--tree { clip-path: polygon(82% 27%, 100% 27%, 100% 71%, 82% 71%); }
+
+  /* A signal crosses the extracted subjects in the artwork's own diagonal direction. */
+  .home-artwork__surge {
+    position: absolute;
+    inset: 0;
+    background: url("assets/home-key-visual-motion-foreground.png") center / cover no-repeat;
+    filter: brightness(1.7) saturate(1.15);
+    -webkit-mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
+    mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
+    -webkit-mask-size: 280% 100%;
+    mask-size: 280% 100%;
+    opacity: 0;
+    animation: home-artwork-surge 6.4s ease-in-out infinite paused;
+  }
+
+  body[data-view="home"] .home-artwork.is-ready.is-active .home-artwork__surge { animation-play-state: running; }
+
+  @keyframes home-artwork-surge {
+    0%, 12% { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0; }
+    20% { opacity: 0.85; }
+    67% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0.85; }
+    74%, 100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0; }
+  }
+}
+
 body[data-view="home"] .site-backdrop.is-static-fallback::after {
   display: none;
 }
@@ -1475,6 +1534,13 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source 
   z-index: 1;
   opacity: 0.85;
   filter: none;
+}
+
+@media (min-width: 48.01rem) and (prefers-reduced-motion: no-preference) {
+  body[data-view="home"] .site-backdrop.is-static-fallback.has-home-artwork .site-backdrop__source {
+    opacity: 0.85;
+    visibility: hidden;
+  }
 }
 
 /* Let schedule and project content sit over the same softened campus image
@@ -1592,4 +1658,46 @@ body:not([data-view="home"]) .site-backdrop::before {
   #view-home .home-intro__copy {
     font-size: 1.1rem;
   }
+}
+
+/* Project filtering keeps spatial continuity; the art reacts only on desktop. */
+@media (min-width: 48.01rem) {
+  #view-projects .project-card__visual::before,
+  #view-projects .project-card__visual::after,
+  #view-projects .project-card__visual > i {
+    transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), scale 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #view-projects .project-card:hover .project-card__visual::before,
+  #view-projects .project-card:focus-within .project-card__visual::before {
+    transform: rotate(-3deg) translateY(-0.35rem);
+  }
+
+  #view-projects .project-card:hover .project-card__visual::after,
+  #view-projects .project-card:focus-within .project-card__visual::after {
+    scale: 1.15;
+  }
+
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(1),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(1) { transform: translate(0.4rem, -0.3rem); }
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(2),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(2) { transform: translate(-0.3rem, 0.25rem); }
+  #view-projects .project-card:hover .project-card__visual > i:nth-of-type(3),
+  #view-projects .project-card:focus-within .project-card__visual > i:nth-of-type(3) { transform: translate(0.2rem, -0.4rem); }
+
+  ::view-transition-group(*) {
+    animation-duration: 440ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #view-projects .project-card__visual::before,
+  #view-projects .project-card__visual::after,
+  #view-projects .project-card__visual > i { transition: none; }
 }
