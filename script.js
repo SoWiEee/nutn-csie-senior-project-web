@@ -108,7 +108,17 @@ const projects = [
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '第 07 組專題作品', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
-  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: '自然語言導向的三維視覺理解與物件定位', titleEn: 'Natural Language-Guided 3D Visual Understanding and Object Localization', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [] },
+  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [], summary: [
+    {
+      paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
+    },
+    {
+      paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence，基於證據的漸進式觀測與驗證)，一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
+    },
+    {
+      paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 為 54.8%，並在 Nr3D 上取得 55.6% 的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader 觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
+    },
+  ] },
   { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '基於 VGGT 之多視角 3D 重建改進', titleEn: 'Enhancing VGGT for Efficient Multi-View 3D Reconstruction', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '第 11 組專題作品', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
   { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫診斷治療系統', titleEn: 'Traditional Chinese Medicine Diagnosis and Treatment System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
