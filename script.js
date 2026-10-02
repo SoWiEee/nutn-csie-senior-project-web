@@ -108,7 +108,7 @@ const projects = [
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '第 07 組專題作品', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
-  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: [], summary: [
+  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: ['ICS 2026'], summary: [
     {
       paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
     },
@@ -125,7 +125,7 @@ const projects = [
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
   { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '第 15 組專題作品', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
-  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '蕭友翰、鄭珽升', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
+  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
     {
       paragraph: '近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：',
       bullets: [
