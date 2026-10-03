@@ -125,8 +125,7 @@ try {
     $svg = [System.Text.StringBuilder]::new()
     [void]$svg.AppendLine('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1118 380" preserveAspectRatio="xMidYMax slice">')
     [void]$svg.AppendLine('<!-- Reference-sampled blue halftone terrain. Rebuild with scripts/build-footer-mountains.ps1 -ReferenceImage supplied-screenshot.png -->')
-    # Animate only localized terrain dots; no visible wind-line or mist overlay.
-    [void]$svg.AppendLine('<style>.wind-dots{animation:slope-wind 9s cubic-bezier(.45,0,.55,1) infinite}@keyframes slope-wind{0%,12%,50%,100%{transform:translate(0,0)}22%{transform:translate(var(--wind-x),var(--wind-y))}30%{transform:translate(calc(var(--wind-x)*-.25),calc(var(--wind-y)*-.25))}38%{transform:translate(calc(var(--wind-x)*.4),calc(var(--wind-y)*.4))}}@media(prefers-reduced-motion:reduce){.wind-dots{animation:none}}</style>')
+    # Keep sampled terrain static: no animation stylesheet or continuous repaint.
     [void]$svg.AppendLine('<defs><linearGradient id="mist" gradientUnits="userSpaceOnUse" x1="0" y1="64" x2="0" y2="160"><stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></linearGradient><mask id="fade"><rect width="1118" height="380" fill="url(#mist)"/></mask></defs>')
     $dotWidth = ($SampleStep * 0.9).ToString('0.0', [Globalization.CultureInfo]::InvariantCulture)
     [void]$svg.AppendLine("<g mask=`"url(#fade)`" fill=`"none`" stroke-width=`"$dotWidth`" stroke-linecap=`"round`">")
