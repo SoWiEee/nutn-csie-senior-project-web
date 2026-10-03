@@ -687,6 +687,8 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .project-dialog__field { grid-template-columns: 1fr; gap: var(--space-2xs); }
   .project-dialog__details { margin-top: var(--space-xl); }
   .project-grid--archive { grid-template-columns: 1fr; }
+  #view-projects .project-card--archive .project-card__visual { height: 5.5rem; }
+  #view-projects .project-card__visual:not(.project-card__visual--line)::after { width: 3rem; height: 3rem; }
   .tag-note { margin-top: calc(var(--space-sm) * -0.5); }
   .section-head__signal { flex-basis: 3.25rem; width: 3.25rem; }
 }
@@ -1480,7 +1482,7 @@ body[data-view="home"] .site-backdrop::before {
   content: "";
   background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 48%, transparent), color-mix(in oklch, var(--color-void) 68%, transparent)), url("assets/home-key-visual-diagonal-v6.png") center / cover no-repeat;
   filter: blur(0.5rem) saturate(0.78) brightness(0.68) contrast(1.08);
-  opacity: var(--home-backdrop-progress);
+  opacity: clamp(0, calc(var(--home-backdrop-progress) * 1.6), 1);
   pointer-events: none;
   transform: scale(1.04);
   will-change: opacity;
@@ -1598,8 +1600,10 @@ body:not([data-view="home"]) .site-backdrop::before {
 }
 
 #view-home .hero::before {
-  background: none;
-  opacity: 0;
+  /* Keep the artwork bright beyond the reading area, with no hard panel edge. */
+  background: linear-gradient(90deg, rgb(5 12 26 / 72%), rgb(5 12 26 / 44%) 30%, transparent 65%);
+  mask-image: linear-gradient(180deg, transparent, black 12% 80%, transparent);
+  opacity: 1;
 }
 
 #view-home .hero__grid,
@@ -1658,6 +1662,10 @@ body:not([data-view="home"]) .site-backdrop::before {
 }
 
 @media (max-width: 48rem) {
+  #view-home .hero::before {
+    background: linear-gradient(90deg, rgb(5 12 26 / 72%), rgb(5 12 26 / 48%) 70%, rgb(5 12 26 / 24%));
+  }
+
   #view-home .hero {
     min-height: 100vh;
     min-height: 100svh;
