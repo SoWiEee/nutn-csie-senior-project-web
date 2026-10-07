@@ -158,7 +158,7 @@ if (
               leftColor: '#5b86b5',
               rightColor: '#a1c8ee',
               intensity: 1.2,
-              radius: 2.3,
+              radius: 2.0,
               momentum: 30,
             },
           }],
