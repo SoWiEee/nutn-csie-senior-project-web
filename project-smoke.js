@@ -10,6 +10,7 @@ if (
   const tailDuration = 850;
   const idleRenderScale = 0.52;
   const scrollRenderScale = 0.36;
+  const maxRenderPixels = 420_000;
   let canvas;
   let shader;
   let shaderPromise;
@@ -24,9 +25,9 @@ if (
   let warned = false;
   let windowFocused = document.hasFocus();
   let lastPointer = null;
-  let scrollPointer = null;
-  let scrollFlowDirection = 1;
   let lastScrollY = window.scrollY;
+  let surfaceWidth = 0;
+  let maskDirty = true;
   let renderWidth = 0;
   let renderHeight = 0;
   let canvasHeight = 0;
@@ -50,7 +51,12 @@ if (
 
   const resizeSmokeCanvas = (width, height) => {
     canvasHeight = height;
-    const scale = scrolling ? scrollRenderScale : idleRenderScale;
+    const devicePixelRatio = Math.max(1, window.devicePixelRatio || 1);
+    // ponytail: cap full-grid output work; raise after profiling confirms GPU headroom.
+    const scale = Math.min(
+      scrolling ? scrollRenderScale : idleRenderScale,
+      Math.sqrt(maxRenderPixels / Math.max(1, width * height * devicePixelRatio ** 2)),
+    );
     const nextWidth = Math.max(1, Math.round(width * scale));
     const nextHeight = Math.max(1, Math.round(height * scale));
     if (nextWidth !== renderWidth || nextHeight !== renderHeight) {
@@ -62,8 +68,9 @@ if (
     canvas.style.height = `${height}px`;
   };
 
-  const syncSmokeMask = () => {
+  const syncSmokeMask = (refreshMask = false) => {
     if (!canvas) return;
+    maskDirty ||= refreshMask;
     cancelAnimationFrame(maskFrame);
     maskFrame = requestAnimationFrame(() => {
       if (!canvas) return;
@@ -74,7 +81,7 @@ if (
       }
 
       const width = Math.ceil(gridRect.width);
-      const height = Math.ceil(window.innerHeight);
+      const height = Math.ceil(gridRect.height);
       const viewportTop = Math.max(0, gridRect.top);
       const viewportBottom = Math.min(window.innerHeight, gridRect.bottom);
       if (viewportBottom <= viewportTop) {
@@ -83,37 +90,41 @@ if (
         return;
       }
 
-      canvas.style.top = `${Math.max(0, -gridRect.top)}px`;
+      surfaceWidth = width;
+      canvas.style.top = '0px';
       canvas.style.right = 'auto';
       canvas.style.bottom = 'auto';
       canvas.style.left = '0';
       resizeSmokeCanvas(width, height);
 
-      const cardRects = [...projectGrid.querySelectorAll('.project-card--archive:not([hidden])')]
-        .map((card) => {
-          const rect = card.getBoundingClientRect();
-          if (rect.bottom <= viewportTop || rect.top >= viewportBottom) return '';
-          const radius = Number.parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
-          return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - viewportTop).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
-        })
-        .filter(Boolean)
-        .join('');
+      if (maskDirty) {
+        const cardRects = [...projectGrid.querySelectorAll('.project-card--archive:not([hidden])')]
+          .map((card) => {
+            const rect = card.getBoundingClientRect();
+            const radius = Number.parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
+            return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - gridRect.top).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
+          })
+          .filter(Boolean)
+          .join('');
 
-      if (!cardRects) {
-        canvas.style.visibility = 'hidden';
-        if (active) pause(true);
-        return;
+        if (!cardRects) {
+          canvas.style.visibility = 'hidden';
+          if (active) pause(true);
+          return;
+        }
+
+        const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">${cardRects}</svg>`;
+        const maskImage = `url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
+        canvas.style.setProperty('mask-image', maskImage);
+        canvas.style.setProperty('-webkit-mask-image', maskImage);
+        canvas.style.setProperty('mask-mode', 'alpha');
+        canvas.style.setProperty('mask-repeat', 'no-repeat');
+        canvas.style.setProperty('-webkit-mask-repeat', 'no-repeat');
+        canvas.style.setProperty('mask-size', '100% 100%');
+        canvas.style.setProperty('-webkit-mask-size', '100% 100%');
+        maskDirty = false;
       }
 
-      const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">${cardRects}</svg>`;
-      const maskImage = `url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
-      canvas.style.setProperty('mask-image', maskImage);
-      canvas.style.setProperty('-webkit-mask-image', maskImage);
-      canvas.style.setProperty('mask-mode', 'alpha');
-      canvas.style.setProperty('mask-repeat', 'no-repeat');
-      canvas.style.setProperty('-webkit-mask-repeat', 'no-repeat');
-      canvas.style.setProperty('mask-size', '100% 100%');
-      canvas.style.setProperty('-webkit-mask-size', '100% 100%');
       canvas.style.visibility = 'visible';
       if (!active && isActive() && isPointerOverGrid()) activate(lastPointer);
     });
@@ -215,27 +226,20 @@ if (
     const scrollDelta = window.scrollY - lastScrollY;
     lastScrollY = window.scrollY;
     if (canvas && active) {
+      const wasScrolling = scrolling;
       scrolling = true;
+      if (!wasScrolling) resizeSmokeCanvas(surfaceWidth, canvasHeight);
       clearTimeout(scrollTimer);
       scrollTimer = window.setTimeout(() => {
         scrolling = false;
         syncSmokeMask();
       }, 220);
 
-      if (scrollDelta && scrollPointer && isPointerOverGrid()) {
-        // ChromaFlow only injects motion from pointer velocity, so scrolling adds a small drift.
-        const step = Math.sign(scrollDelta) * Math.min(12, Math.max(3, Math.abs(scrollDelta) * 0.35));
-        const minY = Math.max(0, lastPointer.y - 48);
-        const maxY = Math.min(window.innerHeight, lastPointer.y + 48);
-        let nextY = scrollPointer.y - step * scrollFlowDirection;
-        if (nextY < minY || nextY > maxY) {
-          scrollFlowDirection *= -1;
-          nextY = scrollPointer.y - step * scrollFlowDirection;
-        }
-        scrollPointer.y = Math.max(minY, Math.min(maxY, nextY));
+      if (scrollDelta && lastPointer && isPointerOverGrid()) {
+        // The canvas scrolls with the cards, so the stationary viewport pointer moves through content space.
         window.dispatchEvent(new MouseEvent('mousemove', {
-          clientX: scrollPointer.x,
-          clientY: scrollPointer.y,
+          clientX: lastPointer.x,
+          clientY: lastPointer.y,
         }));
       }
     }
@@ -245,22 +249,20 @@ if (
   const trackPointer = (event) => {
     if (event.pointerType === 'touch') return;
     lastPointer = { x: event.clientX, y: event.clientY, pointerType: event.pointerType };
-    scrollPointer = { x: event.clientX, y: event.clientY };
-    scrollFlowDirection = 1;
     if (projectGrid.contains(event.target)) activate(event);
   };
 
-  const maskResizeObserver = new ResizeObserver(syncSmokeMask);
+  const maskResizeObserver = new ResizeObserver(() => syncSmokeMask(true));
   maskResizeObserver.observe(projectGrid);
   projectGrid.querySelectorAll('.project-card--archive').forEach((card) => maskResizeObserver.observe(card));
-  const maskFilterObserver = new MutationObserver(syncSmokeMask);
+  const maskFilterObserver = new MutationObserver(() => syncSmokeMask(true));
   maskFilterObserver.observe(projectGrid, { attributes: true, attributeFilter: ['hidden'], subtree: true });
 
   projectGrid.addEventListener('pointerenter', activate);
   projectGrid.addEventListener('pointerleave', () => pause());
   window.addEventListener('pointermove', trackPointer, { passive: true });
   window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('resize', syncSmokeMask, { passive: true });
+  window.addEventListener('resize', () => syncSmokeMask(true), { passive: true });
   const viewObserver = new MutationObserver(syncView);
   viewObserver.observe(document.body, { attributes: true, attributeFilter: ['data-view'] });
   const dialogObserver = new MutationObserver(syncView);
