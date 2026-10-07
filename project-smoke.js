@@ -8,20 +8,25 @@ if (
   window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches
 ) {
   const tailDuration = 850;
+  const idleRenderScale = 0.52;
+  const scrollRenderScale = 0.36;
   let canvas;
   let shader;
   let shaderPromise;
   let libraryPromise;
   let gpuPromise;
   let pauseTimer = 0;
+  let scrollTimer = 0;
   let maskFrame = 0;
-  let scrollResumeTimer = 0;
   let active = false;
+  let scrolling = false;
   let disabled = false;
   let warned = false;
   let windowFocused = document.hasFocus();
-  let scrollPending = false;
   let lastPointer = null;
+  let renderWidth = 0;
+  let renderHeight = 0;
+  let canvasHeight = 0;
 
   const isActive = () => document.body.dataset.view === 'projects' && !projectDialog?.open && !document.hidden && windowFocused;
   const isPointerOverGrid = () => {
@@ -40,6 +45,20 @@ if (
     return gpuPromise;
   };
 
+  const resizeSmokeCanvas = (width, height) => {
+    canvasHeight = height;
+    const scale = scrolling ? scrollRenderScale : idleRenderScale;
+    const nextWidth = Math.max(1, Math.round(width * scale));
+    const nextHeight = Math.max(1, Math.round(height * scale));
+    if (nextWidth !== renderWidth || nextHeight !== renderHeight) {
+      renderWidth = nextWidth;
+      renderHeight = nextHeight;
+      shader?.resize(renderWidth, renderHeight);
+    }
+    canvas.style.width = '100%';
+    canvas.style.height = `${height}px`;
+  };
+
   const syncSmokeMask = () => {
     if (!canvas) return;
     cancelAnimationFrame(maskFrame);
@@ -52,17 +71,34 @@ if (
       }
 
       const width = Math.ceil(gridRect.width);
-      const height = Math.ceil(gridRect.height);
+      const height = Math.ceil(window.innerHeight);
+      const viewportTop = Math.max(0, gridRect.top);
+      const viewportBottom = Math.min(window.innerHeight, gridRect.bottom);
+      if (viewportBottom <= viewportTop) {
+        canvas.style.visibility = 'hidden';
+        if (active) pause(true);
+        return;
+      }
+
+      canvas.style.top = `${Math.max(0, -gridRect.top)}px`;
+      canvas.style.right = 'auto';
+      canvas.style.bottom = 'auto';
+      canvas.style.left = '0';
+      resizeSmokeCanvas(width, height);
+
       const cardRects = [...projectGrid.querySelectorAll('.project-card--archive:not([hidden])')]
         .map((card) => {
           const rect = card.getBoundingClientRect();
+          if (rect.bottom <= viewportTop || rect.top >= viewportBottom) return '';
           const radius = Number.parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
-          return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - gridRect.top).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
+          return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - viewportTop).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
         })
+        .filter(Boolean)
         .join('');
 
       if (!cardRects) {
         canvas.style.visibility = 'hidden';
+        if (active) pause(true);
         return;
       }
 
@@ -76,6 +112,7 @@ if (
       canvas.style.setProperty('mask-size', '100% 100%');
       canvas.style.setProperty('-webkit-mask-size', '100% 100%');
       canvas.style.visibility = 'visible';
+      if (!active && isActive() && isPointerOverGrid()) activate(lastPointer);
     });
   };
 
@@ -113,10 +150,13 @@ if (
               colorSpace: 'oklab',
             },
           }],
-        }, { gpu, disableTelemetry: true });
+        }, { gpu, disableTelemetry: true, observeElement: false });
       })
       .then((createdShader) => {
         shader = createdShader;
+        shader.resize(renderWidth, renderHeight);
+        canvas.style.width = '100%';
+        canvas.style.height = `${canvasHeight}px`;
         if (active && isActive()) shader.resume();
         else shader.pause();
       })
@@ -149,7 +189,7 @@ if (
   };
 
   const activate = (event) => {
-    if (event.pointerType === 'touch' || !isActive() || disabled || scrollPending || active) return;
+    if (event.pointerType === 'touch' || !isActive() || disabled || active) return;
     clearTimeout(pauseTimer);
     active = true;
     canvas?.classList.remove('is-fading');
@@ -161,6 +201,8 @@ if (
   const syncView = () => {
     if (disabled) return;
     if (!isActive()) {
+      clearTimeout(scrollTimer);
+      scrolling = false;
       pause(true);
       return;
     }
@@ -168,22 +210,22 @@ if (
     if (isPointerOverGrid()) activate(lastPointer);
   };
 
+  const handleScroll = () => {
+    if (canvas && active) {
+      scrolling = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        scrolling = false;
+        syncSmokeMask();
+      }, 220);
+    }
+    syncSmokeMask();
+  };
+
   const trackPointer = (event) => {
     if (event.pointerType === 'touch') return;
     lastPointer = { x: event.clientX, y: event.clientY, pointerType: event.pointerType };
     if (projectGrid.contains(event.target)) activate(event);
-  };
-
-  const pauseDuringScroll = () => {
-    if (!isActive()) return;
-    scrollPending = true;
-    clearTimeout(scrollResumeTimer);
-    if (active) pause(true);
-    scrollResumeTimer = window.setTimeout(() => {
-      scrollPending = false;
-      scrollResumeTimer = 0;
-      if (isActive() && isPointerOverGrid()) activate(lastPointer);
-    }, 280);
   };
 
   const maskResizeObserver = new ResizeObserver(syncSmokeMask);
@@ -195,7 +237,8 @@ if (
   projectGrid.addEventListener('pointerenter', activate);
   projectGrid.addEventListener('pointerleave', () => pause());
   window.addEventListener('pointermove', trackPointer, { passive: true });
-  window.addEventListener('scroll', pauseDuringScroll, { passive: true });
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.addEventListener('resize', syncSmokeMask, { passive: true });
   const viewObserver = new MutationObserver(syncView);
   viewObserver.observe(document.body, { attributes: true, attributeFilter: ['data-view'] });
   const dialogObserver = new MutationObserver(syncView);
