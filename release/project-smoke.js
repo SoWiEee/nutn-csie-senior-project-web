@@ -24,6 +24,9 @@ if (
   let warned = false;
   let windowFocused = document.hasFocus();
   let lastPointer = null;
+  let scrollPointer = null;
+  let scrollFlowDirection = 1;
+  let lastScrollY = window.scrollY;
   let renderWidth = 0;
   let renderHeight = 0;
   let canvasHeight = 0;
@@ -135,19 +138,17 @@ if (
         }
         return createSmokeShader(canvas, {
           components: [{
-            type: 'SmokeFlow',
-            id: 'project-grid-smoke',
+            type: 'ChromaFlow',
+            id: 'project-grid-chroma',
             props: {
-              colorA: '#3b6398',
-              colorB: '#1e3c6b',
-              intensity: 0.4,
-              emitRadius: 0.027,
-              momentum: 14,
-              dissipation: 0.55,
-              detail: 12,
-              gravity: -0.25,
-              colorDecay: 0.5,
-              colorSpace: 'oklab',
+              baseColor: '#31577f',
+              upColor: '#8eb9e6',
+              downColor: '#3b6496',
+              leftColor: '#5b86b5',
+              rightColor: '#a1c8ee',
+              intensity: 1.2,
+              radius: 2.3,
+              momentum: 30,
             },
           }],
         }, { gpu, disableTelemetry: true, observeElement: false });
@@ -166,7 +167,7 @@ if (
         canvas = null;
         if (!warned) {
           warned = true;
-          console.warn('SmokeFlow is unavailable; project cards will use their static styling.', error);
+          console.warn('ChromaFlow is unavailable; project cards will use their static styling.', error);
         }
       })
       .finally(() => { shaderPromise = null; });
@@ -211,6 +212,8 @@ if (
   };
 
   const handleScroll = () => {
+    const scrollDelta = window.scrollY - lastScrollY;
+    lastScrollY = window.scrollY;
     if (canvas && active) {
       scrolling = true;
       clearTimeout(scrollTimer);
@@ -218,6 +221,23 @@ if (
         scrolling = false;
         syncSmokeMask();
       }, 220);
+
+      if (scrollDelta && scrollPointer && isPointerOverGrid()) {
+        // ChromaFlow only injects motion from pointer velocity, so scrolling adds a small drift.
+        const step = Math.sign(scrollDelta) * Math.min(12, Math.max(3, Math.abs(scrollDelta) * 0.35));
+        const minY = Math.max(0, lastPointer.y - 48);
+        const maxY = Math.min(window.innerHeight, lastPointer.y + 48);
+        let nextY = scrollPointer.y - step * scrollFlowDirection;
+        if (nextY < minY || nextY > maxY) {
+          scrollFlowDirection *= -1;
+          nextY = scrollPointer.y - step * scrollFlowDirection;
+        }
+        scrollPointer.y = Math.max(minY, Math.min(maxY, nextY));
+        window.dispatchEvent(new MouseEvent('mousemove', {
+          clientX: scrollPointer.x,
+          clientY: scrollPointer.y,
+        }));
+      }
     }
     syncSmokeMask();
   };
@@ -225,6 +245,8 @@ if (
   const trackPointer = (event) => {
     if (event.pointerType === 'touch') return;
     lastPointer = { x: event.clientX, y: event.clientY, pointerType: event.pointerType };
+    scrollPointer = { x: event.clientX, y: event.clientY };
+    scrollFlowDirection = 1;
     if (projectGrid.contains(event.target)) activate(event);
   };
 
