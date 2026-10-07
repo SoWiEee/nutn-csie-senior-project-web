@@ -102,18 +102,25 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: '運用 Transformer 結合光流預測行人與行車路徑實現用路人安全', titleEn: 'Enhancing Road User Safety by Predicting Pedestrian and Vehicle Trajectories Using Transformer-Integrated Optical Flow', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
+  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
   { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: '第 05 組專題作品', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [] },
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
-  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '第 07 組專題作品', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [] },
+  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
+    {
+      paragraph: '野外生態調查常面臨環境限制，無法使用專業測量設備或固定參照物，且生物個體辨識困難、尺寸測量耗時。傳統影像測量方法依賴高解析度相機與已知尺寸的參照物，在野外實地調查中難以實現。',
+    },
+    {
+      paragraph: '本專題探索利用普通移動設備進行野外生物調查的可行性。透過整合深度學習影像辨識技術與移動設備內建感測器（如慣性測量單元），發展一套無需額外參照物的非接觸式測量方法，以克服野外環境中的測量限制。',
+    },
+  ] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
   { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: ['ICS 2026'], summary: [
     {
       paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
     },
     {
-      paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence，基於證據的漸進式觀測與驗證)，一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
+      paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence)（基於證據的漸進式觀測與驗證），一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
     },
     {
       paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 為 54.8%，並在 Nr3D 上取得 55.6% 的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader 觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
