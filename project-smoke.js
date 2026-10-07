@@ -15,12 +15,20 @@ if (
   let gpuPromise;
   let pauseTimer = 0;
   let maskFrame = 0;
+  let scrollResumeTimer = 0;
   let active = false;
   let disabled = false;
   let warned = false;
   let windowFocused = document.hasFocus();
+  let scrollPending = false;
+  let lastPointer = null;
 
   const isActive = () => document.body.dataset.view === 'projects' && !projectDialog?.open && !document.hidden && windowFocused;
+  const isPointerOverGrid = () => {
+    if (!lastPointer) return false;
+    const target = document.elementFromPoint(lastPointer.x, lastPointer.y);
+    return Boolean(target && projectGrid.contains(target));
+  };
 
   const loadLibrary = () => {
     libraryPromise ??= import('./vendor/shaders-4.0.0.js');
@@ -141,7 +149,7 @@ if (
   };
 
   const activate = (event) => {
-    if (event.pointerType === 'touch' || !isActive() || disabled) return;
+    if (event.pointerType === 'touch' || !isActive() || disabled || scrollPending || active) return;
     clearTimeout(pauseTimer);
     active = true;
     canvas?.classList.remove('is-fading');
@@ -152,8 +160,30 @@ if (
 
   const syncView = () => {
     if (disabled) return;
-    if (isActive()) syncSmokeMask();
-    else pause(true);
+    if (!isActive()) {
+      pause(true);
+      return;
+    }
+    syncSmokeMask();
+    if (isPointerOverGrid()) activate(lastPointer);
+  };
+
+  const trackPointer = (event) => {
+    if (event.pointerType === 'touch') return;
+    lastPointer = { x: event.clientX, y: event.clientY, pointerType: event.pointerType };
+    if (projectGrid.contains(event.target)) activate(event);
+  };
+
+  const pauseDuringScroll = () => {
+    if (!isActive()) return;
+    scrollPending = true;
+    clearTimeout(scrollResumeTimer);
+    if (active) pause(true);
+    scrollResumeTimer = window.setTimeout(() => {
+      scrollPending = false;
+      scrollResumeTimer = 0;
+      if (isActive() && isPointerOverGrid()) activate(lastPointer);
+    }, 280);
   };
 
   const maskResizeObserver = new ResizeObserver(syncSmokeMask);
@@ -164,6 +194,8 @@ if (
 
   projectGrid.addEventListener('pointerenter', activate);
   projectGrid.addEventListener('pointerleave', () => pause());
+  window.addEventListener('pointermove', trackPointer, { passive: true });
+  window.addEventListener('scroll', pauseDuringScroll, { passive: true });
   const viewObserver = new MutationObserver(syncView);
   viewObserver.observe(document.body, { attributes: true, attributeFilter: ['data-view'] });
   const dialogObserver = new MutationObserver(syncView);
