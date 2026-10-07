@@ -14,6 +14,7 @@ if (
   let libraryPromise;
   let gpuPromise;
   let pauseTimer = 0;
+  let maskFrame = 0;
   let active = false;
   let disabled = false;
   let warned = false;
@@ -31,6 +32,45 @@ if (
     return gpuPromise;
   };
 
+  const syncSmokeMask = () => {
+    if (!canvas) return;
+    cancelAnimationFrame(maskFrame);
+    maskFrame = requestAnimationFrame(() => {
+      if (!canvas) return;
+      const gridRect = projectGrid.getBoundingClientRect();
+      if (!gridRect.width || !gridRect.height) {
+        canvas.style.visibility = 'hidden';
+        return;
+      }
+
+      const width = Math.ceil(gridRect.width);
+      const height = Math.ceil(gridRect.height);
+      const cardRects = [...projectGrid.querySelectorAll('.project-card--archive:not([hidden])')]
+        .map((card) => {
+          const rect = card.getBoundingClientRect();
+          const radius = Number.parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
+          return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - gridRect.top).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
+        })
+        .join('');
+
+      if (!cardRects) {
+        canvas.style.visibility = 'hidden';
+        return;
+      }
+
+      const maskSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">${cardRects}</svg>`;
+      const maskImage = `url("data:image/svg+xml,${encodeURIComponent(maskSvg)}")`;
+      canvas.style.setProperty('mask-image', maskImage);
+      canvas.style.setProperty('-webkit-mask-image', maskImage);
+      canvas.style.setProperty('mask-mode', 'alpha');
+      canvas.style.setProperty('mask-repeat', 'no-repeat');
+      canvas.style.setProperty('-webkit-mask-repeat', 'no-repeat');
+      canvas.style.setProperty('mask-size', '100% 100%');
+      canvas.style.setProperty('-webkit-mask-size', '100% 100%');
+      canvas.style.visibility = 'visible';
+    });
+  };
+
   const createShader = () => {
     if (shader || shaderPromise || disabled) return;
     canvas = document.createElement('canvas');
@@ -38,7 +78,9 @@ if (
     canvas.setAttribute('aria-hidden', 'true');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
+    canvas.style.visibility = 'hidden';
     projectGrid.append(canvas);
+    syncSmokeMask();
 
     shaderPromise = Promise.all([loadLibrary(), loadGpu()])
       .then(([{ createShader: createSmokeShader }, gpu]) => {
@@ -55,10 +97,10 @@ if (
               colorB: '#1e3c6b',
               intensity: 0.4,
               emitRadius: 0.027,
-              momentum: 17,
-              dissipation: 0.75,
-              detail: 9,
-              gravity: -0.5,
+              momentum: 14,
+              dissipation: 0.55,
+              detail: 12,
+              gravity: -0.25,
               colorDecay: 0.5,
               colorSpace: 'oklab',
             },
@@ -110,8 +152,15 @@ if (
 
   const syncView = () => {
     if (disabled) return;
-    if (!isActive()) pause(true);
+    if (isActive()) syncSmokeMask();
+    else pause(true);
   };
+
+  const maskResizeObserver = new ResizeObserver(syncSmokeMask);
+  maskResizeObserver.observe(projectGrid);
+  projectGrid.querySelectorAll('.project-card--archive').forEach((card) => maskResizeObserver.observe(card));
+  const maskFilterObserver = new MutationObserver(syncSmokeMask);
+  maskFilterObserver.observe(projectGrid, { attributes: true, attributeFilter: ['hidden'], subtree: true });
 
   projectGrid.addEventListener('pointerenter', activate);
   projectGrid.addEventListener('pointerleave', () => pause());
