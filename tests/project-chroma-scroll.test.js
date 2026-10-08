@@ -55,6 +55,8 @@ async function replay(source) {
   const flushFrames = () => {
     for (const [id, callback] of [...frames]) { frames.delete(id); callback(); }
   };
+  await new Promise(setImmediate);
+  const preparedBeforeHover = Boolean(canvas);
   listeners.pointermove({ pointerType: 'mouse', clientX: 120, clientY: 200, target: card });
   await new Promise(setImmediate);
   flushFrames();
@@ -63,6 +65,7 @@ async function replay(source) {
   let scheduledFrames = 0;
   for (let index = 0; index < 120; index++) {
     window.scrollY = index;
+    listeners.scroll();
     listeners.scroll();
     scheduledFrames += frames.size;
     flushFrames();
@@ -85,7 +88,7 @@ async function replay(source) {
     resume: counts.resume - beforeReturn.resume,
     pointerSync: counts.pointerSync - beforeReturn.pointerSync,
   };
-  return { firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn };
+  return { preparedBeforeHover, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn };
 }
 
 (async () => {
@@ -97,14 +100,19 @@ async function replay(source) {
   const result = await replay(source);
   console.log(JSON.stringify(result));
   if (baseline) return;
+  assert.equal(result.preparedBeforeHover, true, 'entering projects prepares the shader before the first hover');
   assert.equal(result.firstHoverVisible, true, 'first hover must show the newly created canvas');
   assert.equal(result.duringScroll.resize, 0, 'scroll must preserve fluid textures');
-  assert.equal(result.duringScroll.scheduledFrames, 0, 'scroll must not refresh content-relative masks each frame');
-  assert.equal(result.afterScroll.resume, 1, 'the shader resumes once after scrolling settles');
+  assert.equal(result.duringScroll.pause, 0, 'scrolling with the pointer over cards must keep the effect running');
+  assert.ok(result.duringScroll.pointerSync > 0, 'scrolling must update the stationary pointer in content space');
+  assert.equal(result.duringScroll.mask, 0, 'scroll must not rebuild content-relative masks each frame');
+  assert.equal(result.duringScroll.scheduledFrames, 120, 'multiple scroll events coalesce into one update per frame');
   assert.equal(result.afterScroll.resize, 0, 'settling must not recreate the textures');
   assert.equal(result.inactiveFrames, 0, 'scrolling another view must not schedule ChromaFlow work');
   assert.equal(result.afterReturn.visible, true, 'returning to projects restores the visible canvas');
   assert.equal(result.afterReturn.mask, 1, 'returning rebuilds the card mask after layout is visible');
   assert.equal(result.afterReturn.resume, 1, 'returning restarts the renderer once');
   assert.equal(result.afterReturn.pointerSync, 1, 'returning reconnects the library pointer input');
+  assert.deepEqual(await replay(fs.readFileSync(path.join(root, 'release/project-smoke.js'), 'utf8')), result,
+    'release must preserve the same interaction lifecycle');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

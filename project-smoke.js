@@ -18,8 +18,8 @@ if (
   let pauseTimer = 0;
   let scrollTimer = 0;
   let maskFrame = 0;
+  let scrollFrame = 0;
   let active = false;
-  let scrolling = false;
   let disabled = false;
   let warned = false;
   let windowFocused = document.hasFocus();
@@ -37,7 +37,7 @@ if (
   };
 
   const resumeShader = () => {
-    if (!shader || scrolling || !isActive()) return;
+    if (!shader || !isActive()) return;
     if (lastPointer && isPointerOverGrid()) {
       window.dispatchEvent(new MouseEvent('mousemove', {
         clientX: lastPointer.x,
@@ -178,7 +178,7 @@ if (
         shader.resize(renderWidth, renderHeight);
         canvas.style.width = '100%';
         canvas.style.height = `${canvasHeight}px`;
-        if (active && isActive() && !scrolling) resumeShader();
+        if (active && isActive()) resumeShader();
         else shader.pause();
       })
       .catch((error) => {
@@ -216,30 +216,33 @@ if (
     canvas?.classList.remove('is-fading');
     canvas?.classList.add('is-active');
     if (!shader) createShader();
-    else if (!scrolling) resumeShader();
+    else resumeShader();
   };
 
   const syncView = () => {
     if (disabled) return;
     clearTimeout(scrollTimer);
-    scrolling = false;
+    cancelAnimationFrame(scrollFrame);
+    scrollFrame = 0;
     pause(true);
     if (!isActive()) return;
     // Restore after the visible grid has fresh geometry, not while its old mask is hidden.
     if (canvas) syncSmokeMask(true);
-    else if (isPointerOverGrid()) activate(lastPointer);
+    else createShader();
   };
 
   const handleScroll = () => {
     if (!canvas || !isActive()) return;
-    if (!scrolling) {
-      // Freeze in content space without reallocating the fluid textures.
-      shader?.pause();
-    }
-    scrolling = true;
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      if (!isActive()) return;
+      if (isPointerOverGrid()) {
+        if (!active) activate(lastPointer);
+        else resumeShader();
+      } else pause(true);
+    });
     clearTimeout(scrollTimer);
     scrollTimer = window.setTimeout(() => {
-      scrolling = false;
       syncSmokeMask();
       if (active && isActive() && isPointerOverGrid()) {
         resumeShader();
@@ -277,4 +280,8 @@ if (
   window.addEventListener('focus', () => { windowFocused = true; syncView(); });
 
   syncView();
+  // Fetch and prepare the device before the first project interaction; failures use static cards.
+  const prewarm = () => { if (!disabled) loadGpu().catch(() => {}); };
+  if ('requestIdleCallback' in window) window.requestIdleCallback(prewarm, { timeout: 1500 });
+  else window.setTimeout(prewarm, 1500);
 }

@@ -7,7 +7,7 @@ const root = resolve(__dirname, '..');
 
 for (const htmlFile of ['index.html', 'release/index.html']) {
   test(`${htmlFile} keeps group, Chinese title, and close control together for mobile scrolling`, () => {
-    const html = readFileSync(resolve(root, htmlFile), 'utf8');
+    const html = readFileSync(resolve(root, htmlFile), 'utf8').replace(/\r\n/g, '\n');
     const stickyStart = html.indexOf('<div class="project-dialog__sticky">');
     const stickyEnd = html.indexOf('</div>\n        <p class="project-dialog__title-en"', stickyStart);
     const stickyHeader = html.slice(stickyStart, stickyEnd);
