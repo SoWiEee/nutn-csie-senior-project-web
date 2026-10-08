@@ -9,7 +9,6 @@ if (
 ) {
   const tailDuration = 850;
   const idleRenderScale = 0.52;
-  const scrollRenderScale = 0.36;
   const maxRenderPixels = 420_000;
   let canvas;
   let shader;
@@ -25,7 +24,6 @@ if (
   let warned = false;
   let windowFocused = document.hasFocus();
   let lastPointer = null;
-  let surfaceWidth = 0;
   let maskDirty = true;
   let renderWidth = 0;
   let renderHeight = 0;
@@ -36,6 +34,17 @@ if (
     if (!lastPointer) return false;
     const target = document.elementFromPoint(lastPointer.x, lastPointer.y);
     return Boolean(target && projectGrid.contains(target));
+  };
+
+  const resumeShader = () => {
+    if (!shader || scrolling || !isActive()) return;
+    if (lastPointer && isPointerOverGrid()) {
+      window.dispatchEvent(new MouseEvent('mousemove', {
+        clientX: lastPointer.x,
+        clientY: lastPointer.y,
+      }));
+    }
+    shader.resume();
   };
 
   const loadLibrary = () => {
@@ -53,7 +62,7 @@ if (
     const devicePixelRatio = Math.max(1, window.devicePixelRatio || 1);
     // ponytail: cap full-grid output work; raise after profiling confirms GPU headroom.
     const scale = Math.min(
-      scrolling ? scrollRenderScale : idleRenderScale,
+      idleRenderScale,
       Math.sqrt(maxRenderPixels / Math.max(1, width * height * devicePixelRatio ** 2)),
     );
     const nextWidth = Math.max(1, Math.round(width * scale));
@@ -70,8 +79,9 @@ if (
   const syncSmokeMask = (refreshMask = false) => {
     if (!canvas) return;
     maskDirty ||= refreshMask;
-    cancelAnimationFrame(maskFrame);
+    if (maskFrame) return;
     maskFrame = requestAnimationFrame(() => {
+      maskFrame = 0;
       if (!canvas) return;
       const gridRect = projectGrid.getBoundingClientRect();
       if (!gridRect.width || !gridRect.height) {
@@ -89,7 +99,6 @@ if (
         return;
       }
 
-      surfaceWidth = width;
       canvas.style.top = '0px';
       canvas.style.right = 'auto';
       canvas.style.bottom = 'auto';
@@ -133,6 +142,7 @@ if (
     if (shader || shaderPromise || disabled) return;
     canvas = document.createElement('canvas');
     canvas.className = 'project-smoke-canvas';
+    canvas.classList.toggle('is-active', active);
     canvas.setAttribute('aria-hidden', 'true');
     canvas.style.width = '100%';
     canvas.style.height = '100%';
@@ -168,7 +178,7 @@ if (
         shader.resize(renderWidth, renderHeight);
         canvas.style.width = '100%';
         canvas.style.height = `${canvasHeight}px`;
-        if (active && isActive() && !scrolling) shader.resume();
+        if (active && isActive() && !scrolling) resumeShader();
         else shader.pause();
       })
       .catch((error) => {
@@ -206,46 +216,37 @@ if (
     canvas?.classList.remove('is-fading');
     canvas?.classList.add('is-active');
     if (!shader) createShader();
-    else if (!scrolling) shader.resume();
+    else if (!scrolling) resumeShader();
   };
 
   const syncView = () => {
     if (disabled) return;
-    if (!isActive()) {
-      clearTimeout(scrollTimer);
-      scrolling = false;
-      pause(true);
-      return;
-    }
-    syncSmokeMask();
-    if (isPointerOverGrid()) activate(lastPointer);
+    clearTimeout(scrollTimer);
+    scrolling = false;
+    pause(true);
+    if (!isActive()) return;
+    // Restore after the visible grid has fresh geometry, not while its old mask is hidden.
+    if (canvas) syncSmokeMask(true);
+    else if (isPointerOverGrid()) activate(lastPointer);
   };
 
   const handleScroll = () => {
-    if (canvas) {
-      const wasScrolling = scrolling;
-      scrolling = true;
-      if (!wasScrolling) {
-        if (active) resizeSmokeCanvas(surfaceWidth, canvasHeight);
-        // Keep the last rendered frame visible while scrolling; resume once movement settles.
-        shader?.pause();
-      }
-      clearTimeout(scrollTimer);
-      scrollTimer = window.setTimeout(() => {
-        scrolling = false;
-        syncSmokeMask();
-        if (active && isActive()) {
-          if (lastPointer && isPointerOverGrid()) {
-            window.dispatchEvent(new MouseEvent('mousemove', {
-              clientX: lastPointer.x,
-              clientY: lastPointer.y,
-            }));
-          }
-          shader?.resume();
-        }
-      }, 220);
+    if (!canvas || !isActive()) return;
+    if (!scrolling) {
+      // Freeze in content space without reallocating the fluid textures.
+      shader?.pause();
     }
-    syncSmokeMask();
+    scrolling = true;
+    clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(() => {
+      scrolling = false;
+      syncSmokeMask();
+      if (active && isActive() && isPointerOverGrid()) {
+        resumeShader();
+      } else {
+        pause(true);
+      }
+    }, 220);
   };
 
   const trackPointer = (event) => {

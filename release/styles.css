@@ -507,7 +507,13 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card--signal .schedule-card__trigger { z-index: 2; }
 .schedule-card--signal .schedule-card__toggle { position: relative; z-index: 3; background: oklch(15% 0.032 258 / 0.68); }
 .project-dialog { width: min(calc(100% - 2rem), 42rem); max-width: none; max-height: calc(100vh - 2rem); max-height: calc(100dvh - 2rem); overflow-y: auto; overscroll-behavior: contain; padding: 0; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: linear-gradient(135deg, var(--color-glass-highlight), transparent 36%), var(--color-glass-panel); box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.5rem 4rem var(--color-shadow-strong); -webkit-backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); backdrop-filter: blur(1.25rem) saturate(1.2) brightness(1.04); color: var(--color-ink); opacity: 0; transform: scale(0.97); transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out); }
-.project-dialog[open] { opacity: 1; transform: scale(1); }
+.project-dialog[open] { opacity: 1; transform: scale(1); animation: project-detail-enter 180ms var(--ease-out); }
+.project-dialog[open]::backdrop { animation: project-detail-backdrop-enter 160ms var(--ease-out); }
+@keyframes project-detail-enter { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: scale(1); } }
+@keyframes project-detail-backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .project-dialog[open], .project-dialog[open]::backdrop { animation: none; }
+}
 .project-dialog::backdrop { background: oklch(5% 0.02 260 / 0.72); -webkit-backdrop-filter: blur(0.35rem); backdrop-filter: blur(0.35rem); }
 .project-dialog__shell { padding: var(--space-xl); }
 .project-dialog__topline { display: flex; align-items: start; justify-content: space-between; gap: var(--space-md); }
