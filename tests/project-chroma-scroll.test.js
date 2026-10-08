@@ -11,6 +11,7 @@ async function replay(source) {
   const mutations = [];
   const counts = { resize: 0, mask: 0, pause: 0, resume: 0, pointerSync: 0 };
   let nextId = 0;
+  let frameTime = 0;
   let canvas;
   const classes = () => {
     const values = new Set();
@@ -53,7 +54,8 @@ async function replay(source) {
     clearTimeout: (id) => timers.delete(id), MouseEvent: class {},
   });
   const flushFrames = () => {
-    for (const [id, callback] of [...frames]) { frames.delete(id); callback(); }
+    frameTime += 1000 / 60;
+    for (const [id, callback] of [...frames]) { frames.delete(id); callback(frameTime); }
   };
   await new Promise(setImmediate);
   const preparedBeforeHover = Boolean(canvas);
@@ -105,6 +107,8 @@ async function replay(source) {
   assert.equal(result.duringScroll.resize, 0, 'scroll must preserve fluid textures');
   assert.equal(result.duringScroll.pause, 0, 'scrolling with the pointer over cards must keep the effect running');
   assert.ok(result.duringScroll.pointerSync > 0, 'scrolling must update the stationary pointer in content space');
+  assert.ok(result.duringScroll.pointerSync <= 60, 'stationary scroll input is limited to 30 updates per second');
+  assert.equal(result.duringScroll.resume, 0, 'an already running shader must not be resumed for every scroll input');
   assert.equal(result.duringScroll.mask, 0, 'scroll must not rebuild content-relative masks each frame');
   assert.equal(result.duringScroll.scheduledFrames, 120, 'multiple scroll events coalesce into one update per frame');
   assert.equal(result.afterScroll.resize, 0, 'settling must not recreate the textures');

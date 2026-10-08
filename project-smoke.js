@@ -10,6 +10,7 @@ if (
   const tailDuration = 850;
   const idleRenderScale = 0.52;
   const maxRenderPixels = 420_000;
+  const scrollInputInterval = 1000 / 30;
   let canvas;
   let shader;
   let shaderPromise;
@@ -19,6 +20,7 @@ if (
   let scrollTimer = 0;
   let maskFrame = 0;
   let scrollFrame = 0;
+  let lastScrollInputTime = -Infinity;
   let active = false;
   let disabled = false;
   let warned = false;
@@ -36,14 +38,14 @@ if (
     return Boolean(target && projectGrid.contains(target));
   };
 
+  const syncPointer = () => window.dispatchEvent(new MouseEvent('mousemove', {
+    clientX: lastPointer.x,
+    clientY: lastPointer.y,
+  }));
+
   const resumeShader = () => {
     if (!shader || !isActive()) return;
-    if (lastPointer && isPointerOverGrid()) {
-      window.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: lastPointer.x,
-        clientY: lastPointer.y,
-      }));
-    }
+    if (lastPointer && isPointerOverGrid()) syncPointer();
     shader.resume();
   };
 
@@ -224,6 +226,7 @@ if (
     clearTimeout(scrollTimer);
     cancelAnimationFrame(scrollFrame);
     scrollFrame = 0;
+    lastScrollInputTime = -Infinity;
     pause(true);
     if (!isActive()) return;
     // Restore after the visible grid has fresh geometry, not while its old mask is hidden.
@@ -233,12 +236,14 @@ if (
 
   const handleScroll = () => {
     if (!canvas || !isActive()) return;
-    if (!scrollFrame) scrollFrame = requestAnimationFrame(() => {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame((time) => {
       scrollFrame = 0;
       if (!isActive()) return;
+      if (time - lastScrollInputTime < scrollInputInterval) return;
+      lastScrollInputTime = time;
       if (isPointerOverGrid()) {
         if (!active) activate(lastPointer);
-        else resumeShader();
+        else if (shader) syncPointer();
       } else pause(true);
     });
     clearTimeout(scrollTimer);
