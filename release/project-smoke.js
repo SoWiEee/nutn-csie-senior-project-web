@@ -88,6 +88,7 @@ if (
       const gridRect = projectGrid.getBoundingClientRect();
       if (!gridRect.width || !gridRect.height) {
         canvas.style.visibility = 'hidden';
+        if (active) pause(true);
         return;
       }
 
@@ -212,7 +213,13 @@ if (
   };
 
   const activate = (event) => {
-    if (event.pointerType === 'touch' || !isActive() || disabled || active) return;
+    if (event.pointerType === 'touch' || !isActive() || disabled) return;
+    // A hidden layout can outlive the view transition; restore its mask before resuming.
+    if (canvas?.style.visibility === 'hidden') {
+      syncSmokeMask();
+      return;
+    }
+    if (active) return;
     clearTimeout(pauseTimer);
     active = true;
     canvas?.classList.remove('is-fading');

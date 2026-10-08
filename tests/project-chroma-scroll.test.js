@@ -13,6 +13,7 @@ async function replay(source) {
   let nextId = 0;
   let frameTime = 0;
   let canvas;
+  let layoutReady = true;
   const classes = () => {
     const values = new Set();
     return {
@@ -34,7 +35,7 @@ async function replay(source) {
   const grid = {
     contains: (target) => target === card,
     querySelectorAll: () => [card],
-    getBoundingClientRect: () => ({ left: 0, top: 100 - window.scrollY, bottom: 1900 - window.scrollY, width: 900, height: 1800 }),
+    getBoundingClientRect: () => ({ left: 0, top: 100 - window.scrollY, bottom: 1900 - window.scrollY, width: layoutReady ? 900 : 0, height: layoutReady ? 1800 : 0 }),
     append: (element) => { canvas = element; }, addEventListener() {},
   };
   const dialog = { open: false, addEventListener() {} };
@@ -90,7 +91,21 @@ async function replay(source) {
     resume: counts.resume - beforeReturn.resume,
     pointerSync: counts.pointerSync - beforeReturn.pointerSync,
   };
-  return { preparedBeforeHover, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn };
+  const repeatedReturns = [];
+  for (let index = 0; index < 3; index++) {
+    document.body.dataset.view = 'schedule';
+    mutations.find((observer) => observer.target === document.body).callback();
+    layoutReady = false;
+    document.body.dataset.view = 'projects';
+    mutations.find((observer) => observer.target === document.body).callback();
+    flushFrames();
+    layoutReady = true;
+    const resumesBeforeHover = counts.resume;
+    listeners.pointermove({ pointerType: 'mouse', clientX: 120 + index, clientY: 200, target: card });
+    flushFrames();
+    repeatedReturns.push(canvas.style.visibility === 'visible' && canvas.classList.contains('is-active') && counts.resume > resumesBeforeHover);
+  }
+  return { preparedBeforeHover, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
 }
 
 (async () => {
@@ -117,6 +132,7 @@ async function replay(source) {
   assert.equal(result.afterReturn.mask, 1, 'returning rebuilds the card mask after layout is visible');
   assert.equal(result.afterReturn.resume, 1, 'returning restarts the renderer once');
   assert.equal(result.afterReturn.pointerSync, 1, 'returning reconnects the library pointer input');
+  assert.deepEqual(result.repeatedReturns, [true, true, true], 'hover restores a canvas hidden by transitional zero-size layout on every return');
   assert.deepEqual(await replay(fs.readFileSync(path.join(root, 'release/project-smoke.js'), 'utf8')), result,
     'release must preserve the same interaction lifecycle');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
