@@ -25,7 +25,6 @@ if (
   let warned = false;
   let windowFocused = document.hasFocus();
   let lastPointer = null;
-  let lastScrollY = window.scrollY;
   let surfaceWidth = 0;
   let maskDirty = true;
   let renderWidth = 0;
@@ -169,7 +168,7 @@ if (
         shader.resize(renderWidth, renderHeight);
         canvas.style.width = '100%';
         canvas.style.height = `${canvasHeight}px`;
-        if (active && isActive()) shader.resume();
+        if (active && isActive() && !scrolling) shader.resume();
         else shader.pause();
       })
       .catch((error) => {
@@ -206,8 +205,8 @@ if (
     active = true;
     canvas?.classList.remove('is-fading');
     canvas?.classList.add('is-active');
-    if (shader) shader.resume();
-    else createShader();
+    if (!shader) createShader();
+    else if (!scrolling) shader.resume();
   };
 
   const syncView = () => {
@@ -223,25 +222,28 @@ if (
   };
 
   const handleScroll = () => {
-    const scrollDelta = window.scrollY - lastScrollY;
-    lastScrollY = window.scrollY;
-    if (canvas && active) {
+    if (canvas) {
       const wasScrolling = scrolling;
       scrolling = true;
-      if (!wasScrolling) resizeSmokeCanvas(surfaceWidth, canvasHeight);
+      if (!wasScrolling) {
+        if (active) resizeSmokeCanvas(surfaceWidth, canvasHeight);
+        // Keep the last rendered frame visible while scrolling; resume once movement settles.
+        shader?.pause();
+      }
       clearTimeout(scrollTimer);
       scrollTimer = window.setTimeout(() => {
         scrolling = false;
         syncSmokeMask();
+        if (active && isActive()) {
+          if (lastPointer && isPointerOverGrid()) {
+            window.dispatchEvent(new MouseEvent('mousemove', {
+              clientX: lastPointer.x,
+              clientY: lastPointer.y,
+            }));
+          }
+          shader?.resume();
+        }
       }, 220);
-
-      if (scrollDelta && lastPointer && isPointerOverGrid()) {
-        // The canvas scrolls with the cards, so the stationary viewport pointer moves through content space.
-        window.dispatchEvent(new MouseEvent('mousemove', {
-          clientX: lastPointer.x,
-          clientY: lastPointer.y,
-        }));
-      }
     }
     syncSmokeMask();
   };
