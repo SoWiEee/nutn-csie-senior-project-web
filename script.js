@@ -120,15 +120,25 @@ const projects = [
       paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
     },
     {
-      paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence)（基於證據的漸進式觀測與驗證），一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
+      paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence，基於證據的漸進式觀測與驗證)，一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
     },
     {
-      paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 為 54.8%，並在 Nr3D 上取得 55.6% 的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader 觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
+      paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 54.8%，並在 Nr3D 上取得 55.6%的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
     },
   ] },
   { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '基於 VGGT 之多視角 3D 重建改進', titleEn: 'Enhancing VGGT for Efficient Multi-View 3D Reconstruction', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '第 11 組專題作品', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫診斷治療系統', titleEn: 'Traditional Chinese Medicine Diagnosis and Treatment System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [] },
+  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫智慧辨證與診斷輔助系統', titleEn: 'Intelligent Traditional Chinese Medicine Syndrome Differentiation and Diagnostic Support System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [], summary: [
+    {
+      paragraph: '隨著人工智慧技術快速發展，智慧醫療逐漸成為現代醫療的重要趨勢。然而，傳統中醫診斷需整合望、聞、問、切四診資訊，並依賴醫師的臨床經驗進行辨證分析，容易因個人判讀差異影響診斷結果。因此，本專題結合人工智慧與傳統中醫辨證理論，開發「中醫智慧辨證與診斷輔助系統」，期望提升診斷效率與資訊整合能力。',
+    },
+    {
+      paragraph: '本系統整合患者症狀、病史及脈搏儀數位訊號，透過自然語言處理（NLP）與人工智慧模型進行特徵分析，提供證型辨識、治法建議、方劑推薦及藥材加減方向四項輔助功能，協助醫師進行初步診斷與決策。此外，系統導入醫師參與決策機制（Human-in-the-Loop），由醫師審核並修正 AI 建議，同時蒐集回診療效與診療紀錄，建立標準化訓練資料，作為後續模型優化的依據。',
+    },
+    {
+      paragraph: '本專題成果展示了智慧辨證、醫師審核、資料回饋及模型更新的整體架構，並透過線上推論與離線訓練分離的設計，提升系統更新與維護的便利性，展現人工智慧應用於中醫診斷輔助的發展潛力，促進傳統中醫數位化與智慧化。',
+    },
+  ] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
   { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '第 15 組專題作品', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
