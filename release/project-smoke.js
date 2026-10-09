@@ -50,7 +50,7 @@ if (
   };
 
   const loadLibrary = () => {
-    libraryPromise ??= import('./vendor/shaders-4.0.0.js');
+    libraryPromise ??= import('./vendor/shaders-4.0.0.js?v=hidden-input-1');
     return libraryPromise;
   };
 

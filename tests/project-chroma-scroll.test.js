@@ -44,7 +44,7 @@ async function replay(source) {
   document.addEventListener = (name, callback) => { listeners[name] = callback; };
   document.createElement = () => ({ style: style(), classList: classes(), setAttribute() {}, remove() {} });
   const shader = Object.fromEntries(['resize', 'pause', 'resume'].map((name) => [name, () => { counts[name]++; }]));
-  vm.runInNewContext(source.replace("import('./vendor/shaders-4.0.0.js')", 'Promise.resolve(shaderLibrary)'), {
+  vm.runInNewContext(source.replace(/import\('\.\/vendor\/shaders-4\.0\.0\.js(?:\?[^']*)?'\)/, 'Promise.resolve(shaderLibrary)'), {
     document, window, navigator: { gpu: {} }, console,
     shaderLibrary: { createSharedDevice: async () => ({}), createShader: async () => shader },
     ResizeObserver: class { observe() {} },
