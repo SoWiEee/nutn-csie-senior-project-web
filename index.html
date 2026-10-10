@@ -8,7 +8,7 @@
     <title>NUTN CSIE 116｜116 級畢業專題成果展</title>
     <link rel="icon" type="image/png" href="assets/images/csie_icon.png" />
     <link rel="stylesheet" href="tokens.css?v=1.1.6" />
-    <link rel="stylesheet" href="styles.css?v=layout-refine-1" />
+    <link rel="stylesheet" href="styles.css?v=mobile-venue-detail-1" />
   </head>
   <body data-view="home">
     <div class="site-backdrop" data-site-backdrop aria-hidden="true">
@@ -55,6 +55,7 @@
                 </article>
                 <article class="hero__meta-card hero__meta-card--venue" data-liquid-glass aria-label="展覽地點">
                   <p>國立臺南大學府城校區<br />文薈樓地下一樓</p>
+                  <a class="hero__venue-shortcut" href="#home-venue">展場／交通 <span aria-hidden="true">↘</span></a>
                   <span class="hero__meta-card-code" aria-hidden="true">VENUE</span>
                 </article>
               </div>
@@ -80,7 +81,7 @@
         </div>
       </section>
 
-      <section class="home-venue section" aria-labelledby="home-venue-title">
+      <section class="home-venue section" id="home-venue" aria-labelledby="home-venue-title">
         <div class="shell">
           <div class="section-head">
             <div>
@@ -110,6 +111,7 @@
                 <span class="venue-artwork__label venue-artwork__label--jb110" aria-hidden="true">JB110</span>
                 <span class="venue-artwork__label venue-artwork__label--jb109" aria-hidden="true">JB109</span>
                 <span class="venue-artwork__label venue-artwork__label--checkin" aria-hidden="true">簽到桌</span>
+                <button class="venue-artwork__zoom" type="button" data-floorplan-zoom aria-label="放大查看畢業專題展平面圖"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.5 4.5M10.8 7.6v6.4M7.6 10.8H14" /></svg></button>
               </div>
               <figcaption>畢業專題展平面圖</figcaption>
             </figure>
@@ -122,11 +124,11 @@
           <div class="transport-grid transport-grid--compact" aria-label="交通方式">
             <article class="transport-item transport-item--card" data-card-light data-card-proximity>
               <span class="transport-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M6 17h12M7 17v2m10-2v2M5 10h14l-1.2-4H6.2L5 10Zm0 0v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6M8 13h.01M16 13h.01" /></svg></span>
-              <div class="transport-item__content"><p>公車</p><div class="transport-item__details"><p>自「臺南火車站」出發，可搭乘臺南市公車 2 路、5 路、0 左、紅 3 線等路線前往府城校區附近站點，車程約 10–15 分鐘。</p><p>2 路於「大南門城」站下車，沿南門路左轉樹林街二段，步行約 8–10 分鐘即可抵達文薈樓。</p><p>5 路、0 左於「體育公園（臺南大學）」站下車；紅 3 於「延平郡王祠（國立臺南大學）」站下車，步行約 8–10 分鐘抵達校門。</p></div></div>
+              <div class="transport-item__content"><p>公車</p><div class="transport-item__details"><p class="transport-item__lead">自「臺南火車站」出發，可搭乘臺南市公車 2 路、5 路、0 左、紅 3 線等路線前往府城校區附近站點，車程約 10–15 分鐘。</p><ul class="transport-route-list"><li><strong>2 路・「大南門城」站下車</strong><span>沿南門路左轉樹林街二段，步行約 8–10 分鐘即可抵達文薈樓。</span></li><li><strong>5 路、0 左・「體育公園（臺南大學）」站下車</strong><span>步行約 8–10 分鐘抵達校門。</span></li><li><strong>紅 3・「延平郡王祠（國立臺南大學）」站下車</strong><span>步行約 8–10 分鐘抵達校門。</span></li></ul></div></div>
             </article>
             <article class="transport-item transport-item--card" data-card-light data-card-proximity>
               <span class="transport-item__icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M5 16v-4l1.5-4h11L19 12v4M5 16h14M7 16v2m10-2v2M7.5 13h.01M16.5 13h.01M15 5h4" /><path d="M15 3v4h4" /></svg></span>
-              <div class="transport-item__content"><p>汽／機車停車</p><div class="transport-item__details"><p>校園周邊提供多處付費停車場，建議提早抵達並依現場指示停放車輛。</p><p>樹林街前門附近：Times 台南樹林開山停車場（樹林街二段 92 號）、CityParking 建業街停車場（建業街 58 號）等，步行約 3–7 分鐘可達校門。</p><p>五妃街後門附近：俥亭停車場–五妃廟場及五妃街南側／北側停車場，步行約 5–10 分鐘可達校門。</p><p>校內汽車與機車停車位多以教職員生與申請者為主，一般訪客建議利用周邊停車場與大眾運輸工具。</p></div></div>
+              <div class="transport-item__content"><p>汽／機車停車</p><div class="transport-item__details"><p class="transport-item__lead">校園周邊有多處付費停車場，建議提早抵達並依現場指示停放車輛。</p><ul class="transport-route-list"><li><strong>樹林街前門附近</strong><span>Times 台南樹林開山停車場（樹林街二段 92 號）、CityParking 建業街停車場（建業街 58 號）等，步行約 3–7 分鐘可達校門。</span></li><li><strong>五妃街後門附近</strong><span>俥亭停車場–五妃廟場及五妃街南側／北側停車場，步行約 5–10 分鐘可達校門。</span></li></ul><p class="transport-item__note">校內汽車與機車停車位多以教職員生與申請者為主，一般訪客建議利用周邊停車場與大眾運輸工具。</p></div></div>
             </article>
           </div>
         </div>
@@ -206,6 +208,11 @@
       </section>
     </main>
 
+    <dialog class="venue-image-dialog" id="venue-image-dialog" aria-labelledby="venue-image-dialog-title" data-lenis-prevent>
+      <button class="venue-image-dialog__close" type="button" data-venue-image-close aria-label="關閉平面圖"><span aria-hidden="true">×</span></button>
+      <figure><div class="venue-artwork venue-artwork--floorplan venue-image-dialog__artwork"><img src="assets/images/exhibition-floorplan-2026.png?v=2" alt="文薈樓地下一樓畢業專題展場示意圖，包含 JB104 至 JB101、JB106、JB110、JB109、洗手間、簽到桌與入口" /><span class="venue-artwork__label venue-artwork__label--jb104" aria-hidden="true">JB104</span><span class="venue-artwork__label venue-artwork__label--jb103" aria-hidden="true">JB103</span><span class="venue-artwork__label venue-artwork__label--jb102" aria-hidden="true">JB102</span><span class="venue-artwork__label venue-artwork__label--jb101" aria-hidden="true">JB101</span><span class="venue-artwork__label venue-artwork__label--jb106" aria-hidden="true">JB106</span><span class="venue-artwork__label venue-artwork__label--jb110" aria-hidden="true">JB110</span><span class="venue-artwork__label venue-artwork__label--jb109" aria-hidden="true">JB109</span><span class="venue-artwork__label venue-artwork__label--checkin" aria-hidden="true">簽到桌</span></div><figcaption id="venue-image-dialog-title">畢業專題展平面圖</figcaption></figure>
+    </dialog>
+
     <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title" data-lenis-prevent>
       <div class="project-dialog__shell">
         <div class="project-dialog__sticky">
@@ -217,8 +224,9 @@
         </div>
         <p class="project-dialog__title-en" id="project-dialog-title-en" lang="en" hidden></p>
         <div class="project-dialog__details">
-          <div class="project-dialog__field"><span class="project-dialog__label">組員</span><strong id="project-dialog-members"></strong></div>
-          <div class="project-dialog__field project-dialog__field--tags"><span class="project-dialog__label">研討會標籤</span><div class="tag-row" id="project-dialog-tags" aria-label="研討會投稿標籤"></div></div>
+          <div class="project-dialog__field"><span class="project-dialog__label" role="img" aria-label="發表時間"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg></span><time id="project-dialog-time"></time></div>
+          <div class="project-dialog__field"><span class="project-dialog__label" role="img" aria-label="組員"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.25" /><path d="M3 20v-1.5A5.5 5.5 0 0 1 8.5 13h1A5.5 5.5 0 0 1 15 18.5V20m1-10a3 3 0 1 0 0-6m2 9a5 5 0 0 1 3 4.5V20" /></svg></span><strong id="project-dialog-members"></strong></div>
+          <div class="project-dialog__field project-dialog__field--tags"><span class="project-dialog__label" role="img" aria-label="研討會標籤"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13 13 20a2 2 0 0 1-2.8 0L4 13.8V4h9.8l6.2 6.2a2 2 0 0 1 0 2.8Z" /><circle cx="8.5" cy="8.5" r="1.2" /></svg></span><div class="tag-row" id="project-dialog-tags" aria-label="研討會投稿標籤"></div></div>
         </div>
         <section class="project-dialog__summary" id="project-dialog-summary" aria-labelledby="project-dialog-summary-title" hidden>
           <h3 id="project-dialog-summary-title">🚩 摘要 Summary</h3>
@@ -267,7 +275,7 @@
       </div>
     </footer>
 
-  <script src="app.js?v=projects-smoke-library-2"></script>
+  <script src="app.js?v=mobile-venue-detail-1"></script>
   <script type="module" src="project-smoke.js?v=project-smoke-local-23"></script>
   <script src="home-artwork-motion.js?v=3" defer></script>
   <script src="mobile-nav-swipe.js?v=2" defer></script>

@@ -1715,3 +1715,38 @@ body:not([data-view="home"]) .site-backdrop::before {
     animation-duration: 1ms;
   }
 }
+
+.hero__venue-shortcut { display: none; }
+.venue-artwork__zoom { position: absolute; z-index: 3; top: 0.65rem; right: 0.65rem; display: grid; width: 2.75rem; height: 2.75rem; padding: 0; place-items: center; border: 1px solid rgb(255 255 255 / 28%); border-radius: 50%; background: rgb(5 12 26 / 78%); color: var(--color-ink); cursor: zoom-in; -webkit-backdrop-filter: blur(0.5rem); backdrop-filter: blur(0.5rem); }
+.venue-artwork__zoom svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.7; }
+.venue-artwork__zoom:focus-visible,
+.venue-image-dialog__close:focus-visible { outline: 2px solid var(--color-accent-strong); outline-offset: 3px; }
+.venue-image-dialog { position: fixed; width: min(calc(100% - 1rem), 78rem); max-width: none; max-height: calc(100vh - 1rem); max-height: calc(100dvh - 1rem); padding: clamp(0.75rem, 2vw, 1.25rem); overflow: auto; border: var(--rule-thin) solid var(--color-glass-line); border-radius: var(--radius-md); background: var(--color-panel-strong); box-shadow: 0 1.5rem 4rem var(--color-shadow-strong); color: var(--color-ink); }
+.venue-image-dialog::backdrop { background: oklch(5% 0.02 260 / 0.82); -webkit-backdrop-filter: blur(0.35rem); backdrop-filter: blur(0.35rem); }
+.venue-image-dialog figure { display: grid; gap: var(--space-sm); margin: 0; padding-top: 2.5rem; }
+.venue-image-dialog__artwork { width: min(100%, 72rem); margin-inline: auto; }
+.venue-image-dialog figcaption { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-sm); text-align: center; }
+.venue-image-dialog__close { position: absolute; z-index: 1; top: 0.65rem; right: 0.65rem; display: grid; width: 2.75rem; height: 2.75rem; padding: 0; place-items: center; border: 1px solid var(--color-line-strong); border-radius: 50%; background: var(--color-panel); color: var(--color-ink); cursor: pointer; font-size: 1.65rem; }
+.transport-item__lead { font-weight: 550; }
+.transport-route-list { display: grid; gap: var(--space-sm); margin: 0; padding: 0; list-style: none; }
+.transport-route-list li { display: grid; gap: 0.18rem; padding-inline-start: 0.75rem; border-inline-start: 1px solid var(--color-signal-line-soft); }
+.transport-route-list strong { color: var(--color-ink); font-size: var(--text-md); font-weight: 650; line-height: 1.45; }
+.transport-route-list span { color: var(--color-muted); font-size: var(--text-md); line-height: 1.55; }
+.transport-item__note { padding-top: var(--space-sm); border-top: var(--rule-thin) solid var(--color-line); font-size: var(--text-sm) !important; }
+.project-dialog__field { grid-template-columns: 1.25rem minmax(0, 1fr); column-gap: var(--space-sm); }
+.project-dialog__label { display: grid; width: 1.25rem; height: 1.25rem; place-items: center; color: var(--color-accent-strong); }
+.project-dialog__label svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.65; }
+.project-dialog__field strong,
+.project-dialog__field time { min-width: 0; color: var(--color-muted); font-size: var(--text-md); font-weight: 500; line-height: 1.5; }
+.project-dialog__field time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.project-dialog__field--tags { align-items: start; }
+.project-dialog__field--tags .project-dialog__label { margin-top: 0.3rem; }
+
+@media (max-width: 48rem) {
+  .hero__venue-shortcut { display: inline-flex; position: relative; z-index: 1; align-items: center; gap: 0.4rem; width: max-content; min-height: 2.75rem; margin-top: var(--space-xs); padding: 0.4rem 0.7rem; border: 1px solid var(--color-meta-border); border-radius: var(--radius-pill); background: rgb(255 255 255 / 7%); color: var(--color-meta-ink); font-size: var(--text-sm); font-weight: 650; text-decoration: none; }
+  .hero__venue-shortcut span { color: var(--color-accent-strong); }
+  .project-dialog__title-en { max-width: none; font-size: var(--text-md); line-height: 1.4; }
+  .transport-route-list { gap: var(--space-md); }
+  .transport-route-list strong,
+  .transport-route-list span { font-size: var(--text-sm); }
+}
