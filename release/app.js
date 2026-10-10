@@ -4365,8 +4365,6 @@ void main() {
   var projectDialogSummary = document.querySelector("#project-dialog-summary");
   var projectDialogSummaryContent = document.querySelector("#project-dialog-summary-content");
   var projectDialogClose = document.querySelector("[data-project-dialog-close]");
-  var venueImageDialog = document.querySelector("#venue-image-dialog");
-  var venueImageDialogClose = document.querySelector("[data-venue-image-close]");
   var projects = [
     { id: "01", code: "NUTN-CSIE-PRJ-116-001", group: "sense", title: "\u7B2C 01 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u4FCA\u4EA6\u3001\u5433\u8A8C\u8ED2", studentIds: "S11259001\u3001S11259009", advisor: "\u6731\u660E\u6BC5", time: "13:00 ~ 13:15", conferenceTags: [] },
     { id: "02", code: "NUTN-CSIE-PRJ-116-002", group: "sense", title: "\u7B2C 02 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u51FD\u5F97\u3001\u9EC3\u67CF\u667A", studentIds: "S11259002\u3001S11259016", advisor: "\u674E\u5065\u8208", time: "13:15 ~ 13:30", conferenceTags: [] },
@@ -4571,20 +4569,6 @@ void main() {
   projectDialogClose?.addEventListener("click", closeProjectDialog);
   projectDialog?.addEventListener("click", (event) => {
     if (event.target === projectDialog) closeProjectDialog();
-  });
-  var closeVenueImageDialog = () => {
-    if (!venueImageDialog) return;
-    if (typeof venueImageDialog.close === "function") venueImageDialog.close();
-    else venueImageDialog.removeAttribute("open");
-  };
-  document.querySelector("[data-floorplan-zoom]")?.addEventListener("click", () => {
-    if (typeof venueImageDialog?.showModal === "function") venueImageDialog.showModal();
-    else venueImageDialog?.setAttribute("open", "");
-    venueImageDialogClose?.focus();
-  });
-  venueImageDialogClose?.addEventListener("click", closeVenueImageDialog);
-  venueImageDialog?.addEventListener("click", (event) => {
-    if (event.target === venueImageDialog) closeVenueImageDialog();
   });
   var headerState = () => {
     header?.classList.toggle("is-scrolled", window.scrollY > 24);

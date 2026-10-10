@@ -99,8 +99,6 @@ const projectDialogTags = document.querySelector('#project-dialog-tags');
 const projectDialogSummary = document.querySelector('#project-dialog-summary');
 const projectDialogSummaryContent = document.querySelector('#project-dialog-summary-content');
 const projectDialogClose = document.querySelector('[data-project-dialog-close]');
-const venueImageDialog = document.querySelector('#venue-image-dialog');
-const venueImageDialogClose = document.querySelector('[data-venue-image-close]');
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
@@ -308,20 +306,6 @@ const closeProjectDialog = () => {
 
 projectDialogClose?.addEventListener('click', closeProjectDialog);
 projectDialog?.addEventListener('click', (event) => { if (event.target === projectDialog) closeProjectDialog(); });
-
-const closeVenueImageDialog = () => {
-  if (!venueImageDialog) return;
-  if (typeof venueImageDialog.close === 'function') venueImageDialog.close();
-  else venueImageDialog.removeAttribute('open');
-};
-
-document.querySelector('[data-floorplan-zoom]')?.addEventListener('click', () => {
-  if (typeof venueImageDialog?.showModal === 'function') venueImageDialog.showModal();
-  else venueImageDialog?.setAttribute('open', '');
-  venueImageDialogClose?.focus();
-});
-venueImageDialogClose?.addEventListener('click', closeVenueImageDialog);
-venueImageDialog?.addEventListener('click', (event) => { if (event.target === venueImageDialog) closeVenueImageDialog(); });
 
 const headerState = () => {
   header?.classList.toggle('is-scrolled', window.scrollY > 24);
