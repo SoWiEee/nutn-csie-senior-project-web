@@ -4,7 +4,7 @@ const path = require('node:path');
 
 const root = path.join(__dirname, '..');
 const png = (name) => fs.readFileSync(path.join(root, 'assets', name));
-const original = png('home-key-visual-diagonal-v6.png');
+const original = png('home-key-visual.png');
 const plate = png('home-key-visual-motion-plate.png');
 const foreground = png('home-key-visual-motion-foreground.png');
 

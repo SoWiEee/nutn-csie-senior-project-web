@@ -6,6 +6,7 @@ const vm = require('node:vm');
 // Replay a scroll burst with the real controller and a stubbed WebGPU dependency.
 async function replay(source) {
   const listeners = {};
+  const dialogListeners = {};
   const frames = new Map();
   const timers = new Map();
   const mutations = [];
@@ -38,7 +39,7 @@ async function replay(source) {
     getBoundingClientRect: () => ({ left: 0, top: 100 - window.scrollY, bottom: 1900 - window.scrollY, width: layoutReady ? 900 : 0, height: layoutReady ? 1800 : 0 }),
     append: (element) => { canvas = element; }, addEventListener() {},
   };
-  const dialog = { open: false, addEventListener() {} };
+  const dialog = { open: false, addEventListener: (name, callback) => { dialogListeners[name] = callback; } };
   document.querySelector = (selector) => selector === '#view-projects' ? { querySelector: () => grid } : dialog;
   document.elementFromPoint = () => card;
   document.addEventListener = (name, callback) => { listeners[name] = callback; };
@@ -60,6 +61,8 @@ async function replay(source) {
   };
   await new Promise(setImmediate);
   const preparedBeforeHover = Boolean(canvas);
+  let dialogMousemoveStopped = false;
+  dialogListeners.mousemove?.({ stopPropagation: () => { dialogMousemoveStopped = true; } });
   listeners.pointermove({ pointerType: 'mouse', clientX: 120, clientY: 200, target: card });
   await new Promise(setImmediate);
   flushFrames();
@@ -105,7 +108,7 @@ async function replay(source) {
     flushFrames();
     repeatedReturns.push(canvas.style.visibility === 'visible' && canvas.classList.contains('is-active') && counts.resume > resumesBeforeHover);
   }
-  return { preparedBeforeHover, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
+  return { preparedBeforeHover, dialogMousemoveStopped, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
 }
 
 (async () => {
@@ -118,6 +121,7 @@ async function replay(source) {
   console.log(JSON.stringify(result));
   if (baseline) return;
   assert.equal(result.preparedBeforeHover, true, 'entering projects prepares the shader before the first hover');
+  assert.equal(result.dialogMousemoveStopped, true, 'project detail movement must not bubble to the shader runtime window listener');
   assert.equal(result.firstHoverVisible, true, 'first hover must show the newly created canvas');
   assert.equal(result.duringScroll.resize, 0, 'scroll must preserve fluid textures');
   assert.equal(result.duringScroll.pause, 0, 'scrolling with the pointer over cards must keep the effect running');

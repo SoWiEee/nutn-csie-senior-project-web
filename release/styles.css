@@ -8,7 +8,7 @@
 
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; overflow-x: clip; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; overflow-x: clip; -webkit-text-size-adjust: 100%; touch-action: pan-x pan-y; }
 html.lenis,
 html.lenis body { height: auto; }
 .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
@@ -1313,7 +1313,7 @@ body .site-footer {
   content: "";
   background:
     linear-gradient(180deg, color-mix(in oklch, var(--color-void) 68%, transparent), color-mix(in oklch, var(--color-panel) 62%, transparent)),
-    url("assets/home-key-visual-diagonal-v6.png") center 54% / cover;
+    url("assets/home-key-visual.png") center 54% / cover;
   filter: blur(0.85rem) saturate(0.72) brightness(0.78);
   transform: scale(1.035);
 }
@@ -1456,7 +1456,7 @@ body[data-view="home"] .site-backdrop::before {
   z-index: 2;
   inset: -1.5rem;
   content: "";
-  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 48%, transparent), color-mix(in oklch, var(--color-void) 68%, transparent)), url("assets/home-key-visual-diagonal-v6.png") center / cover no-repeat;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 48%, transparent), color-mix(in oklch, var(--color-void) 68%, transparent)), url("assets/home-key-visual.png") center / cover no-repeat;
   filter: blur(0.5rem) saturate(0.78) brightness(0.68) contrast(1.08);
   opacity: clamp(0, calc(var(--home-backdrop-progress) * 1.6), 1);
   pointer-events: none;
@@ -1624,7 +1624,7 @@ body:not([data-view="home"]) .site-backdrop::before {
 .project-dialog__field--tags .project-dialog__label { margin-top: 0.3rem; }
 
 @media (max-width: 48rem) {
-  .hero__venue-shortcut { display: inline-flex; position: relative; z-index: 1; align-items: center; gap: 0.4rem; width: max-content; min-height: 2.75rem; margin-top: 0.125rem; padding: 0.4rem 0.7rem; border: 1px solid var(--color-meta-border); border-radius: var(--radius-pill); background: rgb(255 255 255 / 7%); color: var(--color-meta-ink); font-size: var(--text-sm); font-weight: 650; text-decoration: none; }
+  .hero__venue-shortcut { display: inline-flex; position: relative; z-index: 1; align-items: center; gap: 0.4rem; width: max-content; min-height: 2.75rem; margin-top: 0.5rem; padding: 0.4rem 0.7rem; border: 1px solid var(--color-meta-border); border-radius: var(--radius-pill); background: rgb(112 150 255 / 13%); color: var(--color-meta-ink); font-size: var(--text-sm); font-weight: 650; text-decoration: none; }
   .hero__venue-shortcut span { color: var(--color-accent-strong); }
   .project-dialog__title-en { max-width: none; font-size: var(--text-md); line-height: 1.4; }
   .transport-route-list { gap: var(--space-md); }

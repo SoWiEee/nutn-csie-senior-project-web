@@ -104,7 +104,17 @@ const projects = [
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
   { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
   { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
-  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: '第 05 組專題作品', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [] },
+  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'E2M-DCC：基於腦電訊號連續情感解碼之動態音樂生成系統', titleEn: 'E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
+    {
+      paragraph: '隨著生成式人工智慧與腦機介面技術快速發展，如何讓音樂生成系統不只依賴文字或人工設定，而能進一步反映使用者本身的情緒狀態，成為值得探討的研究方向。本研究建立一套以腦電訊號 (EEG) 驅動的情緒音樂生成系統，從 EEG 中解碼連續的 Valence（情緒正負向程度）與 Arousal（情緒喚醒程度），並將其作為音樂生成模型的情緒控制條件。',
+    },
+    {
+      paragraph: '系統以前端 EEG 情緒解碼與後端條件式音樂生成兩部分組成，並透過跨受試者實驗評估模型對不同使用者的泛化能力。研究過程中針對資料處理、訓練方式與特徵表示進行多次比較與修正，以提升情緒預測的穩定性與一致性。',
+    },
+    {
+      paragraph: '最終系統可將腦電訊號轉換為連續情緒資訊，並據此生成對應情緒特性的音樂，期望提供一種結合生理訊號、情感運算與生成式音樂的新型人機互動方式。',
+    },
+  ] },
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
     {

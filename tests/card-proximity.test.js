@@ -12,9 +12,13 @@ const end = source.indexOf('\n\nconst backdropElement', start);
 assert.notEqual(start, -1, 'card proximity binder must exist');
 assert.notEqual(end, -1, 'card proximity binder must have a clear boundary');
 
-test('schedule and project card templates opt into proximity lighting', () => {
+test('schedule cards use proximity lighting while project cards use ChromaFlow', () => {
   assert.match(source, /class="schedule-card schedule-card--signal" data-card-light data-card-proximity/);
-  assert.match(source, /class="project-card project-card--archive"[^\n]*data-card-light data-card-proximity/);
+  assert.match(source, /class="project-card project-card--archive" data-project-group=/);
+  assert.doesNotMatch(source, /class="project-card project-card--archive"[^\n]*data-card-proximity/);
+  const projectSmoke = readFileSync(new URL('../project-smoke.js', import.meta.url), 'utf8');
+  assert.match(projectSmoke, /projectGrid = projectView\?\.querySelector\('\.project-grid--archive'\)/);
+  assert.match(projectSmoke, /type: 'ChromaFlow'/);
   for (const html of htmlSources) {
     assert.equal([...html.matchAll(/<figure class="venue-figure" data-card-light data-card-proximity>/g)].length, 2);
   }

@@ -4369,7 +4369,17 @@ void main() {
     { id: "02", code: "NUTN-CSIE-PRJ-116-002", group: "sense", title: "\u7B2C 02 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u51FD\u5F97\u3001\u9EC3\u67CF\u667A", studentIds: "S11259002\u3001S11259016", advisor: "\u674E\u5065\u8208", time: "13:15 ~ 13:30", conferenceTags: [] },
     { id: "03", code: "NUTN-CSIE-PRJ-116-003", group: "sense", title: "PAMFormer\uFF1A\u7D50\u5408\u8A9E\u7FA9\u7279\u5FB5\u3001\u5149\u6D41\u8207\u6642\u7A7A\u95DC\u4FC2\u77E5\u8B58\u4E4B\u884C\u4EBA\u8ECC\u8DE1\u8207\u7A7F\u8D8A\u610F\u5716\u806F\u5408\u9810\u6E2C", titleEn: "PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge", members: "\u7FC1\u7ACB\u6668\u3001\u9EC3\u53EF\u745C\u3001\u6D2A\u4F2F\u7FCA", studentIds: "S11259004\u3001S11259035\u3001S11259046", advisor: "\u9673\u5B97\u79A7", time: "13:30 ~ 13:45", conferenceTags: ["TANET 2026"] },
     { id: "04", code: "NUTN-CSIE-PRJ-116-004", group: "sense", title: "\u7B2C 04 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u5F35\u4EE5\u878D\u3001\u5442\u5B88\u52F3\u3001\u5085\u8702\u8CB4", studentIds: "S11259005\u3001S11259007\u3001S11259036", advisor: "\u6731\u660E\u6BC5", time: "13:45 ~ 14:00", conferenceTags: [] },
-    { id: "05", code: "NUTN-CSIE-PRJ-116-005", group: "sense", title: "\u7B2C 05 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9673\u88D5\u8343\u3001\u6797\u660E\u4EAE", studentIds: "S11259006\u3001S11259053", advisor: "\u674E\u5EFA\u6A39", time: "14:00 ~ 14:15", conferenceTags: [] },
+    { id: "05", code: "NUTN-CSIE-PRJ-116-005", group: "sense", title: "E2M-DCC\uFF1A\u57FA\u65BC\u8166\u96FB\u8A0A\u865F\u9023\u7E8C\u60C5\u611F\u89E3\u78BC\u4E4B\u52D5\u614B\u97F3\u6A02\u751F\u6210\u7CFB\u7D71", titleEn: "E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation", members: "\u9673\u88D5\u8343\u3001\u6797\u660E\u4EAE", studentIds: "S11259006\u3001S11259053", advisor: "\u674E\u5EFA\u6A39", time: "14:00 ~ 14:15", conferenceTags: [], summary: [
+      {
+        paragraph: "\u96A8\u8457\u751F\u6210\u5F0F\u4EBA\u5DE5\u667A\u6167\u8207\u8166\u6A5F\u4ECB\u9762\u6280\u8853\u5FEB\u901F\u767C\u5C55\uFF0C\u5982\u4F55\u8B93\u97F3\u6A02\u751F\u6210\u7CFB\u7D71\u4E0D\u53EA\u4F9D\u8CF4\u6587\u5B57\u6216\u4EBA\u5DE5\u8A2D\u5B9A\uFF0C\u800C\u80FD\u9032\u4E00\u6B65\u53CD\u6620\u4F7F\u7528\u8005\u672C\u8EAB\u7684\u60C5\u7DD2\u72C0\u614B\uFF0C\u6210\u70BA\u503C\u5F97\u63A2\u8A0E\u7684\u7814\u7A76\u65B9\u5411\u3002\u672C\u7814\u7A76\u5EFA\u7ACB\u4E00\u5957\u4EE5\u8166\u96FB\u8A0A\u865F (EEG) \u9A45\u52D5\u7684\u60C5\u7DD2\u97F3\u6A02\u751F\u6210\u7CFB\u7D71\uFF0C\u5F9E EEG \u4E2D\u89E3\u78BC\u9023\u7E8C\u7684 Valence\uFF08\u60C5\u7DD2\u6B63\u8CA0\u5411\u7A0B\u5EA6\uFF09\u8207 Arousal\uFF08\u60C5\u7DD2\u559A\u9192\u7A0B\u5EA6\uFF09\uFF0C\u4E26\u5C07\u5176\u4F5C\u70BA\u97F3\u6A02\u751F\u6210\u6A21\u578B\u7684\u60C5\u7DD2\u63A7\u5236\u689D\u4EF6\u3002"
+      },
+      {
+        paragraph: "\u7CFB\u7D71\u4EE5\u524D\u7AEF EEG \u60C5\u7DD2\u89E3\u78BC\u8207\u5F8C\u7AEF\u689D\u4EF6\u5F0F\u97F3\u6A02\u751F\u6210\u5169\u90E8\u5206\u7D44\u6210\uFF0C\u4E26\u900F\u904E\u8DE8\u53D7\u8A66\u8005\u5BE6\u9A57\u8A55\u4F30\u6A21\u578B\u5C0D\u4E0D\u540C\u4F7F\u7528\u8005\u7684\u6CDB\u5316\u80FD\u529B\u3002\u7814\u7A76\u904E\u7A0B\u4E2D\u91DD\u5C0D\u8CC7\u6599\u8655\u7406\u3001\u8A13\u7DF4\u65B9\u5F0F\u8207\u7279\u5FB5\u8868\u793A\u9032\u884C\u591A\u6B21\u6BD4\u8F03\u8207\u4FEE\u6B63\uFF0C\u4EE5\u63D0\u5347\u60C5\u7DD2\u9810\u6E2C\u7684\u7A69\u5B9A\u6027\u8207\u4E00\u81F4\u6027\u3002"
+      },
+      {
+        paragraph: "\u6700\u7D42\u7CFB\u7D71\u53EF\u5C07\u8166\u96FB\u8A0A\u865F\u8F49\u63DB\u70BA\u9023\u7E8C\u60C5\u7DD2\u8CC7\u8A0A\uFF0C\u4E26\u64DA\u6B64\u751F\u6210\u5C0D\u61C9\u60C5\u7DD2\u7279\u6027\u7684\u97F3\u6A02\uFF0C\u671F\u671B\u63D0\u4F9B\u4E00\u7A2E\u7D50\u5408\u751F\u7406\u8A0A\u865F\u3001\u60C5\u611F\u904B\u7B97\u8207\u751F\u6210\u5F0F\u97F3\u6A02\u7684\u65B0\u578B\u4EBA\u6A5F\u4E92\u52D5\u65B9\u5F0F\u3002"
+      }
+    ] },
     { id: "06", code: "NUTN-CSIE-PRJ-116-006", group: "sense", title: "\u7B2C 06 \u7D44\u5C08\u984C\u4F5C\u54C1", members: "\u9418\u57F9\u5609\u3001\u66FE\u91D1\u5B8F\u3001\u8607\u5955\u5B89", studentIds: "S11259008\u3001S11259030\u3001S11259047", advisor: "\u9673\u69AE\u9298", time: "14:25 ~ 14:40", conferenceTags: [] },
     { id: "07", code: "NUTN-CSIE-PRJ-116-007", group: "sense", title: "\u57FA\u65BC\u79FB\u52D5\u8A2D\u5099\u611F\u6E2C\u5668\u8F14\u52A9\u7684\u91CE\u5916\u751F\u7269\u975E\u63A5\u89F8\u5F0F\u6E2C\u91CF\u7CFB\u7D71", titleEn: "Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors", members: "\u56B4\u624D\u52DD\u3001\u674E\u4F7E\u6069\u3001\u9EC3\u8056\u5091", studentIds: "S11259011\u3001S11259044\u3001S11259055", advisor: "\u8607\u6EA2\u82B3", time: "14:40 ~ 14:55", conferenceTags: [], summary: [
       {
@@ -5229,6 +5239,14 @@ void main() {
   void initLiquidGlass();
 
   // app-entry.js
+  if (navigator.maxTouchPoints > 0) {
+    const preventPinchZoom = (event) => event.preventDefault();
+    window.addEventListener("gesturestart", preventPinchZoom, { passive: false });
+    window.addEventListener("gesturechange", preventPinchZoom, { passive: false });
+    window.addEventListener("touchmove", (event) => {
+      if (event.touches.length > 1) event.preventDefault();
+    }, { passive: false });
+  }
   var canSmoothWheel = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (canSmoothWheel && !prefersReducedMotion) {

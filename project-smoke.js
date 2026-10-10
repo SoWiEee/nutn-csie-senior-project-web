@@ -278,6 +278,7 @@ if (
 
   projectGrid.addEventListener('pointerenter', activate);
   projectGrid.addEventListener('pointerleave', () => pause());
+  projectDialog?.addEventListener('mousemove', (event) => event.stopPropagation());
   window.addEventListener('pointermove', trackPointer, { passive: true });
   window.addEventListener('scroll', handleScroll, { passive: true });
   window.addEventListener('resize', () => syncSmokeMask(true), { passive: true });
