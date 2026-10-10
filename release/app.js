@@ -4359,7 +4359,6 @@ void main() {
   var projectDialogTitle = document.querySelector("#project-dialog-title");
   var projectDialogEnglishTitle = document.querySelector("#project-dialog-title-en");
   var projectDialogGroup = document.querySelector("#project-dialog-group");
-  var projectDialogTime = document.querySelector("#project-dialog-time");
   var projectDialogMembers = document.querySelector("#project-dialog-members");
   var projectDialogTags = document.querySelector("#project-dialog-tags");
   var projectDialogSummary = document.querySelector("#project-dialog-summary");
@@ -4472,7 +4471,6 @@ void main() {
     projectDialogEnglishTitle.textContent = project.titleEn || "";
     projectDialogEnglishTitle.hidden = !project.titleEn;
     projectDialogGroup.textContent = `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`;
-    projectDialogTime.textContent = project.time;
     projectDialogMembers.textContent = project.members;
     projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
     projectDialogTags.innerHTML = tagMarkup(project.conferenceTags);

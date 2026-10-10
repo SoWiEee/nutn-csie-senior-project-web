@@ -93,7 +93,6 @@ const projectDialog = document.querySelector('#project-dialog');
 const projectDialogTitle = document.querySelector('#project-dialog-title');
 const projectDialogEnglishTitle = document.querySelector('#project-dialog-title-en');
 const projectDialogGroup = document.querySelector('#project-dialog-group');
-const projectDialogTime = document.querySelector('#project-dialog-time');
 const projectDialogMembers = document.querySelector('#project-dialog-members');
 const projectDialogTags = document.querySelector('#project-dialog-tags');
 const projectDialogSummary = document.querySelector('#project-dialog-summary');
@@ -211,7 +210,6 @@ const openProjectDialog = (projectId) => {
   projectDialogEnglishTitle.textContent = project.titleEn || '';
   projectDialogEnglishTitle.hidden = !project.titleEn;
   projectDialogGroup.textContent = `第 ${project.id} 組・${groupName(project.group)}`;
-  projectDialogTime.textContent = project.time;
   projectDialogMembers.textContent = project.members;
   projectDialogTags.parentElement.hidden = project.conferenceTags.length === 0;
   projectDialogTags.innerHTML = tagMarkup(project.conferenceTags);

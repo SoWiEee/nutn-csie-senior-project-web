@@ -1615,13 +1615,11 @@ body:not([data-view="home"]) .site-backdrop::before {
 .transport-route-list strong { color: var(--color-ink); font-size: var(--text-md); font-weight: 650; line-height: 1.45; }
 .transport-route-list span { color: var(--color-muted); font-size: var(--text-md); line-height: 1.55; }
 .transport-item__note { padding-top: var(--space-sm); border-top: var(--rule-thin) solid var(--color-line); }
-.transport-item__note::before { top: calc(var(--space-sm) + 0.72em); }
+.transport-item__details p.transport-item__note::before { top: calc(var(--space-sm) + 0.8em); }
 .project-dialog__field { grid-template-columns: 1.25rem minmax(0, 1fr); column-gap: var(--space-sm); }
 .project-dialog__label { display: grid; width: 1.25rem; height: 1.25rem; place-items: center; color: var(--color-accent-strong); }
 .project-dialog__label svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.65; }
-.project-dialog__field strong,
-.project-dialog__field time { min-width: 0; color: var(--color-muted); font-size: var(--text-md); font-weight: 500; line-height: 1.5; }
-.project-dialog__field time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.project-dialog__field strong { min-width: 0; color: var(--color-muted); font-size: var(--text-md); font-weight: 500; line-height: 1.5; }
 .project-dialog__field--tags { align-items: start; }
 .project-dialog__field--tags .project-dialog__label { margin-top: 0.3rem; }
 
