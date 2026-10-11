@@ -5239,14 +5239,6 @@ void main() {
   void initLiquidGlass();
 
   // app-entry.js
-  if (navigator.maxTouchPoints > 0) {
-    const preventPinchZoom = (event) => event.preventDefault();
-    window.addEventListener("gesturestart", preventPinchZoom, { passive: false });
-    window.addEventListener("gesturechange", preventPinchZoom, { passive: false });
-    window.addEventListener("touchmove", (event) => {
-      if (event.touches.length > 1) event.preventDefault();
-    }, { passive: false });
-  }
   var canSmoothWheel = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (canSmoothWheel && !prefersReducedMotion) {

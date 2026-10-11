@@ -3,15 +3,6 @@ import { LiquidGlass } from './vendor/liquidglass/index.js';
 import { initHeroRipple } from './hero-ripple.js';
 import './script.js';
 
-if (navigator.maxTouchPoints > 0) {
-  const preventPinchZoom = (event) => event.preventDefault();
-  window.addEventListener('gesturestart', preventPinchZoom, { passive: false });
-  window.addEventListener('gesturechange', preventPinchZoom, { passive: false });
-  window.addEventListener('touchmove', (event) => {
-    if (event.touches.length > 1) event.preventDefault();
-  }, { passive: false });
-}
-
 const canSmoothWheel = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
