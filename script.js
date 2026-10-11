@@ -103,7 +103,7 @@ const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
   { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
-  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '張以融、呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
+  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'E2M-DCC：基於腦電訊號連續情感解碼之動態音樂生成系統', titleEn: 'E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
     {
       paragraph: '隨著生成式人工智慧與腦機介面技術快速發展，如何讓音樂生成系統不只依賴文字或人工設定，而能進一步反映使用者本身的情緒狀態，成為值得探討的研究方向。本研究建立一套以腦電訊號 (EEG) 驅動的情緒音樂生成系統，從 EEG 中解碼連續的 Valence（情緒正負向程度）與 Arousal（情緒喚醒程度），並將其作為音樂生成模型的情緒控制條件。',
@@ -151,7 +151,11 @@ const projects = [
   ] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '第 15 組專題作品', members: '石皓宇', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於自注意力機制之多模態擴散策略離線強化學習研究', titleEn: 'Offline Reinforcement Learning with a Self-Attention-Based Multimodal Diffusion Policy', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+    {
+      paragraph: '本研究結合自注意力機制、擴散策略與保守 Q 學習，提出一種離線強化學習方法，以提升機器人操作的策略穩定性與學習效率。透過 UR-5 機器手臂推動任務進行實驗，結果顯示所提出的 Diffusion-CQL 架構具有較高成功率，並展現一定的泛化能力。',
+    },
+  ] },
   { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
     {
       paragraph: '近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：',

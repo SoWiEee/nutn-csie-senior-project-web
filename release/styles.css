@@ -1623,7 +1623,8 @@ body:not([data-view="home"]) .site-backdrop::before {
   }
 }
 
-.hero__venue-shortcut { display: none; }
+.hero__venue-shortcut { display: inline-flex; position: relative; z-index: 1; align-items: center; gap: 0.4rem; width: max-content; min-height: 2.75rem; margin-top: var(--space-md); padding: 0.4rem 0.7rem; border: 1px solid var(--color-meta-border); border-radius: var(--radius-pill); background: rgb(112 150 255 / 13%); color: var(--color-meta-ink); font-size: var(--text-sm); font-weight: 650; text-decoration: none; }
+.hero__venue-shortcut span { color: var(--color-accent-strong); }
 .transport-item__lead { font-weight: 550; }
 .transport-route-list { display: grid; gap: var(--space-sm); margin: 0; padding: 0; list-style: none; }
 .transport-route-list li { display: grid; gap: 0.18rem; padding-inline-start: 0.75rem; border-inline-start: 1px solid var(--color-signal-line-soft); }
@@ -1639,8 +1640,13 @@ body:not([data-view="home"]) .site-backdrop::before {
 .project-dialog__field--tags .project-dialog__label { margin-top: 0.3rem; }
 
 @media (max-width: 48rem) {
-  .hero__venue-shortcut { display: inline-flex; position: relative; z-index: 1; align-items: center; gap: 0.4rem; width: max-content; min-height: 2.75rem; margin-top: 0.5rem; padding: 0.4rem 0.7rem; border: 1px solid var(--color-meta-border); border-radius: var(--radius-pill); background: rgb(112 150 255 / 13%); color: var(--color-meta-ink); font-size: var(--text-sm); font-weight: 650; text-decoration: none; }
-  .hero__venue-shortcut span { color: var(--color-accent-strong); }
+  .hero__venue-shortcut { margin-top: var(--space-xs); }
+  #view-schedule .section-head { gap: var(--space-xs); margin-bottom: var(--space-lg); }
+  #view-schedule .agenda-notice { margin-bottom: var(--space-md); padding: var(--space-xs) var(--space-sm); }
+  #view-schedule .filter-bar--tracks { margin-bottom: var(--space-md); }
+  #view-schedule .filter-chip--track { min-height: 5.5rem; padding-block: var(--space-xs); }
+  #view-schedule .filter-chip__icon { width: 1.5rem; height: 1.5rem; }
+  #view-schedule .filter-chip__icon svg { width: 1.35rem; height: 1.35rem; }
   .project-dialog__title-en { max-width: none; font-size: var(--text-md); line-height: 1.4; }
   .transport-route-list { gap: var(--space-md); }
   .transport-route-list strong,
