@@ -179,6 +179,15 @@ const groupMeta = {
   decision: { title: '智慧推論與決策系統組', label: 'INFERENCE / DECISION SYSTEMS' },
 };
 
+const projectTeasers = {
+  '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
+  '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
+  '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
+  '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
+  '16': { src: 'assets/project-teasers/project-16.webp', alt: 'Slurm 與 Kubernetes 平台上的 GPU 工作排程專題視覺圖' },
+  '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
+};
+
 const escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
 const tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? ' conference-tag--accent' : ''}">${escapeHTML(tag)}</span>`).join('') : '';
 const projectSummaryMarkup = (blocks = []) => blocks.map(({ paragraph, bullets = [] }) => `<p>${escapeHTML(paragraph)}</p>${bullets.length ? `<ul>${bullets.map((bullet) => `<li>${escapeHTML(bullet)}</li>`).join('')}</ul>` : ''}`).join('');
@@ -205,7 +214,6 @@ const renderSchedule = () => {
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">↗</span>
         </button>
-        <span class="schedule-card__signal" aria-hidden="true"><svg viewBox="0 0 96 24" focusable="false"><path d="M1 16h13l5-9 8 14 8-15 8 10h12l6-6 7 9h15" /></svg></span>
       </article>`).join('');
     return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
       <div class="schedule schedule--dense">${rows}</div>
@@ -247,12 +255,15 @@ const bindProjectLinks = () => {
 
 const renderProjects = () => {
   if (!projectList) return;
-  projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" style="view-transition-name: project-${escapeHTML(project.id)}">
+  projectList.innerHTML = projects.map((project, index) => {
+    const teaser = project.title && project.summary?.length && projectTeasers[project.id];
+    return `<article class="project-card project-card--archive" data-project-group="${project.group}" style="view-transition-name: project-${escapeHTML(project.id)}">
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="查看第 ${escapeHTML(project.id)} 組專題詳細資訊"></button>
-    <div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
+    ${teaser ? `<div class="project-card__visual project-card__visual--teaser"><img src="${teaser.src}" alt="${escapeHTML(teaser.alt)}" loading="lazy" decoding="async"></div>` : `<div class="project-card__visual ${index % 3 === 1 ? 'project-card__visual--violet' : index % 3 === 2 ? 'project-card__visual--line' : ''}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>`}
     <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup('group', 'GROUP', `第 ${project.id} 組・${groupName(project.group)}`)}${projectInfoMarkup('members', 'MEMBERS', project.members)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="研討會投稿標籤">${tagMarkup(project.conferenceTags)}</div>` : ''}</div>
     <span class="project-card__arrow" aria-hidden="true">↗</span>
-  </article>`).join('');
+  </article>`;
+  }).join('');
 };
 
 let menuOpenedAtScrollY = 0;

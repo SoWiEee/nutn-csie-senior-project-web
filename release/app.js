@@ -4442,6 +4442,14 @@ void main() {
     sense: { title: "\u667A\u6167\u611F\u77E5\u8207\u8A0A\u865F\u5206\u6790\u7D44", label: "SENSE / SIGNAL ANALYSIS" },
     decision: { title: "\u667A\u6167\u63A8\u8AD6\u8207\u6C7A\u7B56\u7CFB\u7D71\u7D44", label: "INFERENCE / DECISION SYSTEMS" }
   };
+  var projectTeasers = {
+    "05": { src: "assets/project-teasers/project-05.webp", alt: "\u8166\u96FB\u8A0A\u865F\u89E3\u8B80\u60C5\u7DD2\u4E26\u751F\u6210\u97F3\u6A02\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "07": { src: "assets/project-teasers/project-07.webp", alt: "\u5229\u7528\u624B\u6A5F\u611F\u6E2C\u5668\u6E2C\u91CF\u91CE\u5916\u52D5\u7269\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "09": { src: "assets/project-teasers/project-09.webp", alt: "\u5728\u4E09\u7DAD\u5834\u666F\u4E2D\u9010\u6B65\u9A57\u8B49\u8996\u89BA\u8B49\u64DA\u4E26\u5B9A\u4F4D\u7269\u4EF6\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "12": { src: "assets/project-teasers/project-12.webp", alt: "\u4E2D\u91AB\u8FA8\u8B49\u8CC7\u6599\u8207\u667A\u6167\u8A3A\u65B7\u8F14\u52A9\u7CFB\u7D71\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "16": { src: "assets/project-teasers/project-16.webp", alt: "Slurm \u8207 Kubernetes \u5E73\u53F0\u4E0A\u7684 GPU \u5DE5\u4F5C\u6392\u7A0B\u5C08\u984C\u8996\u89BA\u5716" },
+    "17": { src: "assets/project-teasers/project-17.webp", alt: "\u4EE5\u4EBA\u9AD4\u9AA8\u67B6\u7BC0\u9EDE\u8A55\u4F30\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u7684\u5C08\u984C\u8996\u89BA\u5716" }
+  };
   var escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
   var tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? " conference-tag--accent" : ""}">${escapeHTML(tag)}</span>`).join("") : "";
   var projectSummaryMarkup = (blocks = []) => blocks.map(({ paragraph, bullets = [] }) => `<p>${escapeHTML(paragraph)}</p>${bullets.length ? `<ul>${bullets.map((bullet) => `<li>${escapeHTML(bullet)}</li>`).join("")}</ul>` : ""}`).join("");
@@ -4467,7 +4475,6 @@ void main() {
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>
         </button>
-        <span class="schedule-card__signal" aria-hidden="true"><svg viewBox="0 0 96 24" focusable="false"><path d="M1 16h13l5-9 8 14 8-15 8 10h12l6-6 7 9h15" /></svg></span>
       </article>`).join("");
       return `<section class="agenda-group" data-schedule-group="${group}" aria-label="${escapeHTML(meta.title)}">
       <div class="schedule schedule--dense">${rows}</div>
@@ -4505,12 +4512,15 @@ void main() {
   };
   var renderProjects = () => {
     if (!projectList) return;
-    projectList.innerHTML = projects.map((project, index) => `<article class="project-card project-card--archive" data-project-group="${project.group}" style="view-transition-name: project-${escapeHTML(project.id)}">
+    projectList.innerHTML = projects.map((project, index) => {
+      const teaser = project.title && project.summary?.length && projectTeasers[project.id];
+      return `<article class="project-card project-card--archive" data-project-group="${project.group}" style="view-transition-name: project-${escapeHTML(project.id)}">
     <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
-    <div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>
+    ${teaser ? `<div class="project-card__visual project-card__visual--teaser"><img src="${teaser.src}" alt="${escapeHTML(teaser.alt)}" loading="lazy" decoding="async"></div>` : `<div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>`}
     <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup("group", "GROUP", `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`)}${projectInfoMarkup("members", "MEMBERS", project.members)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="\u7814\u8A0E\u6703\u6295\u7A3F\u6A19\u7C64">${tagMarkup(project.conferenceTags)}</div>` : ""}</div>
     <span class="project-card__arrow" aria-hidden="true">\u2197</span>
-  </article>`).join("");
+  </article>`;
+    }).join("");
   };
   var menuOpenedAtScrollY = 0;
   var setMenuState = (isOpen) => {
