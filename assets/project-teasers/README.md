@@ -6,9 +6,13 @@ Shared prompt: one landscape 16:9 flat minimal research schematic, with 5–8 ma
 
 ## Subject prompts
 
+- 04: Three-view robot sensing with spatial token grids, one missing/occluded camera, and robust attention fusion from the remaining views.
 - 05: EEG scalp sensors and brainwaves flowing into continuous emotion-conditioned musical ribbons.
 - 07: Smartphone sensing and non-contact measurement of a wild bird; visual brackets and inertial orientation arcs, without physical reference objects.
 - 09: PROVE-3D indoor point-cloud scene, a chair localized by a 3D bounding box, multiple observation planes converging into verified spatial evidence.
 - 12: Clinician reviewing wrist-pulse signals and structured reasoning; restrained herbal context, human-reviewed diagnostic support without cure claims.
+- 15: A robot arm pushes a small disc along a selected learned trajectory, with multimodal sensor tokens, attention fusion, and faint alternate candidate paths.
 - 16: Heterogeneous GPU modules, differently sized workloads and allocation lanes representing intelligent scheduling and resource sharing.
 - 17: Controlled bodyweight squat, pose-joint skeleton, sequential reference silhouettes and temporal alignment ribbons.
+
+Project 05's background was recolored to match the shared midnight navy used across the teaser set.

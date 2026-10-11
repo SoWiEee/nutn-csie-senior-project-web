@@ -7,9 +7,9 @@ const vm = require('node:vm');
 const source = readFileSync(resolve(__dirname, '../script.js'), 'utf8');
 const section = (start, end) => source.slice(source.indexOf(start), source.indexOf(end));
 
-test('only the six complete projects render static lazy teaser banners', () => {
+test('only the eight complete projects render static lazy teaser banners', () => {
   const projectList = { innerHTML: '' };
-  const ids = ['05', '07', '09', '12', '16', '17'];
+  const ids = ['04', '05', '07', '09', '12', '15', '16', '17'];
   const projects = [...ids.map((id) => ({ id, group: 'sense', title: `專題 ${id}`, summary: ['摘要'], members: '', conferenceTags: [] })),
     { id: '01', group: 'sense', title: '未完成', members: '', conferenceTags: [] },
     { id: '18', group: 'sense', title: '未提供圖片', summary: ['摘要'], members: '', conferenceTags: [] }];
@@ -18,12 +18,12 @@ test('only the six complete projects render static lazy teaser banners', () => {
     projectList, projects, escapeHTML: (value) => String(value), groupName: () => '測試組',
     projectInfoMarkup: () => '', tagMarkup: () => '',
   });
-  assert.equal((projectList.innerHTML.match(/<img /g) || []).length, 6);
+  assert.equal((projectList.innerHTML.match(/<img /g) || []).length, 8);
   for (const id of ids) {
     assert.match(projectList.innerHTML, new RegExp(`<img src="assets/project-teasers/project-${id}\\.webp"`));
   }
-  assert.equal((projectList.innerHTML.match(/loading="lazy" decoding="async"/g) || []).length, 6);
-  assert.equal((projectList.innerHTML.match(/alt="[^"]*[\u3400-\u9fff][^"]*"/g) || []).length, 6);
+  assert.equal((projectList.innerHTML.match(/loading="lazy" decoding="async"/g) || []).length, 8);
+  assert.equal((projectList.innerHTML.match(/alt="[^"]*[\u3400-\u9fff][^"]*"/g) || []).length, 8);
   assert.equal((projectList.innerHTML.match(/class="project-card__trigger"/g) || []).length, projects.length);
 });
 

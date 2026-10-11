@@ -103,7 +103,17 @@ const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
   { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
-  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '第 04 組專題作品', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [] },
+  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '時空多 token 化多視角注意力融合：提升擴散策略對感測缺失的穩定性', titleEn: 'Spatio-Temporal Tokenized Multi-View Fusion for Robust Diffusion Policies', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
+    {
+      paragraph: '離線強化學習能利用預先收集的示範資料學習機器人控制策略，避免昂貴且危險的即時試誤。近年以擴散模型表示策略的方法，能捕捉多峰動作分布，並結合自注意力雜訊預測模型整合多視角影像與末端執行器資訊。然而，現有架構把每支相機影像壓縮成單一全域特徵，注意力只在少數幾個 token 之間運算，空間位置與時間變化資訊大量流失。此外，模型假設所有感測器都正常運作，一旦鏡頭被遮擋、影像受雜訊干擾或光照改變，策略表現可能大幅下降；各模態對決策的實際貢獻也缺乏驗證。',
+    },
+    {
+      paragraph: '本專題以「自注意力擴散策略 + 保守 Q 學習 (Conservative Q-Learning, CQL) 雙 Q 評論家」為基礎，提出時空 token 化的多視角注意力融合方法。在空間上，保留 ResNet-18 卷積特徵圖的空間結構，把每個位置轉成獨立的 token，並加入二維位置編碼與相機嵌入，讓注意力能聚焦在物體與末端執行器所在的區域。在時間上，納入前數幀的觀測特徵，讓模型能感知物體滑動等動態資訊。為了提升穩健性，訓練時加入模態丟棄 (modality dropout)，隨機遮蔽單一相機或運動捕捉資料，迫使策略學會在部分資訊缺失時仍能做出決策。',
+    },
+    {
+      paragraph: '本研究在 MuJoCo 模擬環境中進行，主要任務是以 UR5 機械手臂把隨機位置的圓餅推到目標區域。另外設計一組感測缺失測試，包括前視或腕部相機失效、影像高斯雜訊、光照變化與相機位置偏移等情境。實驗將比較原始全域特徵架構與本方法在正常及缺失情境下的成功率與平均成功步數，並透過模態消融與注意力權重視覺化，分析策略在接近與推動兩個階段分別依賴哪些感測來源。預期本方法能在維持正常情境表現的同時，明顯降低感測缺失時的性能衰退，也能為「多模態擴散策略如何融合多種感測資訊」提供可解釋的實證依據，提升機器人策略部署到真實場景時的可靠性。',
+    },
+  ] },
   { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'E2M-DCC：基於腦電訊號連續情感解碼之動態音樂生成系統', titleEn: 'E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
     {
       paragraph: '隨著生成式人工智慧與腦機介面技術快速發展，如何讓音樂生成系統不只依賴文字或人工設定，而能進一步反映使用者本身的情緒狀態，成為值得探討的研究方向。本研究建立一套以腦電訊號 (EEG) 驅動的情緒音樂生成系統，從 EEG 中解碼連續的 Valence（情緒正負向程度）與 Arousal（情緒喚醒程度），並將其作為音樂生成模型的情緒控制條件。',
@@ -184,10 +194,12 @@ const groupMeta = {
 };
 
 const projectTeasers = {
+  '04': { src: 'assets/project-teasers/project-04.webp', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
   '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
   '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
   '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
   '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.webp', alt: '機械手臂沿擴散策略軌跡推動物件至目標區域的專題視覺圖' },
   '16': { src: 'assets/project-teasers/project-16.webp', alt: 'Slurm 與 Kubernetes 平台上的 GPU 工作排程專題視覺圖' },
   '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
