@@ -101,8 +101,25 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '第 02 組專題作品', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [] },
-  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'] },
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '結合人工智慧語音辨識與量子電路評估之國小台語教材輔助學習系統之研發', titleEn: 'Development of an AI-based Speech Recognition and Quantum Circuit Evaluation System for Elementary Taiwanese Teaching Materials', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+    {
+      paragraph: '隨著母語教育的推廣，台語（閩南語）語音辨識 (Automatic Speech Recognition, ASR) 技術之效能評量日益受到重視。然而，由於台語具有複雜的聲調與連音變調規則，單一語音辨識模型難以在不同教材情境下提供穩定且客觀之評估結果。因此，本研究提出一套結合計算智慧 (Computational Intelligence, CI) 與量子邏輯電路之多模型台語語意評量架構。',
+    },
+    {
+      paragraph: '本研究蒐集國小台語教材語料，並導入多種語音辨識模型（包含 Whisper 與 Breeze_ASR 系列）進行語音辨識，以取得語意相似度分數，並利用 Python 進行資料分析與視覺化。為改善傳統評分方式之主觀性與模糊性，本研究於 QCI AI 平台建構模糊邏輯知識模型，並利用基因演算法 (Genetic Algorithm, GA) 對隸屬函數參數進行最佳化調整。',
+    },
+    {
+      paragraph: '實驗結果顯示，經由基因演算法訓練後，模型能建立較具一致性之評估準則，其自動化評量結果與專家評分具有良好的一致性，並有助於降低多模型評估過程中的主觀誤差。此外，本研究進一步探討將模糊評量規則轉換為量子布林邏輯之可行性，並透過量子邏輯閘建構評估電路。',
+    },
+    {
+      paragraph: '本研究所提出之方法可作為未來多模型台語語音辨識評估之參考架構，並為量子計算應用於語音評量領域提供初步研究基礎。',
+    },
+  ] },
+  { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'], summary: [
+    {
+      paragraph: '本研究提出 PAMFormer，用於同時預測行人未來軌跡與穿越意圖。PAMFormer-Base 以 Cross-Modal Transformer 整合歷史 bounding boxes、速度、離散位置、可選 optical flow 與 affine 特徵，並由 Enhanced SAIM 聚合 SAM3 semantic patches；PAMFormer-KG 保留相同編碼與雙 LSTM 解碼介面，新增以目標行人為中心的時空關係知識分支，將六維幾何關係、五類 relation states 及 training-only priors 透過 gated cross-attention 融入表示。',
+    },
+  ] },
   { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '時空多 token 化多視角注意力融合：提升擴散策略對感測缺失的穩定性', titleEn: 'Spatio-Temporal Tokenized Multi-View Fusion for Robust Diffusion Policies', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
     {
       paragraph: '離線強化學習能利用預先收集的示範資料學習機器人控制策略，避免昂貴且危險的即時試誤。近年以擴散模型表示策略的方法，能捕捉多峰動作分布，並結合自注意力雜訊預測模型整合多視角影像與末端執行器資訊。然而，現有架構把每支相機影像壓縮成單一全域特徵，注意力只在少數幾個 token 之間運算，空間位置與時間變化資訊大量流失。此外，模型假設所有感測器都正常運作，一旦鏡頭被遮擋、影像受雜訊干擾或光照改變，策略表現可能大幅下降；各模態對決策的實際貢獻也缺乏驗證。',
@@ -147,7 +164,11 @@ const projects = [
     },
   ] },
   { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '基於 VGGT 之多視角 3D 重建改進', titleEn: 'Enhancing VGGT for Efficient Multi-View 3D Reconstruction', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '第 11 組專題作品', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [] },
+  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL(L2-MPC-FL)', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+    {
+      paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
+    },
+  ] },
   { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫智慧辨證與診斷輔助系統', titleEn: 'Intelligent Traditional Chinese Medicine Syndrome Differentiation and Diagnostic Support System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [], summary: [
     {
       paragraph: '隨著人工智慧技術快速發展，智慧醫療逐漸成為現代醫療的重要趨勢。然而，傳統中醫診斷需整合望、聞、問、切四診資訊，並依賴醫師的臨床經驗進行辨證分析，容易因個人判讀差異影響診斷結果。因此，本專題結合人工智慧與傳統中醫辨證理論，開發「中醫智慧辨證與診斷輔助系統」，期望提升診斷效率與資訊整合能力。',
@@ -161,9 +182,9 @@ const projects = [
   ] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於自注意力機制之多模態擴散策略離線強化學習研究', titleEn: 'Offline Reinforcement Learning with a Self-Attention-Based Multimodal Diffusion Policy', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
     {
-      paragraph: '本研究結合自注意力機制、擴散策略與保守 Q 學習，提出一種離線強化學習方法，以提升機器人操作的策略穩定性與學習效率。透過 UR-5 機器手臂推動任務進行實驗，結果顯示所提出的 Diffusion-CQL 架構具有較高成功率，並展現一定的泛化能力。',
+      paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
     },
   ] },
   { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
@@ -194,12 +215,15 @@ const groupMeta = {
 };
 
 const projectTeasers = {
+  '02': { src: 'assets/project-teasers/project-02.webp', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
+  '03': { src: 'assets/project-teasers/project-03.webp', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
   '04': { src: 'assets/project-teasers/project-04.webp', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
   '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
   '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
   '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
+  '11': { src: 'assets/project-teasers/project-11.webp', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
   '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
-  '15': { src: 'assets/project-teasers/project-15.webp', alt: '機械手臂沿擴散策略軌跡推動物件至目標區域的專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.webp', alt: '以 Flow Matching 生成連續機器人操作軌跡並減少推論步數的專題視覺圖' },
   '16': { src: 'assets/project-teasers/project-16.webp', alt: 'Slurm 與 Kubernetes 平台上的 GPU 工作排程專題視覺圖' },
   '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
