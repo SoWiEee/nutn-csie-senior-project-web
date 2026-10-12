@@ -50,7 +50,7 @@ if (
   };
 
   const loadLibrary = () => {
-    libraryPromise ??= import('./vendor/shaders-4.0.0.js?v=hidden-input-1');
+    libraryPromise ??= import('./vendor/shaders-4.0.0.js?v=frame-input-2');
     return libraryPromise;
   };
 
