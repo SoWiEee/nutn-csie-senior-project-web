@@ -567,7 +567,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .project-dialog__title-en { max-width: 72ch; text-wrap: balance; }
   .project-dialog__field { grid-template-columns: minmax(8.5rem, max-content) minmax(0, 1fr); }
 }
-.project-grid--archive { position: relative; isolation: isolate; overflow: clip; align-items: start; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.project-grid--archive { position: relative; isolation: isolate; overflow: clip; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .project-card--archive { grid-row: auto; }
 .project-card--archive .project-card__visual { height: 8.75rem; }
 .project-card__info { display: grid; gap: var(--space-xs); margin-top: var(--space-md); padding-top: var(--space-md); border-top: var(--rule-thin) solid var(--color-line); }
