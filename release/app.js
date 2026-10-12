@@ -4548,7 +4548,7 @@ void main() {
       ${timePointMarkup(project.time)}
       <article class="schedule-card schedule-card--signal" data-card-light data-card-proximity>
         <span class="schedule-card__number" aria-hidden="true">${escapeHTML(project.id)}</span>
-        <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A">
+        <button class="schedule-card__trigger" type="button" data-schedule-project="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\uFF1A${escapeHTML(project.title)}">
           <strong>${escapeHTML(project.title)}</strong>
           <span class="schedule-card__toggle" aria-hidden="true">\u2197</span>
         </button>
@@ -4592,9 +4592,9 @@ void main() {
     projectList.innerHTML = projects.map((project, index) => {
       const teaser = project.title && project.summary?.length && projectTeasers[project.id];
       return `<article class="project-card project-card--archive" data-project-group="${project.group}" style="view-transition-name: project-${escapeHTML(project.id)}">
-    <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\u5C08\u984C\u8A73\u7D30\u8CC7\u8A0A"></button>
+    <button class="project-card__trigger" type="button" data-project-detail="${escapeHTML(project.id)}" aria-haspopup="dialog" aria-label="\u67E5\u770B\u7B2C ${escapeHTML(project.id)} \u7D44\uFF1A${escapeHTML(project.title)}"></button>
     ${teaser ? `<div class="project-card__visual project-card__visual--teaser"><img src="${teaser.src}" alt="${escapeHTML(teaser.alt)}" loading="lazy" decoding="async"></div>` : `<div class="project-card__visual ${index % 3 === 1 ? "project-card__visual--violet" : index % 3 === 2 ? "project-card__visual--line" : ""}" aria-hidden="true"><span>${escapeHTML(project.id)}</span><i></i><i></i><i></i></div>`}
-    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3><div class="project-card__info">${projectInfoMarkup("group", "GROUP", `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`)}${projectInfoMarkup("members", "MEMBERS", project.members)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="\u7814\u8A0E\u6703\u6295\u7A3F\u6A19\u7C64">${tagMarkup(project.conferenceTags)}</div>` : ""}</div>
+    <div class="project-card__body"><h3>${escapeHTML(project.title)}</h3>${!project.titleEn && !project.summary?.length ? '<p class="project-card__pending">\u5C08\u984C\u8CC7\u6599\u5F85\u88DC</p>' : ""}<div class="project-card__info">${projectInfoMarkup("group", "GROUP", `\u7B2C ${project.id} \u7D44\u30FB${groupName(project.group)}`)}${projectInfoMarkup("members", "MEMBERS", project.members)}</div>${project.conferenceTags.length ? `<div class="tag-row" aria-label="\u7814\u8A0E\u6703\u6295\u7A3F\u6A19\u7C64">${tagMarkup(project.conferenceTags)}</div>` : ""}</div>
     <span class="project-card__arrow" aria-hidden="true">\u2197</span>
   </article>`;
     }).join("");
@@ -5259,65 +5259,11 @@ void main() {
       }
     }, { once: true });
   };
-  var bindHeroMetaDrag = () => {
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const cards = [...document.querySelectorAll("#view-home .hero__meta-card")];
-    let activePointer = null;
-    const markGlass = (card) => liquidGlassInstances.get(card.parentElement)?.markChanged(card);
-    cards.forEach((card) => {
-      card.addEventListener("pointerdown", (event) => {
-        if (event.button !== 0 || event.pointerType !== "mouse" || event.isPrimary === false) return;
-        event.preventDefault();
-        activePointer = { card, id: event.pointerId, x: event.clientX, y: event.clientY };
-        card.dataset.dragging = "";
-        card.style.transition = "none";
-        card.setPointerCapture(event.pointerId);
-      });
-      card.addEventListener("pointermove", (event) => {
-        if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
-        event.preventDefault();
-        const x = event.clientX - activePointer.x;
-        const y = event.clientY - activePointer.y;
-        card.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-        markGlass(card);
-      });
-      const returnToRest = (event) => {
-        if (!activePointer || activePointer.card !== card || activePointer.id !== event.pointerId) return;
-        activePointer = null;
-        delete card.dataset.dragging;
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          card.style.transform = "";
-          card.style.transition = "";
-          markGlass(card);
-          return;
-        }
-        card.style.transition = "transform 480ms cubic-bezier(0.22, 1.45, 0.36, 1)";
-        card.style.transform = "translate3d(0, 0, 0)";
-        const settleAt = performance.now() + 520;
-        const refreshReturn = () => {
-          if (!card.isConnected || card.hasAttribute("data-dragging")) return;
-          markGlass(card);
-          if (performance.now() < settleAt) window.requestAnimationFrame(refreshReturn);
-        };
-        window.requestAnimationFrame(refreshReturn);
-      };
-      card.addEventListener("pointerup", returnToRest);
-      card.addEventListener("pointercancel", returnToRest);
-      card.addEventListener("lostpointercapture", returnToRest);
-      card.addEventListener("transitionend", (event) => {
-        if (event.propertyName !== "transform" || card.hasAttribute("data-dragging")) return;
-        card.style.transform = "";
-        card.style.transition = "";
-        markGlass(card);
-      });
-    });
-  };
   renderSchedule();
   renderProjects();
   bindScheduleProjectLinks();
   bindProjectLinks();
   bindCardProximityLight();
-  bindHeroMetaDrag();
   applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || "sense");
   headerState();
   setView(window.location.hash.slice(1), { updateHash: false });
