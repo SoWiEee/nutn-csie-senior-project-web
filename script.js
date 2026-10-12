@@ -101,7 +101,7 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '結合人工智慧語音辨識與量子電路評估之國小台語教材輔助學習系統之研發', titleEn: 'Development of an AI-based Speech Recognition and Quantum Circuit Evaluation System for Elementary Taiwanese Teaching Materials', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用人工智慧台語語音辨識模型與量子計算智慧輔助評估之國小台語人機共同學習', titleEn: 'Human-AI Collaborative Learning of Taiwanese in Elementary Schools: Apply Whisper Taiwanese Model with QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
       paragraph: '隨著母語教育的推廣，台語（閩南語）語音辨識 (Automatic Speech Recognition, ASR) 技術之效能評量日益受到重視。然而，由於台語具有複雜的聲調與連音變調規則，單一語音辨識模型難以在不同教材情境下提供穩定且客觀之評估結果。因此，本研究提出一套結合計算智慧 (Computational Intelligence, CI) 與量子邏輯電路之多模型台語語意評量架構。',
     },
