@@ -10,12 +10,15 @@ Shared prompt: one landscape 16:9 flat minimal research schematic, with 5–8 ma
 - 03: A detected pedestrian, semantic and optical-flow inputs, and diverging future paths for crossing versus continuing.
 - 04: Three-view robot sensing with spatial token grids, one missing/occluded camera, and robust attention fusion from the remaining views.
 - 05: EEG scalp sensors and brainwaves flowing into continuous emotion-conditioned musical ribbons.
+- 06: EEG signals and WGAN-generated traces flow through a compact generator into a comparison grid of classification models.
 - 07: Smartphone sensing and non-contact measurement of a wild bird; visual brackets and inertial orientation arcs, without physical reference objects.
+- 08: A wrist PPG sensor and pulse waveform branch into multi-scale temporal features and a time-frequency map, fuse through cross-attention, and produce systolic and diastolic blood-pressure estimates.
 - 09: PROVE-3D indoor point-cloud scene, a chair localized by a 3D bounding box, multiple observation planes converging into verified spatial evidence.
 - 10: Multi-view images and 3D scene tokens pass through a teacher-initialized model, shared projection slicing, and distillation into a compact deployable VGGT.
 - 11: Federated clients feed a neural network with strong MPC protection on shallow layers and lightweight masking on deeper layers.
 - 12: Clinician reviewing wrist-pulse signals and structured reasoning; restrained herbal context, human-reviewed diagnostic support without cure claims.
-- 15: A wrist PPG sensor and pulse waveform branch into multi-scale temporal features and a time-frequency map, fuse through cross-attention, and produce systolic and diastolic blood-pressure estimates.
+- 13: Two Taiwanese speech streams from different speakers flow through quantum fuzzy inference and semantic analysis into a travel image.
+- 15: A robot arm pushes a small puck along a continuous Flow Matching trajectory with sparse inference steps and a faint alternate path.
 - 16: Batch AI jobs pass through a scheduler and are allocated across two heterogeneous GPU nodes, with shared workload tiles and resource monitoring.
 - 17: Controlled bodyweight squat, pose-joint skeleton, sequential reference silhouettes and temporal alignment ribbons.
 

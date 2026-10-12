@@ -101,18 +101,15 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用人工智慧台語語音辨識模型與量子計算智慧輔助評估之國小台語人機共同學習', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用 Whisper 語音辨識模型與 QCI 評估機制於國小台語人機協同學習之研究', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
-      paragraph: '隨著母語教育的推廣，台語（閩南語）語音辨識 (Automatic Speech Recognition, ASR) 技術之效能評量日益受到重視。然而，由於台語具有複雜的聲調與連音變調規則，單一語音辨識模型難以在不同教材情境下提供穩定且客觀之評估結果。因此，本研究提出一套結合計算智慧 (Computational Intelligence, CI) 與量子邏輯電路之多模型台語語意評量架構。',
+      paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧（Quantum Computational Intelligence, QCI）評估機制的國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
     },
     {
-      paragraph: '本研究蒐集國小台語教材語料，並導入多種語音辨識模型（包含 Whisper 與 Breeze_ASR 系列）進行語音辨識，以取得語意相似度分數，並利用 Python 進行資料分析與視覺化。為改善傳統評分方式之主觀性與模糊性，本研究於 QCI AI 平台建構模糊邏輯知識模型，並利用基因演算法 (Genetic Algorithm, GA) 對隸屬函數參數進行最佳化調整。',
+      paragraph: '在評估機制方面，本研究於 QCI AI 平台建構模糊邏輯知識模型，並採用基因演算法（Genetic Algorithm, GA）最佳化隸屬函數參數，以提升系統評估結果與專家評分的一致性。此外，本研究進一步將 QCI 評估機制映射至量子邏輯電路，探討將模糊推論規則轉換為量子布林邏輯的可行性，並建構人機協同學習回饋機制，使學生能依據 AI 語音辨識與評估結果，即時獲得口語表現回饋及改善建議，促進教師、學生與 AI 系統三方互動的協同學習。',
     },
     {
-      paragraph: '實驗結果顯示，經由基因演算法訓練後，模型能建立較具一致性之評估準則，其自動化評量結果與專家評分具有良好的一致性，並有助於降低多模型評估過程中的主觀誤差。此外，本研究進一步探討將模糊評量規則轉換為量子布林邏輯之可行性，並透過量子邏輯閘建構評估電路。',
-    },
-    {
-      paragraph: '本研究所提出之方法可作為未來多模型台語語音辨識評估之參考架構，並為量子計算應用於語音評量領域提供初步研究基礎。',
+      paragraph: '本研究期望所提出的架構能作為國小台語口語智慧教育與學習評量的參考，並為量子計算智慧應用於語言學習評估提供初步研究基礎。',
     },
   ] },
   { id: '03', code: 'NUTN-CSIE-PRJ-116-003', group: 'sense', title: 'PAMFormer：結合語義特徵、光流與時空關係知識之行人軌跡與穿越意圖聯合預測', titleEn: 'PAMFormer: Joint Prediction of Pedestrian Trajectories and Crossing Intentions Using Semantic Features, Optical Flow, and Spatiotemporal Relational Knowledge', members: '翁立晨、黃可瑜、洪伯翊', studentIds: 'S11259004、S11259035、S11259046', advisor: '陳宗禧', time: '13:30 ~ 13:45', conferenceTags: ['TANET 2026'], summary: [
@@ -142,7 +139,11 @@ const projects = [
       paragraph: '最終系統可將腦電訊號轉換為連續情緒資訊，並據此生成對應情緒特性的音樂，期望提供一種結合生理訊號、情感運算與生成式音樂的新型人機互動方式。',
     },
   ] },
-  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: '第 06 組專題作品', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: 'WGAN 資料增強對常見機器學習與深度學習模型於 EEG 神經退化性疾病分類效能之影響評估', titleEn: 'Evaluating the Impact of WGAN-Based Data Augmentation on Machine Learning and Deep Learning Models for EEG-Based Neurodegenerative Disease Classification', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: ['TAAI 2026'], summary: [
+    {
+      paragraph: '本研究探討 Wasserstein 生成對抗網路 (WGAN) 資料增強應用於腦電圖 (EEG) 神經退化性疾病診斷之效果，並系統性比較常見的機器學習與深度學習模型在資料增強前後的分類效能。實驗採用公開EEG資料集，涵蓋阿茲海默症 (AD)、輕度認知障礙 (MCI) 及正常認知狀態 (CN)三 類，原始資料存在嚴重類別不平衡問題（AD : MCI : CN ≈ 33 : 4 : 2）。本研究以本研究以Progressive WGAN with Gradient Penalty (WGAN-GP) 生成合成 EEG 訊號，將各類別訓練資料補足至4,000筆，並評估Random Forest（RF）、Support Vector Machine（SVM）、一維卷積神經網路(1D CNN)、二維卷積神經網路 (2D CNN) 及 Vision Transformer (ViT) 五種分類模型在資料增強前後的分類表現。實驗結果顯示，WGAN生成資料在0.5至32 Hz有效頻段內與真實EEG訊號具有高度吻合性，確認合成資料的品質可作為訓練資料來源。在分類效能方面，SVM與1D CNN在引入WGAN資料後獲得最顯著的改善，SVM的Macro F1提升11.51%，MCI F1提升31.05%；1D CNN的Macro F1更從30.15%躍升至97.17%。RF亦獲得正向提升，而2D CNN為唯一出現效能輕微下滑的模型，ViT則呈現小幅提升。整體而言，WGAN資料增強對因類別不平衡而受限的模型具有顯著修復效果，但對效能已相對飽和的模型效益有限。MCI類別在所有模型中始終是最難辨識的類別，顯示單純的資料量補足難以根本解決MCI與其他類別之間的特徵重疊問題，未來研究可朝條件式生成策略與更具判別力的特徵表示方向延伸。',
+    },
+  ] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
     {
       paragraph: '野外生態調查常面臨環境限制，無法使用專業測量設備或固定參照物，且生物個體辨識困難、尺寸測量耗時。傳統影像測量方法依賴高解析度相機與已知尺寸的參照物，在野外實地調查中難以實現。',
@@ -151,7 +152,17 @@ const projects = [
       paragraph: '本專題探索利用普通移動設備進行野外生物調查的可行性。透過整合深度學習影像辨識技術與移動設備內建感測器（如慣性測量單元），發展一套無需額外參照物的非接觸式測量方法，以克服野外環境中的測量限制。',
     },
   ] },
-  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '第 08 組專題作品', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [] },
+  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [], summary: [
+    {
+      paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號（Photoplethysmography, PPG）具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓（SBP）與舒張壓（DBP）。',
+    },
+    {
+      paragraph: '本研究結合多尺度特徵提取與時頻域特徵融合，透過卷積神經網路（CNN）學習 PPG 波形的局部特徵，並利用短時傅立葉轉換（STFT）與 Transformer 擷取時頻特徵及其長距離關聯。接著，透過跨注意力機制（Cross-Attention）融合不同分支的特徵，最後由回歸層輸出收縮壓與舒張壓的估測值。',
+    },
+    {
+      paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差（MAE）等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
+    },
+  ] },
   { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: ['ICS 2026'], summary: [
     {
       paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
@@ -190,17 +201,24 @@ const projects = [
       paragraph: '本專題成果展示了智慧辨證、醫師審核、資料回饋及模型更新的整體架構，並透過線上推論與離線訓練分離的設計，提升系統更新與維護的便利性，展現人工智慧應用於中醫診斷輔助的發展潛力，促進傳統中醫數位化與智慧化。',
     },
   ] },
-  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
+  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
+    {
+      paragraph: '本專題以「基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人」為主題，整合自動語音辨識（ASR）、量子模糊推論（QCI）、AI-FML 模型及生成式人工智慧技術，開發一套結合跨國語音辨識、語意分析與圖片生成的多模態智慧應用系統，探討不同國籍使用者的台語語音辨識與語意理解能力。',
+    },
+    {
+      paragraph: '本專題首先使用 QCI & AI-FML 學習平台建立旅遊知識模型，設定預算、旅遊天數及旅遊興趣等輸入變數，並以旅遊推薦 (Recommendation) 為輸出變數，完成 64 條 QCI 模糊推論規則建置及 AI-FML 模型微調。此外，蒐集越南籍與印尼籍使用者的台語語音，利用 KWS AI 平台及不同自動語音辨識模型進行辨識，並透過 Heatmap 與 Average Similarity 比較各模型的辨識結果。',
+    },
+    {
+      paragraph: '在多模態應用方面，本專題結合 TAIDE 進行語意分析，並利用 Speech-to-Image 技術將語音內容轉換為對應圖片，同時完成模擬量子電路的建置與視覺化。實驗結果顯示，Whisper Taiwanese v0.9.7i、Whisper Taiwanese v0.9.7j 及 Breeze ASR 在不同口音的台語語音辨識實驗中具有較佳的辨識表現與語意相似度。',
+    },
+    {
+      paragraph: '本專題整合語音辨識、智慧推論、模型微調、語意分析及圖片生成等技術，展現人工智慧在跨國語言學習與多模態應用上的可行性，可作為未來台語教學、跨國語言學習及智慧人機協作系統發展之參考',
+    },
+  ] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
     {
-      paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號（Photoplethysmography, PPG）具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓（SBP）與舒張壓（DBP）。',
-    },
-    {
-      paragraph: '本研究結合多尺度特徵提取與時頻域特徵融合，透過卷積神經網路（CNN）學習 PPG 波形的局部特徵，並利用短時傅立葉轉換（STFT）與 Transformer 擷取時頻特徵及其長距離關聯。接著，透過跨注意力機制（Cross-Attention）融合不同分支的特徵，最後由回歸層輸出收縮壓與舒張壓的估測值。',
-    },
-    {
-      paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差（MAE）等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
+      paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
     },
   ] },
   { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
@@ -234,12 +252,15 @@ const projectTeasers = {
   '03': { src: 'assets/project-teasers/project-03.webp', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
   '04': { src: 'assets/project-teasers/project-04.webp', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
   '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
+  '06': { src: 'assets/project-teasers/project-06.webp?v=2026-10-12-wgan', alt: '以 WGAN 生成 EEG 訊號並比較多種神經退化性疾病分類模型的專題視覺圖' },
   '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
+  '08': { src: 'assets/project-teasers/project-08.webp?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
   '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
   '10': { src: 'assets/project-teasers/project-10.webp?v=2026-10-12-vggt', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
   '11': { src: 'assets/project-teasers/project-11.webp', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
   '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
-  '15': { src: 'assets/project-teasers/project-15.webp?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
+  '13': { src: 'assets/project-teasers/project-13.webp?v=2026-10-12-qci-speech-image', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.webp?v=2026-10-12-flow-matching', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
   '16': { src: 'assets/project-teasers/project-16.webp?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
   '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
