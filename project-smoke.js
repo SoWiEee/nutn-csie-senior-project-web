@@ -9,8 +9,8 @@ if (
 ) {
   const tailDuration = 850;
   const idleRenderScale = 0.52;
-  const maxRenderPixels = 420_000;
-  const scrollInputInterval = 1000 / 30;
+  const maxRenderPixels = 260_000;
+  const scrollInputInterval = 1000 / 20;
   let canvas;
   let shader;
   let shaderPromise;
@@ -67,8 +67,8 @@ if (
       idleRenderScale,
       Math.sqrt(maxRenderPixels / Math.max(1, width * height * devicePixelRatio ** 2)),
     );
-    const nextWidth = Math.max(1, Math.round(width * scale));
-    const nextHeight = Math.max(1, Math.round(height * scale));
+    const nextWidth = Math.max(1, Math.floor(width * scale));
+    const nextHeight = Math.max(1, Math.floor(height * scale));
     if (nextWidth !== renderWidth || nextHeight !== renderHeight) {
       renderWidth = nextWidth;
       renderHeight = nextHeight;

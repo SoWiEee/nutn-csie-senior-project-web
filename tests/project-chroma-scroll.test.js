@@ -14,6 +14,7 @@ async function replay(source) {
   let nextId = 0;
   let frameTime = 0;
   let canvas;
+  let renderPixels = 0;
   let layoutReady = true;
   const classes = () => {
     const values = new Set();
@@ -44,7 +45,10 @@ async function replay(source) {
   document.elementFromPoint = () => card;
   document.addEventListener = (name, callback) => { listeners[name] = callback; };
   document.createElement = () => ({ style: style(), classList: classes(), setAttribute() {}, remove() {} });
-  const shader = Object.fromEntries(['resize', 'pause', 'resume'].map((name) => [name, () => { counts[name]++; }]));
+  const shader = Object.fromEntries(['resize', 'pause', 'resume'].map((name) => [name, (width, height) => {
+    counts[name]++;
+    if (name === 'resize') renderPixels = width * height;
+  }]));
   vm.runInNewContext(source.replace(/import\('\.\/vendor\/shaders-4\.0\.0\.js(?:\?[^']*)?'\)/, 'Promise.resolve(shaderLibrary)'), {
     document, window, navigator: { gpu: {} }, console,
     shaderLibrary: { createSharedDevice: async () => ({}), createShader: async () => shader },
@@ -67,6 +71,7 @@ async function replay(source) {
   await new Promise(setImmediate);
   flushFrames();
   const firstHoverVisible = canvas.classList.contains('is-active');
+  const preparedRenderPixels = renderPixels;
   Object.keys(counts).forEach((key) => { counts[key] = 0; });
   let scheduledFrames = 0;
   for (let index = 0; index < 120; index++) {
@@ -108,7 +113,7 @@ async function replay(source) {
     flushFrames();
     repeatedReturns.push(canvas.style.visibility === 'visible' && canvas.classList.contains('is-active') && counts.resume > resumesBeforeHover);
   }
-  return { preparedBeforeHover, dialogMousemoveStopped, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
+  return { preparedBeforeHover, preparedRenderPixels, dialogMousemoveStopped, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
 }
 
 (async () => {
@@ -121,12 +126,13 @@ async function replay(source) {
   console.log(JSON.stringify(result));
   if (baseline) return;
   assert.equal(result.preparedBeforeHover, true, 'entering projects prepares the shader before the first hover');
+  assert.ok(result.preparedRenderPixels <= 260_000, 'the shared fluid texture must stay within the smaller pixel budget');
   assert.equal(result.dialogMousemoveStopped, true, 'project detail movement must not bubble to the shader runtime window listener');
   assert.equal(result.firstHoverVisible, true, 'first hover must show the newly created canvas');
   assert.equal(result.duringScroll.resize, 0, 'scroll must preserve fluid textures');
   assert.equal(result.duringScroll.pause, 0, 'scrolling with the pointer over cards must keep the effect running');
   assert.ok(result.duringScroll.pointerSync > 0, 'scrolling must update the stationary pointer in content space');
-  assert.ok(result.duringScroll.pointerSync <= 60, 'stationary scroll input is limited to 30 updates per second');
+  assert.ok(result.duringScroll.pointerSync <= 40, 'stationary scroll input is limited to 20 updates per second');
   assert.equal(result.duringScroll.resume, 0, 'an already running shader must not be resumed for every scroll input');
   assert.equal(result.duringScroll.mask, 0, 'scroll must not rebuild content-relative masks each frame');
   assert.equal(result.duringScroll.scheduledFrames, 120, 'multiple scroll events coalesce into one update per frame');
