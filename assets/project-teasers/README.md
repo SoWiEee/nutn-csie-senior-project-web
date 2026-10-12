@@ -12,10 +12,11 @@ Shared prompt: one landscape 16:9 flat minimal research schematic, with 5–8 ma
 - 05: EEG scalp sensors and brainwaves flowing into continuous emotion-conditioned musical ribbons.
 - 07: Smartphone sensing and non-contact measurement of a wild bird; visual brackets and inertial orientation arcs, without physical reference objects.
 - 09: PROVE-3D indoor point-cloud scene, a chair localized by a 3D bounding box, multiple observation planes converging into verified spatial evidence.
+- 10: Multi-view images and 3D scene tokens pass through a teacher-initialized model, shared projection slicing, and distillation into a compact deployable VGGT.
 - 11: Federated clients feed a neural network with strong MPC protection on shallow layers and lightweight masking on deeper layers.
 - 12: Clinician reviewing wrist-pulse signals and structured reasoning; restrained herbal context, human-reviewed diagnostic support without cure claims.
-- 15: A robot arm pushes a small puck along a continuous Flow Matching trajectory with sparse inference steps and a faint alternate path.
-- 16: Heterogeneous GPU modules, differently sized workloads and allocation lanes representing intelligent scheduling and resource sharing.
+- 15: A wrist PPG sensor and pulse waveform branch into multi-scale temporal features and a time-frequency map, fuse through cross-attention, and produce systolic and diastolic blood-pressure estimates.
+- 16: Batch AI jobs pass through a scheduler and are allocated across two heterogeneous GPU nodes, with shared workload tiles and resource monitoring.
 - 17: Controlled bodyweight squat, pose-joint skeleton, sequential reference silhouettes and temporal alignment ribbons.
 
 Project 05's background was recolored to match the shared midnight navy used across the teaser set.

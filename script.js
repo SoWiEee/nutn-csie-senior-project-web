@@ -101,7 +101,7 @@ const projectDialogClose = document.querySelector('[data-project-dialog-close]')
 
 const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用人工智慧台語語音辨識模型與量子計算智慧輔助評估之國小台語人機共同學習', titleEn: 'Human-AI Collaborative Learning of Taiwanese in Elementary Schools: Apply Whisper Taiwanese Model with QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用人工智慧台語語音辨識模型與量子計算智慧輔助評估之國小台語人機共同學習', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
       paragraph: '隨著母語教育的推廣，台語（閩南語）語音辨識 (Automatic Speech Recognition, ASR) 技術之效能評量日益受到重視。然而，由於台語具有複雜的聲調與連音變調規則，單一語音辨識模型難以在不同教材情境下提供穩定且客觀之評估結果。因此，本研究提出一套結合計算智慧 (Computational Intelligence, CI) 與量子邏輯電路之多模型台語語意評量架構。',
     },
@@ -163,7 +163,17 @@ const projects = [
       paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 54.8%，並在 Nr3D 上取得 55.6%的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
     },
   ] },
-  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '基於 VGGT 之多視角 3D 重建改進', titleEn: 'Enhancing VGGT for Efficient Multi-View 3D Reconstruction', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: [] },
+  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '壓縮 3D 基礎模型：以教師初始化蒸餾與全域投影切片實現可部署的 VGGT', titleEn: 'Compressing a 3D Foundation Model: Teacher-Initialized Distillation and Global Projection Slicing for Deployable VGGT', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: ['ICS 2026'], summary: [
+    {
+      paragraph: 'VGGT 是一個大型前饋式 Transformer，能從多視角影像同時預測相機位姿、深度、點圖與點軌跡，但其 12 億參數的規模使其難以在資源受限的平台上運行。本文研究 VGGT 相機位姿與深度路徑的參數層級壓縮，並發現相機位姿分支存在一種崩塌模式：從頭蒸餾的小型學生模型會使相機 token 退化為近乎恆定、與視角無關的表徵（跨視角餘弦相似度達 0.998），旋轉誤差約為 82°，相當於僅輸出單一平均位姿的失效水準，而深度分支仍能正常訓練。',
+    },
+    {
+      paragraph: '在固定寬度下的元件消融實驗顯示，單獨繼承教師的任何一個元件皆不足以解決問題，誤差仍維持在約 76°；唯有同時繼承 DINOv2 前端、聚合器（aggregator）與相機頭，並凍結前端，才能在 8.42 億參數下恢復接近教師的 RRA@15。',
+    },
+    {
+      paragraph: '進一步的頻譜探測顯示殘差流具有高度低秩性，這促使我們在訓練之後而非之前縮減寬度：透過全域共享的正交投影搭配六個 epoch 的恢復蒸餾，將聚合器與相機頭寬度縮減至四分之一，得到 4.64 億參數的模型，同時保留教師 88% 的真值 RRA@15 與 79% 的旋轉 AUC@30。再結合 INT8 僅權重量化，序列化模型大小降至 537 MB，為 fp32 教師模型的 1/9.4，且相對教師軟標籤的旋轉誤差僅增加 0.01°。在模擬 4～8 GiB 記憶體預算下，該模型可處理 8～32 張影像，而教師模型至多僅能處理 1 張。',
+    },
+  ] },
   { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL(L2-MPC-FL)', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
       paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
@@ -182,24 +192,29 @@ const projects = [
   ] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '第 13 組專題作品', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
     {
-      paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
+      paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號（Photoplethysmography, PPG）具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓（SBP）與舒張壓（DBP）。',
+    },
+    {
+      paragraph: '本研究結合多尺度特徵提取與時頻域特徵融合，透過卷積神經網路（CNN）學習 PPG 波形的局部特徵，並利用短時傅立葉轉換（STFT）與 Transformer 擷取時頻特徵及其長距離關聯。接著，透過跨注意力機制（Cross-Attention）融合不同分支的特徵，最後由回歸層輸出收縮壓與舒張壓的估測值。',
+    },
+    {
+      paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差（MAE）等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
     },
   ] },
   { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
     {
-      paragraph: '近年來，大型語言模型與生成式 AI 快速發展，GPU 已成為訓練、推論與資料處理的主要運算資源。然而大學實驗室與中小型叢集常由不同世代 GPU 組成，且 NVIDIA MPS 允許多個工作共享同一張 GPU，使 GPU 利用率、工作完成時間與批次佇列管理難以同時最佳化，常常面臨以下困境：',
-      bullets: [
-        '異質 GPU 的運算能力與記憶體容量不同，工作放置不能只看 GPU 數量。',
-        'MPS 配額會影響共置工作數、可用容量與實際完成時間。',
-      ],
+      paragraph: '大型語言模型與生成式 AI 快速發展，使 GPU 成為訓練、推論與資料處理的重要運算資源；然而，一般大學實驗室的共享 GPU 主機仍常面臨資源閒置、利用率不足與批次工作管理困難。不同世代的 GPU 在運算能力與記憶體容量上各有差異，工作放置不能只看 GPU 數量；NVIDIA MPS 雖可讓多個工作共享同一張 GPU，資源配額也會影響可共置的工作數、可用容量與完成時間，使資源利用與工作管理難以同時最佳化。',
     },
     {
-      paragraph: '目前常見的系統大多只擅長其中一件事。傳統高效能運算排程器 Slurm 雖然擅長批次工作、佇列與資源管理，但傳統 FCFS 與 Backfill 主要依固定規則運作，難以同時感知 GPU 型號、MPS 配額、工作特徵與佇列狀態，也對彈性擴縮與雲端式管理不夠方便；相對地，容器平台如 Kubernetes 適合容器部署、自動擴縮與健康監控，並不直接提供 Slurm 的批次排程語意。現有研究較少在真實 Slurm 提交流程中，聯合處理異質 GPU、MPS 配額與學習式工作排序。',
+      paragraph: 'Slurm 擅長批次工作、佇列與資源管理，但傳統 FCFS 與 Backfill 主要依固定規則排程，較難同時考量 GPU 型號、MPS 配額、工作特徵與佇列狀態；Kubernetes 適合容器部署、自動擴縮與健康監控，卻未直接提供 Slurm 的批次排程語意。目前較少研究在真實 Slurm 提交流程中，同時處理異質 GPU、MPS 配額與學習式工作排序。',
     },
     {
-      paragraph: '因此，本專題希望結合兩者優點，建立一套既能保有研究者熟悉的工作提交流程，又能做到動態分配 CPU、GPU 與儲存資源的系統。進一步地，我們也希望導入深度強化學習策略，讓系統可以根據工作佇列狀態與叢集狀態，自動做出更合理的資源分配決策。',
+      paragraph: '為結合兩者，本研究提出以 Slurm-on-Kubernetes 為核心的共享 GPU 排程平台，目標是在容器化環境中建立兼具彈性與穩定性的 AI 工作負載排程系統。使用者可沿用熟悉的 Slurm 流程提交工作，並由系統自動啟動、分配與監控資源；架構整合 NVIDIA MPS 多行程共享、執行資源配額控制、監控介面與深度強化學習排程插件，以支援多工作共享 GPU 及智慧化資源放置，並以動態分配 CPU、GPU 與儲存資源為目標。',
+    },
+    {
+      paragraph: '本研究在兩個節點、每個節點配置一張異質 GPU 的實機環境中，測試不同工作佇列深度下 FCFS、Backfill 與多種學習式策略的表現。結果顯示，學習式策略的平均工作完成時間較 FCFS 與 Backfill 顯著改善約 9%～13%，且佇列越深，改善效益越明顯；但在 P99 尾端延遲方面，FCFS 與 Backfill 表現較佳，顯示學習式策略仍有改善空間。',
     },
   ] },
   { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'], summary: [
@@ -221,10 +236,11 @@ const projectTeasers = {
   '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
   '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
   '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
+  '10': { src: 'assets/project-teasers/project-10.webp?v=2026-10-12-vggt', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
   '11': { src: 'assets/project-teasers/project-11.webp', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
   '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
-  '15': { src: 'assets/project-teasers/project-15.webp', alt: '以 Flow Matching 生成連續機器人操作軌跡並減少推論步數的專題視覺圖' },
-  '16': { src: 'assets/project-teasers/project-16.webp', alt: 'Slurm 與 Kubernetes 平台上的 GPU 工作排程專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.webp?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
+  '16': { src: 'assets/project-teasers/project-16.webp?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
   '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
 
