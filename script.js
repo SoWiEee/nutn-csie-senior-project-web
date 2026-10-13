@@ -103,10 +103,10 @@ const projects = [
   { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用 Whisper 語音辨識模型與 QCI 評估機制於國小台語人機協同學習之研究', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
-      paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧（Quantum Computational Intelligence, QCI）評估機制的國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
+      paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧 (Quantum Computational Intelligence, QCI) 評估機制的國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
     },
     {
-      paragraph: '在評估機制方面，本研究於 QCI AI 平台建構模糊邏輯知識模型，並採用基因演算法（Genetic Algorithm, GA）最佳化隸屬函數參數，以提升系統評估結果與專家評分的一致性。此外，本研究進一步將 QCI 評估機制映射至量子邏輯電路，探討將模糊推論規則轉換為量子布林邏輯的可行性，並建構人機協同學習回饋機制，使學生能依據 AI 語音辨識與評估結果，即時獲得口語表現回饋及改善建議，促進教師、學生與 AI 系統三方互動的協同學習。',
+      paragraph: '在評估機制方面，本研究於 QCI AI 平台建構模糊邏輯知識模型，並採用基因演算法 (Genetic Algorithm, GA) 最佳化隸屬函數參數，以提升系統評估結果與專家評分的一致性。此外，本研究進一步將 QCI 評估機制映射至量子邏輯電路，探討將模糊推論規則轉換為量子布林邏輯的可行性，並建構人機協同學習回饋機制，使學生能依據 AI 語音辨識與評估結果，即時獲得口語表現回饋及改善建議，促進教師、學生與 AI 系統三方互動的協同學習。',
     },
     {
       paragraph: '本研究期望所提出的架構能作為國小台語口語智慧教育與學習評量的參考，並為量子計算智慧應用於語言學習評估提供初步研究基礎。',
@@ -141,7 +141,16 @@ const projects = [
   ] },
   { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: 'WGAN 資料增強對常見機器學習與深度學習模型於 EEG 神經退化性疾病分類效能之影響評估', titleEn: 'Evaluating the Impact of WGAN-Based Data Augmentation on Machine Learning and Deep Learning Models for EEG-Based Neurodegenerative Disease Classification', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: ['TAAI 2026'], summary: [
     {
-      paragraph: '本研究探討 Wasserstein 生成對抗網路 (WGAN) 資料增強應用於腦電圖 (EEG) 神經退化性疾病診斷之效果，並系統性比較常見的機器學習與深度學習模型在資料增強前後的分類效能。實驗採用公開EEG資料集，涵蓋阿茲海默症 (AD)、輕度認知障礙 (MCI) 及正常認知狀態 (CN)三 類，原始資料存在嚴重類別不平衡問題（AD : MCI : CN ≈ 33 : 4 : 2）。本研究以本研究以Progressive WGAN with Gradient Penalty (WGAN-GP) 生成合成 EEG 訊號，將各類別訓練資料補足至4,000筆，並評估Random Forest（RF）、Support Vector Machine（SVM）、一維卷積神經網路(1D CNN)、二維卷積神經網路 (2D CNN) 及 Vision Transformer (ViT) 五種分類模型在資料增強前後的分類表現。實驗結果顯示，WGAN生成資料在0.5至32 Hz有效頻段內與真實EEG訊號具有高度吻合性，確認合成資料的品質可作為訓練資料來源。在分類效能方面，SVM與1D CNN在引入WGAN資料後獲得最顯著的改善，SVM的Macro F1提升11.51%，MCI F1提升31.05%；1D CNN的Macro F1更從30.15%躍升至97.17%。RF亦獲得正向提升，而2D CNN為唯一出現效能輕微下滑的模型，ViT則呈現小幅提升。整體而言，WGAN資料增強對因類別不平衡而受限的模型具有顯著修復效果，但對效能已相對飽和的模型效益有限。MCI類別在所有模型中始終是最難辨識的類別，顯示單純的資料量補足難以根本解決MCI與其他類別之間的特徵重疊問題，未來研究可朝條件式生成策略與更具判別力的特徵表示方向延伸。',
+      paragraph: '本研究探討 Wasserstein 生成對抗網路 (WGAN) 資料增強應用於腦電圖 (EEG) 神經退化性疾病診斷之效果，並系統性比較常見的機器學習與深度學習模型在資料增強前後的分類效能。實驗採用公開 EEG 資料集，涵蓋阿茲海默症 (AD)、輕度認知障礙 (MCI) 及正常認知狀態 (CN) 三類，原始資料存在嚴重類別不平衡問題 (AD : MCI : CN ≈ 33 : 4 : 2)。',
+    },
+    {
+      paragraph: '本研究以 Progressive WGAN with Gradient Penalty (WGAN-GP) 生成合成 EEG 訊號，將各類別訓練資料補足至 4,000 筆，並評估 Random Forest (RF)、Support Vector Machine (SVM)、一維卷積神經網路 (1D CNN)、二維卷積神經網路 (2D CNN) 及 Vision Transformer (ViT) 五種分類模型在資料增強前後的分類表現。',
+    },
+    {
+      paragraph: '實驗結果顯示，WGAN 生成資料在 0.5~32 Hz 有效頻段內與真實 EEG 訊號具有高度吻合性，確認合成資料的品質可作為訓練資料來源。在分類效能方面，SVM 與 1D CNN 在引入 WGAN 資料後獲得最顯著的改善，SVM 的 Macro F1 提升 11.51%，MCI F1 提升 31.05%；1D CNN 的 Macro F1 更從 30.15% 躍升至 97.17%。RF 亦獲得正向提升，而 2D CNN 為唯一出現效能輕微下滑的模型，ViT 則呈現小幅提升。',
+    },
+    {
+      paragraph: '整體而言，WGAN 資料增強對因類別不平衡而受限的模型具有顯著修復效果，但對效能已相對飽和的模型效益有限。MCI 類別在所有模型中始終是最難辨識的類別，顯示單純的資料量補足難以根本解決 MCI 與其他類別之間的特徵重疊問題，未來研究可朝條件式生成策略與更具判別力的特徵表示方向延伸。',
     },
   ] },
   { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
@@ -154,13 +163,13 @@ const projects = [
   ] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [], summary: [
     {
-      paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號（Photoplethysmography, PPG）具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓（SBP）與舒張壓（DBP）。',
+      paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號 (Photoplethysmography, PPG) 具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓 (SBP) 與舒張壓 (DBP)。',
     },
     {
-      paragraph: '本研究結合多尺度特徵提取與時頻域特徵融合，透過卷積神經網路（CNN）學習 PPG 波形的局部特徵，並利用短時傅立葉轉換（STFT）與 Transformer 擷取時頻特徵及其長距離關聯。接著，透過跨注意力機制（Cross-Attention）融合不同分支的特徵，最後由回歸層輸出收縮壓與舒張壓的估測值。',
+      paragraph: '本研究結合多尺度特徵提取與時頻域特徵融合，透過卷積神經網路 (CNN) 學習 PPG 波形的局部特徵，並利用短時傅立葉轉換 (STFT) 與 Transformer 擷取時頻特徵及其長距離關聯。接著，透過跨注意力機制 (Cross-Attention) 融合不同分支的特徵，最後由回歸層輸出收縮壓與舒張壓的估測值。',
     },
     {
-      paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差（MAE）等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
+      paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差 (MAE) 等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
     },
   ] },
   { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: ['ICS 2026'], summary: [
@@ -171,7 +180,7 @@ const projects = [
       paragraph: '我們提出 PROVE-3D (Progressive Observation and Verification with Evidence，基於證據的漸進式觀測與驗證)，一套零樣本三維視覺定位框架，整合了增量式多視角觀測、物件層級驗證，以及自適應視覺證據取得。當累積的證據足以確認目標後，Early-stop 策略便會終止後續的場景處理。最後，系統會將已驗證的候選物件投影並融合至三維空間中，以估計其三維邊界框。',
     },
     {
-      paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 54.8%，並在 Nr3D 上取得 55.6%的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
+      paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 54.8%，並在 Nr3D 上取得 55.6% 的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader 觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
     },
   ] },
   { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '壓縮 3D 基礎模型：以教師初始化蒸餾與全域投影切片實現可部署的 VGGT', titleEn: 'Compressing a 3D Foundation Model: Teacher-Initialized Distillation and Global Projection Slicing for Deployable VGGT', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: ['ICS 2026'], summary: [
@@ -179,7 +188,7 @@ const projects = [
       paragraph: 'VGGT 是一個大型前饋式 Transformer，能從多視角影像同時預測相機位姿、深度、點圖與點軌跡，但其 12 億參數的規模使其難以在資源受限的平台上運行。本文研究 VGGT 相機位姿與深度路徑的參數層級壓縮，並發現相機位姿分支存在一種崩塌模式：從頭蒸餾的小型學生模型會使相機 token 退化為近乎恆定、與視角無關的表徵（跨視角餘弦相似度達 0.998），旋轉誤差約為 82°，相當於僅輸出單一平均位姿的失效水準，而深度分支仍能正常訓練。',
     },
     {
-      paragraph: '在固定寬度下的元件消融實驗顯示，單獨繼承教師的任何一個元件皆不足以解決問題，誤差仍維持在約 76°；唯有同時繼承 DINOv2 前端、聚合器（aggregator）與相機頭，並凍結前端，才能在 8.42 億參數下恢復接近教師的 RRA@15。',
+      paragraph: '在固定寬度下的元件消融實驗顯示，單獨繼承教師的任何一個元件皆不足以解決問題，誤差仍維持在約 76°；唯有同時繼承 DINOv2 前端、聚合器 (aggregator) 與相機頭，並凍結前端，才能在 8.42 億參數下恢復接近教師的 RRA@15。',
     },
     {
       paragraph: '進一步的頻譜探測顯示殘差流具有高度低秩性，這促使我們在訓練之後而非之前縮減寬度：透過全域共享的正交投影搭配六個 epoch 的恢復蒸餾，將聚合器與相機頭寬度縮減至四分之一，得到 4.64 億參數的模型，同時保留教師 88% 的真值 RRA@15 與 79% 的旋轉 AUC@30。再結合 INT8 僅權重量化，序列化模型大小降至 537 MB，為 fp32 教師模型的 1/9.4，且相對教師軟標籤的旋轉誤差僅增加 0.01°。在模擬 4～8 GiB 記憶體預算下，該模型可處理 8～32 張影像，而教師模型至多僅能處理 1 張。',
@@ -187,7 +196,7 @@ const projects = [
   ] },
   { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL(L2-MPC-FL)', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
-      paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
+      paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用 MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
     },
   ] },
   { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫智慧辨證與診斷輔助系統', titleEn: 'Intelligent Traditional Chinese Medicine Syndrome Differentiation and Diagnostic Support System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [], summary: [
@@ -195,7 +204,7 @@ const projects = [
       paragraph: '隨著人工智慧技術快速發展，智慧醫療逐漸成為現代醫療的重要趨勢。然而，傳統中醫診斷需整合望、聞、問、切四診資訊，並依賴醫師的臨床經驗進行辨證分析，容易因個人判讀差異影響診斷結果。因此，本專題結合人工智慧與傳統中醫辨證理論，開發「中醫智慧辨證與診斷輔助系統」，期望提升診斷效率與資訊整合能力。',
     },
     {
-      paragraph: '本系統整合患者症狀、病史及脈搏儀數位訊號，透過自然語言處理（NLP）與人工智慧模型進行特徵分析，提供證型辨識、治法建議、方劑推薦及藥材加減方向四項輔助功能，協助醫師進行初步診斷與決策。此外，系統導入醫師參與決策機制（Human-in-the-Loop），由醫師審核並修正 AI 建議，同時蒐集回診療效與診療紀錄，建立標準化訓練資料，作為後續模型優化的依據。',
+      paragraph: '本系統整合患者症狀、病史及脈搏儀數位訊號，透過自然語言處理 (NLP) 與人工智慧模型進行特徵分析，提供證型辨識、治法建議、方劑推薦及藥材加減方向四項輔助功能，協助醫師進行初步診斷與決策。此外，系統導入醫師參與決策機制 (Human-in-the-Loop)，由醫師審核並修正 AI 建議，同時蒐集回診療效與診療紀錄，建立標準化訓練資料，作為後續模型優化的依據。',
     },
     {
       paragraph: '本專題成果展示了智慧辨證、醫師審核、資料回饋及模型更新的整體架構，並透過線上推論與離線訓練分離的設計，提升系統更新與維護的便利性，展現人工智慧應用於中醫診斷輔助的發展潛力，促進傳統中醫數位化與智慧化。',
@@ -203,7 +212,7 @@ const projects = [
   ] },
   { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
     {
-      paragraph: '本專題以「基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人」為主題，整合自動語音辨識（ASR）、量子模糊推論（QCI）、AI-FML 模型及生成式人工智慧技術，開發一套結合跨國語音辨識、語意分析與圖片生成的多模態智慧應用系統，探討不同國籍使用者的台語語音辨識與語意理解能力。',
+      paragraph: '本專題以「基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人」為主題，整合自動語音辨識 (ASR)、量子模糊推論 (QCI)、AI-FML 模型及生成式人工智慧技術，開發一套結合跨國語音辨識、語意分析與圖片生成的多模態智慧應用系統，探討不同國籍使用者的台語語音辨識與語意理解能力。',
     },
     {
       paragraph: '本專題首先使用 QCI & AI-FML 學習平台建立旅遊知識模型，設定預算、旅遊天數及旅遊興趣等輸入變數，並以旅遊推薦 (Recommendation) 為輸出變數，完成 64 條 QCI 模糊推論規則建置及 AI-FML 模型微調。此外，蒐集越南籍與印尼籍使用者的台語語音，利用 KWS AI 平台及不同自動語音辨識模型進行辨識，並透過 Heatmap 與 Average Similarity 比較各模型的辨識結果。',
@@ -212,7 +221,7 @@ const projects = [
       paragraph: '在多模態應用方面，本專題結合 TAIDE 進行語意分析，並利用 Speech-to-Image 技術將語音內容轉換為對應圖片，同時完成模擬量子電路的建置與視覺化。實驗結果顯示，Whisper Taiwanese v0.9.7i、Whisper Taiwanese v0.9.7j 及 Breeze ASR 在不同口音的台語語音辨識實驗中具有較佳的辨識表現與語意相似度。',
     },
     {
-      paragraph: '本專題整合語音辨識、智慧推論、模型微調、語意分析及圖片生成等技術，展現人工智慧在跨國語言學習與多模態應用上的可行性，可作為未來台語教學、跨國語言學習及智慧人機協作系統發展之參考',
+      paragraph: '本專題整合語音辨識、智慧推論、模型微調、語意分析及圖片生成等技術，展現人工智慧在跨國語言學習與多模態應用上的可行性，可作為未來台語教學、跨國語言學習及智慧人機協作系統發展之參考。',
     },
   ] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
@@ -237,7 +246,13 @@ const projects = [
   ] },
   { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'], summary: [
     {
-      paragraph: '本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。',
+      paragraph: '本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。',
+    },
+    {
+      paragraph: '為了處理使用者與標準示範動作之間動作速度不一致的問題，本系統加入局部時間對齊機制，使評分過程能比較相近的動作階段，而非僅依照相同播放時間進行判斷。評分方法則結合整體動作特徵相似度與特定健身動作的姿勢結構分數，以評估使用者動作與標準示範之間的差異。',
+    },
+    {
+      paragraph: '期望本系統能降低居家健身時因缺乏姿勢監督所造成的錯誤動作與運動傷害風險，並提升使用者自我訓練的安全性與有效性。',
     },
   ] },
 ];
@@ -381,7 +396,7 @@ const setView = (view, { updateHash = true } = {}) => {
   const nextView = ['home', 'schedule', 'projects'].includes(view) ? view : 'home';
   const viewChanged = document.body.dataset.view !== nextView;
   viewPanels.forEach((panel) => { panel.hidden = panel.dataset.viewPanel !== nextView; panel.classList.toggle('is-active', panel.dataset.viewPanel === nextView); });
-  viewTabs.forEach((tab) => { const active = tab.dataset.view === nextView; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', String(active)); });
+  viewTabs.forEach((tab) => { const active = tab.dataset.view === nextView; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
   document.body.dataset.view = nextView;
   setMenuState(false);
   if (updateHash) {
@@ -392,7 +407,7 @@ const setView = (view, { updateHash = true } = {}) => {
   scheduleLiquidGlassForCurrentView('view');
 };
 
-const setFilterState = (buttons, activeButton) => buttons.forEach((button) => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); });
+const setFilterState = (buttons, activeButton) => buttons.forEach((button) => { const active = button === activeButton; button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active)); button.tabIndex = active ? 0 : -1; });
 
 const closeProjectDialog = () => {
   if (!projectDialog) return;
@@ -491,6 +506,29 @@ projectFilters.forEach((button) => button.addEventListener('click', () => {
     }
   }
 }));
+
+const bindTablistKeyboard = () => {
+  document.querySelectorAll('[role="tablist"]').forEach((tablist) => {
+    tablist.querySelectorAll('[role="tab"]').forEach((tab) => {
+      tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+    });
+    tablist.addEventListener('keydown', (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      const tabs = [...tablist.querySelectorAll('[role="tab"]')].filter((tab) => !tab.disabled && !tab.hidden);
+      const index = tabs.indexOf(event.target.closest('[role="tab"]'));
+      if (index < 0) return;
+      let nextIndex;
+      if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === 'Home') nextIndex = 0;
+      else if (event.key === 'End') nextIndex = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      tabs[nextIndex].focus({ preventScroll: true });
+      tabs[nextIndex].click();
+    });
+  });
+};
 
 const bindCardProximityLight = () => {
   const cards = [...document.querySelectorAll('[data-card-proximity]')];
@@ -1039,6 +1077,7 @@ bindCardProximityLight();
 applyScheduleFilter(scheduleFilters[0]?.dataset.scheduleFilter || 'sense');
 headerState();
 setView(window.location.hash.slice(1), { updateHash: false });
+bindTablistKeyboard();
 scheduleHomeBackdropProgress();
 initGlassDiagnostics();
 void initLiquidGlass();

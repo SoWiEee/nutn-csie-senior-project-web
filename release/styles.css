@@ -503,7 +503,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
 .schedule-card--break { justify-content: center; margin-top: var(--space-xs); padding-block: var(--space-sm); border-style: dashed; background: transparent; color: var(--color-muted); text-align: center; }
 .schedule-card--break::before { display: none; }
 .schedule-card--break strong { font-size: var(--text-lg); font-weight: 500; letter-spacing: 0.04em; }
-.schedule-card--signal { overflow: clip; isolation: isolate; border-color: oklch(100% 0.005 255 / 0.24); background: linear-gradient(90deg, transparent 0 18%, oklch(78% 0.16 272 / 0.075) 18.1%, transparent 18.25%), linear-gradient(135deg, oklch(78% 0.16 272 / 0.1), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.045), transparent 72%), oklch(15% 0.032 258 / 0.92); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.16), inset 0 -1px 0 oklch(100% 0.005 255 / 0.06), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.28); -webkit-backdrop-filter: none; backdrop-filter: none; contain: paint; }
+.schedule-card--signal { overflow: clip; isolation: isolate; border-color: oklch(100% 0.005 255 / 0.24); background: linear-gradient(135deg, oklch(78% 0.16 272 / 0.1), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.045), transparent 72%), oklch(15% 0.032 258 / 0.92); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.16), inset 0 -1px 0 oklch(100% 0.005 255 / 0.06), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.28); -webkit-backdrop-filter: none; backdrop-filter: none; contain: paint; }
 .schedule-card--signal::before { z-index: 1; width: 3.5rem; background: linear-gradient(90deg, var(--color-accent-strong), oklch(78% 0.16 272 / 0.12)); }
 .schedule-card--signal[data-card-proximity] {
   --card-cool-glow: oklch(65% 0.1 255 / 0.18);
@@ -603,7 +603,7 @@ button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: 0.
   .filter-chip--track:hover .filter-chip__icon { color: var(--color-accent-strong); }
   .schedule-time--break + .schedule-card:hover { background: var(--color-panel-strong); }
   .schedule-card:hover { border-color: var(--color-accent); background: var(--color-panel); }
-  .schedule-card--signal:hover { border-color: oklch(78% 0.16 272 / 0.72); background: linear-gradient(90deg, transparent 0 18%, oklch(78% 0.16 272 / 0.1) 18.1%, transparent 18.25%), linear-gradient(135deg, oklch(78% 0.16 272 / 0.14), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.06), transparent 72%), oklch(16% 0.036 258 / 0.95); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.2), inset 0 -1px 0 oklch(100% 0.005 255 / 0.08), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.32); }
+  .schedule-card--signal:hover { border-color: oklch(78% 0.16 272 / 0.72); background: linear-gradient(135deg, oklch(78% 0.16 272 / 0.14), transparent 38%), linear-gradient(180deg, oklch(100% 0.005 255 / 0.06), transparent 72%), oklch(16% 0.036 258 / 0.95); box-shadow: inset 0 1px 0 oklch(100% 0.005 255 / 0.2), inset 0 -1px 0 oklch(100% 0.005 255 / 0.08), 0 1rem 2.5rem oklch(5% 0.018 260 / 0.32); }
   .schedule-card__trigger:hover .schedule-card__toggle { border-color: var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent-strong); transform: translate(0.1rem, -0.1rem); }
   .project-dialog__close:hover { border-color: var(--color-danger); background: var(--color-danger-soft); color: var(--color-danger); }
 }
@@ -1672,6 +1672,9 @@ body:not([data-view="home"]) .site-backdrop::before {
   #view-schedule .filter-chip__icon { width: 1.5rem; height: 1.5rem; }
   #view-schedule .filter-chip__icon svg { width: 1.35rem; height: 1.35rem; }
   .project-dialog__title-en { max-width: none; font-size: var(--text-md); line-height: 1.4; }
+  .project-dialog__summary-content { line-height: 1.75; }
+  .project-dialog__summary-content p + p,
+  .project-dialog__summary-content ul + p { margin-top: var(--space-lg); }
   .transport-route-list { gap: var(--space-md); }
   .transport-route-list strong,
   .transport-route-list span { font-size: var(--text-sm); }
