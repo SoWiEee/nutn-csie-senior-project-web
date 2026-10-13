@@ -1202,6 +1202,24 @@ body .site-footer {
   box-shadow: inset 0 1px 0 var(--color-glass-highlight), inset 0 -1px 0 var(--color-glass-rim), 0 1.2rem 3rem var(--color-glass-shadow);
 }
 
+@supports (corner-shape: superellipse(2)) {
+  .schedule-card,
+  .project-card,
+  .map-card,
+  .venue-figure,
+  .transport-item--card {
+    corner-shape: superellipse(2);
+  }
+
+  .project-card__trigger,
+  .schedule-card__trigger,
+  [data-card-light]::after,
+  [data-card-proximity]::after,
+  .project-smoke-canvas {
+    corner-shape: inherit;
+  }
+}
+
 @keyframes signal-block-pulse {
   0%, 100% { opacity: 0.45; transform: translate3d(0, 0, 0); }
   50% { opacity: 0.9; transform: translate3d(0.16rem, -0.08rem, 0); }

@@ -20,7 +20,7 @@ test('only the eleven complete projects render static lazy teaser banners', () =
   });
   assert.equal((projectList.innerHTML.match(/<img /g) || []).length, 11);
   for (const id of ids) {
-    assert.match(projectList.innerHTML, new RegExp(`<img src="assets/project-teasers/project-${id}\\.webp"`));
+    assert.match(projectList.innerHTML, new RegExp(`<img src="assets/project-teasers/project-${id}\\.webp(?:\\?[^"]*)?"`));
   }
   assert.equal((projectList.innerHTML.match(/loading="lazy" decoding="async"/g) || []).length, 11);
   assert.equal((projectList.innerHTML.match(/alt="[^"]*[\u3400-\u9fff][^"]*"/g) || []).length, 11);

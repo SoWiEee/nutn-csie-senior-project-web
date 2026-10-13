@@ -30,6 +30,7 @@ if (
   let renderWidth = 0;
   let renderHeight = 0;
   let canvasHeight = 0;
+  const supportsSuperellipse = CSS.supports('corner-shape', 'superellipse(2)');
 
   const isActive = () => document.body.dataset.view === 'projects' && !projectDialog?.open && !document.hidden && windowFocused;
   const isPointerOverGrid = () => {
@@ -78,6 +79,30 @@ if (
     canvas.style.height = `${height}px`;
   };
 
+  const superellipseMask = (x, y, width, height, radius) => {
+    if (!supportsSuperellipse) return `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="${radius}" fill="white"/>`;
+    const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+    if (!r) return `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="white"/>`;
+    const corners = [
+      [x + width - r, y + r, -Math.PI / 2],
+      [x + width - r, y + height - r, 0],
+      [x + r, y + height - r, Math.PI / 2],
+      [x + r, y + r, Math.PI],
+    ];
+    let path = `M ${x + r} ${y} L ${x + width - r} ${y}`;
+    for (const [cx, cy, start] of corners) {
+      for (let step = 0; step <= 16; step++) {
+        const angle = start + Math.PI / 2 * step / 16;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+        const px = cx + Math.sign(cos) * Math.sqrt(Math.abs(cos)) * r;
+        const py = cy + Math.sign(sin) * Math.sqrt(Math.abs(sin)) * r;
+        path += ` L ${px.toFixed(2)} ${py.toFixed(2)}`;
+      }
+    }
+    return `<path d="${path} Z" fill="white"/>`;
+  };
+
   const syncSmokeMask = (refreshMask = false) => {
     if (!canvas) return;
     maskDirty ||= refreshMask;
@@ -113,7 +138,13 @@ if (
           .map((card) => {
             const rect = card.getBoundingClientRect();
             const radius = Number.parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
-            return `<rect x="${(rect.left - gridRect.left).toFixed(2)}" y="${(rect.top - gridRect.top).toFixed(2)}" width="${rect.width.toFixed(2)}" height="${rect.height.toFixed(2)}" rx="${radius}" fill="white"/>`;
+            return superellipseMask(
+              rect.left - gridRect.left,
+              rect.top - gridRect.top,
+              rect.width,
+              rect.height,
+              radius,
+            );
           })
           .filter(Boolean)
           .join('');

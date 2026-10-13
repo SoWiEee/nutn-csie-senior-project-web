@@ -4,13 +4,15 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 // Replay a scroll burst with the real controller and a stubbed WebGPU dependency.
-async function replay(source) {
+async function replay(source, superellipseSupported = true) {
   const listeners = {};
   const dialogListeners = {};
   const frames = new Map();
   const timers = new Map();
   const mutations = [];
   const counts = { resize: 0, mask: 0, pause: 0, resume: 0, pointerSync: 0 };
+  let maskUsesSuperellipsePath = false;
+  let maskUsesRoundRect = false;
   let nextId = 0;
   let frameTime = 0;
   let canvas;
@@ -24,7 +26,15 @@ async function replay(source) {
       toggle: (name, enabled) => enabled ? values.add(name) : values.delete(name),
     };
   };
-  const style = () => ({ setProperty(name) { if (name === 'mask-image') counts.mask++; } });
+  const style = () => ({ setProperty(name, value) {
+    if (name !== 'mask-image') return;
+    counts.mask++;
+    const encodedSvg = value.match(/^url\("data:image\/svg\+xml,(.*)"\)$/)?.[1];
+    if (!encodedSvg) return;
+    const svg = decodeURIComponent(encodedSvg);
+    maskUsesSuperellipsePath ||= /<path d="M/.test(svg) && (svg.match(/\bL /g) || []).length >= 64;
+    maskUsesRoundRect ||= /<rect [^>]*rx="19\.2"/.test(svg);
+  } });
   const document = { body: { dataset: { view: 'projects' } }, hidden: false, hasFocus: () => true };
   const window = {
     innerHeight: 900, devicePixelRatio: 1, scrollY: 0,
@@ -50,7 +60,7 @@ async function replay(source) {
     if (name === 'resize') renderPixels = width * height;
   }]));
   vm.runInNewContext(source.replace(/import\('\.\/vendor\/shaders-4\.0\.0\.js(?:\?[^']*)?'\)/, 'Promise.resolve(shaderLibrary)'), {
-    document, window, navigator: { gpu: {} }, console,
+    document, window, navigator: { gpu: {} }, CSS: { supports: () => superellipseSupported }, console,
     shaderLibrary: { createSharedDevice: async () => ({}), createShader: async () => shader },
     ResizeObserver: class { observe() {} },
     MutationObserver: class { constructor(callback) { this.callback = callback; } observe(target) { mutations.push({ target, callback: this.callback }); } },
@@ -113,7 +123,7 @@ async function replay(source) {
     flushFrames();
     repeatedReturns.push(canvas.style.visibility === 'visible' && canvas.classList.contains('is-active') && counts.resume > resumesBeforeHover);
   }
-  return { preparedBeforeHover, preparedRenderPixels, dialogMousemoveStopped, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
+  return { preparedBeforeHover, preparedRenderPixels, maskUsesSuperellipsePath, maskUsesRoundRect, dialogMousemoveStopped, firstHoverVisible, duringScroll, afterScroll, inactiveFrames, afterReturn, repeatedReturns };
 }
 
 (async () => {
@@ -127,6 +137,10 @@ async function replay(source) {
   if (baseline) return;
   assert.equal(result.preparedBeforeHover, true, 'entering projects prepares the shader before the first hover');
   assert.ok(result.preparedRenderPixels <= 260_000, 'the shared fluid texture must stay within the smaller pixel budget');
+  assert.equal(result.maskUsesSuperellipsePath, true, 'the ChromaFlow card mask must use a smooth superellipse contour');
+  const fallback = await replay(source, false);
+  assert.equal(fallback.maskUsesRoundRect, true, 'browsers without corner-shape keep the rounded-rectangle mask');
+  assert.equal(fallback.maskUsesSuperellipsePath, false, 'unsupported browsers must not receive a superellipse mask');
   assert.equal(result.dialogMousemoveStopped, true, 'project detail movement must not bubble to the shader runtime window listener');
   assert.equal(result.firstHoverVisible, true, 'first hover must show the newly created canvas');
   assert.equal(result.duringScroll.resize, 0, 'scroll must preserve fluid textures');

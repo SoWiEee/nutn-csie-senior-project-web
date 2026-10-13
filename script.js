@@ -100,7 +100,17 @@ const projectDialogSummaryContent = document.querySelector('#project-dialog-summ
 const projectDialogClose = document.querySelector('[data-project-dialog-close]');
 
 const projects = [
-  { id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense', title: '第 01 組專題作品', members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [] },
+  {
+    id: '01', code: 'NUTN-CSIE-PRJ-116-001', group: 'sense',
+    title: '多視角擴散生成的幾何不一致分析與三維高斯重建緩解方法研究',
+    titleEn: 'Analyzing and Mitigating Geometric Inconsistency in 3D Gaussian Reconstruction from Multi-View Diffusion Outputs',
+    members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [],
+    summary: [
+      {
+        paragraph: '本專題探討單張影像經多視角擴散模型生成後，其跨視角幾何不一致對三維高斯重建品質的影響。系統以 Wonder3D++ 產生六視角彩色影像與法向量圖，經去背與前景遮罩處理後，使用 AnySplat 快速建立三維高斯模型。為辨識潛在幾何衝突，本研究將法向量積分為相對深度，並與 AnySplat 預測深度進行對齊與比較，建立逐像素可靠度權重，降低衝突區域在高斯融合中的影響。透過基準版本與加權版本的對照實驗，分析重影、模糊、破碎及模型完整程度，並進一步評估後最佳化的改善效果，探索有限運算資源下兼顧重建品質與效率的方法。',
+      },
+    ],
+  },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用 Whisper 語音辨識模型與 QCI 評估機制於國小台語人機協同學習之研究', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
       paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧 (Quantum Computational Intelligence, QCI) 評估機制的國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
