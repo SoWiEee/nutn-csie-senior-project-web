@@ -117,7 +117,7 @@ const projects = [
       paragraph: '本研究提出 PAMFormer，用於同時預測行人未來軌跡與穿越意圖。PAMFormer-Base 以 Cross-Modal Transformer 整合歷史 bounding boxes、速度、離散位置、可選 optical flow 與 affine 特徵，並由 Enhanced SAIM 聚合 SAM3 semantic patches；PAMFormer-KG 保留相同編碼與雙 LSTM 解碼介面，新增以目標行人為中心的時空關係知識分支，將六維幾何關係、五類 relation states 及 training-only priors 透過 gated cross-attention 融入表示。',
     },
   ] },
-  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'sense', title: '時空多 token 化多視角注意力融合：提升擴散策略對感測缺失的穩定性', titleEn: 'Spatio-Temporal Tokenized Multi-View Fusion for Robust Diffusion Policies', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
+  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'decision', title: '時空多 token 化多視角注意力融合：提升擴散策略對感測缺失的穩定性', titleEn: 'Spatio-Temporal Tokenized Multi-View Fusion for Robust Diffusion Policies', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [], summary: [
     {
       paragraph: '離線強化學習能利用預先收集的示範資料學習機器人控制策略，避免昂貴且危險的即時試誤。近年以擴散模型表示策略的方法，能捕捉多峰動作分布，並結合自注意力雜訊預測模型整合多視角影像與末端執行器資訊。然而，現有架構把每支相機影像壓縮成單一全域特徵，注意力只在少數幾個 token 之間運算，空間位置與時間變化資訊大量流失。此外，模型假設所有感測器都正常運作，一旦鏡頭被遮擋、影像受雜訊干擾或光照改變，策略表現可能大幅下降；各模態對決策的實際貢獻也缺乏驗證。',
     },
@@ -128,7 +128,7 @@ const projects = [
       paragraph: '本研究在 MuJoCo 模擬環境中進行，主要任務是以 UR5 機械手臂把隨機位置的圓餅推到目標區域。另外設計一組感測缺失測試，包括前視或腕部相機失效、影像高斯雜訊、光照變化與相機位置偏移等情境。實驗將比較原始全域特徵架構與本方法在正常及缺失情境下的成功率與平均成功步數，並透過模態消融與注意力權重視覺化，分析策略在接近與推動兩個階段分別依賴哪些感測來源。預期本方法能在維持正常情境表現的同時，明顯降低感測缺失時的性能衰退，也能為「多模態擴散策略如何融合多種感測資訊」提供可解釋的實證依據，提升機器人策略部署到真實場景時的可靠性。',
     },
   ] },
-  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'E2M-DCC：基於腦電訊號連續情感解碼之動態音樂生成系統', titleEn: 'E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
+  { id: '05', code: 'NUTN-CSIE-PRJ-116-005', group: 'sense', title: 'E2M-DCC：基於腦電訊號連續情感解碼之動態音樂生成系統', titleEn: 'E2M-DCC: An EEG-Driven Dynamic Continuous Controller for Emotion-Conditioned Music Generation', members: '陳裕荃、林明亮', studentIds: 'S11259006、S11259053', advisor: '李建樹', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
     {
       paragraph: '隨著生成式人工智慧與腦機介面技術快速發展，如何讓音樂生成系統不只依賴文字或人工設定，而能進一步反映使用者本身的情緒狀態，成為值得探討的研究方向。本研究建立一套以腦電訊號 (EEG) 驅動的情緒音樂生成系統，從 EEG 中解碼連續的 Valence（情緒正負向程度）與 Arousal（情緒喚醒程度），並將其作為音樂生成模型的情緒控制條件。',
     },
@@ -139,7 +139,7 @@ const projects = [
       paragraph: '最終系統可將腦電訊號轉換為連續情緒資訊，並據此生成對應情緒特性的音樂，期望提供一種結合生理訊號、情感運算與生成式音樂的新型人機互動方式。',
     },
   ] },
-  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: 'WGAN 資料增強對常見機器學習與深度學習模型於 EEG 神經退化性疾病分類效能之影響評估', titleEn: 'Evaluating the Impact of WGAN-Based Data Augmentation on Machine Learning and Deep Learning Models for EEG-Based Neurodegenerative Disease Classification', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:25 ~ 14:40', conferenceTags: ['TAAI 2026'], summary: [
+  { id: '06', code: 'NUTN-CSIE-PRJ-116-006', group: 'sense', title: 'WGAN 資料增強對常見機器學習與深度學習模型於 EEG 神經退化性疾病分類效能之影響評估', titleEn: 'Evaluating the Impact of WGAN-Based Data Augmentation on Machine Learning and Deep Learning Models for EEG-Based Neurodegenerative Disease Classification', members: '鐘培嘉、曾金宏、蘇奕安', studentIds: 'S11259008、S11259030、S11259047', advisor: '陳榮銘', time: '14:00 ~ 14:15', conferenceTags: ['TAAI 2026'], summary: [
     {
       paragraph: '本研究探討 Wasserstein 生成對抗網路 (WGAN) 資料增強應用於腦電圖 (EEG) 神經退化性疾病診斷之效果，並系統性比較常見的機器學習與深度學習模型在資料增強前後的分類效能。實驗採用公開 EEG 資料集，涵蓋阿茲海默症 (AD)、輕度認知障礙 (MCI) 及正常認知狀態 (CN) 三類，原始資料存在嚴重類別不平衡問題 (AD : MCI : CN ≈ 33 : 4 : 2)。',
     },
@@ -153,7 +153,7 @@ const projects = [
       paragraph: '整體而言，WGAN 資料增強對因類別不平衡而受限的模型具有顯著修復效果，但對效能已相對飽和的模型效益有限。MCI 類別在所有模型中始終是最難辨識的類別，顯示單純的資料量補足難以根本解決 MCI 與其他類別之間的特徵重疊問題，未來研究可朝條件式生成策略與更具判別力的特徵表示方向延伸。',
     },
   ] },
-  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
+  { id: '07', code: 'NUTN-CSIE-PRJ-116-007', group: 'sense', title: '基於移動設備感測器輔助的野外生物非接觸式測量系統', titleEn: 'Non-contact Measurement System for Wild Animals Assisted by Mobile Device Sensors', members: '嚴才勝、李佾恩、黃聖傑', studentIds: 'S11259011、S11259044、S11259055', advisor: '蘇溢芳', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
     {
       paragraph: '野外生態調查常面臨環境限制，無法使用專業測量設備或固定參照物，且生物個體辨識困難、尺寸測量耗時。傳統影像測量方法依賴高解析度相機與已知尺寸的參照物，在野外實地調查中難以實現。',
     },
@@ -161,7 +161,7 @@ const projects = [
       paragraph: '本專題探索利用普通移動設備進行野外生物調查的可行性。透過整合深度學習影像辨識技術與移動設備內建感測器（如慣性測量單元），發展一套無需額外參照物的非接觸式測量方法，以克服野外環境中的測量限制。',
     },
   ] },
-  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:55 ~ 15:10', conferenceTags: [], summary: [
+  { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
     {
       paragraph: '血壓是評估人體心血管健康的重要指標，傳統袖帶式量測方式較難滿足長時間連續監測的需求。光體積變化描記訊號 (Photoplethysmography, PPG) 具有非侵入性且易於整合至穿戴式裝置的特性，因此，本研究利用深度學習技術，建立無袖帶血壓估測模型，以單一 PPG 訊號估測收縮壓 (SBP) 與舒張壓 (DBP)。',
     },
@@ -172,7 +172,7 @@ const projects = [
       paragraph: '本研究使用公開血壓資料集進行模型訓練與測試，並以平均絕對誤差 (MAE) 等指標評估估測表現，探討多尺度特徵提取與時頻域融合對血壓估測的影響，作為未來穿戴式、非侵入性血壓監測技術的研究基礎。',
     },
   ] },
-  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '15:10 ~ 15:25', conferenceTags: ['ICS 2026'], summary: [
+  { id: '09', code: 'NUTN-CSIE-PRJ-116-009', group: 'sense', title: 'PROVE-3D：漸進式視覺證據驗證之零樣本開放詞彙三維視覺定位', titleEn: 'PROVE-3D: Progressive Observation and Verification with Evidence for Zero-Shot 3D Visual Grounding', members: '羅暐媁、莊旻芳、李安以', studentIds: 'S11259013、S11259019、S11259029', advisor: '林朝興', time: '14:55 ~ 15:10', conferenceTags: ['ICS 2026'], summary: [
     {
       paragraph: '近年來，視覺語言模型 (Vision-Language Models, VLMs) 的發展，使得在不需要針對特定三維任務進行訓練的情況下，執行零樣本三維視覺定位 (zero-shot 3D visual grounding) 成為可能。然而，現有的多視角觀測可能無法針對包含目標屬性、參考物件與空間關係的查詢提供足夠的視覺證據。',
     },
@@ -183,7 +183,7 @@ const projects = [
       paragraph: 'PROVE-3D 在 ScanRefer 上取得整體 Acc@0.25 54.8%，並在 Nr3D 上取得 55.6% 的 top-1 定位準確率。在 ScanRefer 上，Early-stop 僅使用 Full-scene 所取樣 Reader 觀測預算的 62.93%，同時保留 Full-scene 95.62% 的 Acc@0.25 表現，顯示其能在三維定位效能與觀測需求之間取得有效的權衡。',
     },
   ] },
-  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '壓縮 3D 基礎模型：以教師初始化蒸餾與全域投影切片實現可部署的 VGGT', titleEn: 'Compressing a 3D Foundation Model: Teacher-Initialized Distillation and Global Projection Slicing for Deployable VGGT', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:00 ~ 13:15', conferenceTags: ['ICS 2026'], summary: [
+  { id: '10', code: 'NUTN-CSIE-PRJ-116-010', group: 'decision', title: '壓縮 3D 基礎模型：以教師初始化蒸餾與全域投影切片實現可部署的 VGGT', titleEn: 'Compressing a 3D Foundation Model: Teacher-Initialized Distillation and Global Projection Slicing for Deployable VGGT', members: '黃子齊、林崇瑋、陳冠友', studentIds: 'S11259014、S11259031、S11259039', advisor: '林朝興', time: '13:15 ~ 13:30', conferenceTags: ['ICS 2026'], summary: [
     {
       paragraph: 'VGGT 是一個大型前饋式 Transformer，能從多視角影像同時預測相機位姿、深度、點圖與點軌跡，但其 12 億參數的規模使其難以在資源受限的平台上運行。本文研究 VGGT 相機位姿與深度路徑的參數層級壓縮，並發現相機位姿分支存在一種崩塌模式：從頭蒸餾的小型學生模型會使相機 token 退化為近乎恆定、與視角無關的表徵（跨視角餘弦相似度達 0.998），旋轉誤差約為 82°，相當於僅輸出單一平均位姿的失效水準，而深度分支仍能正常訓練。',
     },
@@ -194,12 +194,12 @@ const projects = [
       paragraph: '進一步的頻譜探測顯示殘差流具有高度低秩性，這促使我們在訓練之後而非之前縮減寬度：透過全域共享的正交投影搭配六個 epoch 的恢復蒸餾，將聚合器與相機頭寬度縮減至四分之一，得到 4.64 億參數的模型，同時保留教師 88% 的真值 RRA@15 與 79% 的旋轉 AUC@30。再結合 INT8 僅權重量化，序列化模型大小降至 537 MB，為 fp32 教師模型的 1/9.4，且相對教師軟標籤的旋轉誤差僅增加 0.01°。在模擬 4～8 GiB 記憶體預算下，該模型可處理 8～32 張影像，而教師模型至多僅能處理 1 張。',
     },
   ] },
-  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL(L2-MPC-FL)', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
+  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL(L2-MPC-FL)', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '13:30 ~ 13:45', conferenceTags: [], summary: [
     {
       paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用 MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
     },
   ] },
-  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫智慧辨證與診斷輔助系統', titleEn: 'Intelligent Traditional Chinese Medicine Syndrome Differentiation and Diagnostic Support System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:30 ~ 13:45', conferenceTags: [], summary: [
+  { id: '12', code: 'NUTN-CSIE-PRJ-116-012', group: 'decision', title: '中醫智慧辨證與診斷輔助系統', titleEn: 'Intelligent Traditional Chinese Medicine Syndrome Differentiation and Diagnostic Support System', members: '楊諭昌、花揚景、李泳儀', studentIds: 'S11259018、S11259025、S11259049', advisor: '高啟洲', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
     {
       paragraph: '隨著人工智慧技術快速發展，智慧醫療逐漸成為現代醫療的重要趨勢。然而，傳統中醫診斷需整合望、聞、問、切四診資訊，並依賴醫師的臨床經驗進行辨證分析，容易因個人判讀差異影響診斷結果。因此，本專題結合人工智慧與傳統中醫辨證理論，開發「中醫智慧辨證與診斷輔助系統」，期望提升診斷效率與資訊整合能力。',
     },
@@ -210,7 +210,7 @@ const projects = [
       paragraph: '本專題成果展示了智慧辨證、醫師審核、資料回饋及模型更新的整體架構，並透過線上推論與離線訓練分離的設計，提升系統更新與維護的便利性，展現人工智慧應用於中醫診斷輔助的發展潛力，促進傳統中醫數位化與智慧化。',
     },
   ] },
-  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '13:45 ~ 14:00', conferenceTags: [], summary: [
+  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
     {
       paragraph: '本專題以「基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人」為主題，整合自動語音辨識 (ASR)、量子模糊推論 (QCI)、AI-FML 模型及生成式人工智慧技術，開發一套結合跨國語音辨識、語意分析與圖片生成的多模態智慧應用系統，探討不同國籍使用者的台語語音辨識與語意理解能力。',
     },
@@ -224,13 +224,13 @@ const projects = [
       paragraph: '本專題整合語音辨識、智慧推論、模型微調、語意分析及圖片生成等技術，展現人工智慧在跨國語言學習與多模態應用上的可行性，可作為未來台語教學、跨國語言學習及智慧人機協作系統發展之參考。',
     },
   ] },
-  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:00 ~ 14:15', conferenceTags: [] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
     {
       paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
     },
   ] },
-  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:40 ~ 14:55', conferenceTags: ['TANET 2026'], summary: [
+  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['TANET 2026'], summary: [
     {
       paragraph: '大型語言模型與生成式 AI 快速發展，使 GPU 成為訓練、推論與資料處理的重要運算資源；然而，一般大學實驗室的共享 GPU 主機仍常面臨資源閒置、利用率不足與批次工作管理困難。不同世代的 GPU 在運算能力與記憶體容量上各有差異，工作放置不能只看 GPU 數量；NVIDIA MPS 雖可讓多個工作共享同一張 GPU，資源配額也會影響可共置的工作數、可用容量與完成時間，使資源利用與工作管理難以同時最佳化。',
     },
@@ -244,7 +244,7 @@ const projects = [
       paragraph: '本研究在兩個節點、每個節點配置一張異質 GPU 的實機環境中，測試不同工作佇列深度下 FCFS、Backfill 與多種學習式策略的表現。結果顯示，學習式策略的平均工作完成時間較 FCFS 與 Backfill 顯著改善約 9%～13%，且佇列越深，改善效益越明顯；但在 P99 尾端延遲方面，FCFS 與 Backfill 表現較佳，顯示學習式策略仍有改善空間。',
     },
   ] },
-  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '14:55 ~ 15:10', conferenceTags: ['CVGIP 2026'], summary: [
+  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '15:10 ~ 15:25', conferenceTags: ['CVGIP 2026'], summary: [
     {
       paragraph: '本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。',
     },
