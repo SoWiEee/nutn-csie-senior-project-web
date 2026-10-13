@@ -273,6 +273,7 @@ const groupMeta = {
 };
 
 const projectTeasers = {
+  '01': { src: 'assets/project-teasers/project-01.webp', alt: '單張影像經多視角生成與幾何可靠度分析後重建為三維高斯模型的專題示意圖' },
   '02': { src: 'assets/project-teasers/project-02.webp', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
   '03': { src: 'assets/project-teasers/project-03.webp', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
   '04': { src: 'assets/project-teasers/project-04.webp', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },

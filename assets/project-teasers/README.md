@@ -6,6 +6,7 @@ Shared prompt: one landscape 16:9 flat minimal research schematic, with 5–8 ma
 
 ## Subject prompts
 
+- 01: A single reference image branches into six chair views; a geometric mismatch is identified and down-weighted by a reliability grid before a Gaussian-splat chair reconstruction.
 - 02: Taiwanese speech waveform and recognition panel connected to a compact quantum logic circuit and elementary learning materials.
 - 03: A detected pedestrian, semantic and optical-flow inputs, and diverging future paths for crossing versus continuing.
 - 04: Three-view robot sensing with spatial token grids, one missing/occluded camera, and robust attention fusion from the remaining views.
