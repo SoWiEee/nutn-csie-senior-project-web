@@ -1,4 +1,4 @@
-// Keep the bundled 4.0.0 pointer handler bounded during mouse bursts and hidden views.
+// Bound pointer input and brush work without changing the bundled 4.0.0 flow output.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -9,6 +9,9 @@ const mouseHandlers = [
   'mW=X=>{!i||!a||!ff(X)||(xe=!0,pa())}',
 ];
 const replacements = [
+  // The brush is zero outside its aspect-corrected radius; keep the original distance check inside.
+  ['for(let Q=0;Q<go;Q++)for(let se=0;se<go;se++)',
+   'let minX=Math.max(0,Math.floor((k.pointer.x-2*F/Math.max(y,1))*go)),maxX=Math.min(go-1,Math.ceil((k.pointer.x+2*F/Math.max(y,1))*go)),minY=Math.max(0,Math.floor((k.pointer.y-2*F*Math.min(y,1))*go)),maxY=Math.min(go-1,Math.ceil((k.pointer.y+2*F*Math.min(y,1))*go));for(let Q=minY;Q<=maxY;Q++)for(let se=minX;se<=maxX;se++)'],
   ['ff=X=>{if(!a)return;Re=a.getBoundingClientRect();let Z,J;',
    'ff=X=>{if(!a)return!1;Re=a.getBoundingClientRect();if(!(Re.width>0&&Re.height>0))return!1;let Z,J;'],
   ['we=(Z-Re.left)/Re.width,de=(J-Re.top)/Re.height,Ae=!0}',

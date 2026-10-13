@@ -50,7 +50,7 @@ if (
   };
 
   const loadLibrary = () => {
-    libraryPromise ??= import('./vendor/shaders-4.0.0.js?v=frame-input-2');
+    libraryPromise ??= import('./vendor/shaders-4.0.0.js?v=bounded-brush-1');
     return libraryPromise;
   };
 
