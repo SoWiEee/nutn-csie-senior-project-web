@@ -107,16 +107,16 @@ const projects = [
     members: '陳俊亦、吳誌軒', studentIds: 'S11259001、S11259009', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [],
     summary: [
       {
-        paragraph: '本專題探討單張影像經多視角擴散模型生成後，其跨視角幾何不一致對三維高斯重建品質的影響。系統以 Wonder3D++ 產生六視角彩色影像與法向量圖，經去背與前景遮罩處理後，使用 AnySplat 快速建立三維高斯模型。為辨識潛在幾何衝突，本研究將法向量積分為相對深度，並與 AnySplat 預測深度進行對齊與比較，建立逐像素可靠度權重，降低衝突區域在高斯融合中的影響。透過基準版本與加權版本的對照實驗，分析重影、模糊、破碎及模型完整程度，並進一步評估後最佳化的改善效果，探索有限運算資源下兼顧重建品質與效率的方法。',
+        paragraph: '本專題探討單張影像經多視角擴散模型生成後，其跨視角幾何不一致對三維高斯重建品質的影響。系統以 Wonder3D++ 產生六視角彩色影像與法向量圖，經過去背與前景遮罩處理後，使用 AnySplat 快速建立三維高斯模型。為辨識潛在幾何衝突，本研究將法向量積分為相對深度，並與 AnySplat 預測深度進行對齊與比較，建立逐像素可靠度權重，降低衝突區域在高斯融合中的影響。透過基準版本與加權版本的對照實驗，分析重影、模糊、破碎及模型完整程度，並進一步評估後最佳化的改善效果，探索有限運算資源下兼顧重建品質與效率的方法。',
       },
     ],
   },
   { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用 Whisper 語音辨識模型與 QCI 評估機制於國小台語人機協同學習之研究', titleEn: 'Human–AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:15 ~ 13:30', conferenceTags: [], summary: [
     {
-      paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧 (Quantum Computational Intelligence, QCI) 評估機制的國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
+      paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧（Quantum Computational Intelligence, QCI）評估機制之國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
     },
     {
-      paragraph: '在評估機制方面，本研究於 QCI AI 平台建構模糊邏輯知識模型，並採用基因演算法 (Genetic Algorithm, GA) 最佳化隸屬函數參數，以提升系統評估結果與專家評分的一致性。此外，本研究進一步將 QCI 評估機制映射至量子邏輯電路，探討將模糊推論規則轉換為量子布林邏輯的可行性，並建構人機協同學習回饋機制，使學生能依據 AI 語音辨識與評估結果，即時獲得口語表現回饋及改善建議，促進教師、學生與 AI 系統三方互動的協同學習。',
+      paragraph: '在評估機制方面，本研究於 QCI AI 平台建構模糊邏輯知識模型，並採用基因演算法（Genetic Algorithm, GA）最佳化隸屬函數參數，以提升系統評估結果與專家評分的一致性。此外，本研究進一步將 QCI 評估機制映射至量子邏輯電路，探討將模糊推論規則轉換為量子布林邏輯的可行性，並建構人機協同學習回饋機制，使學生能依據 AI 語音辨識與評估結果，即時獲得口語表現回饋及改善建議，促進教師、學生與 AI 系統三方互動的協同學習。',
     },
     {
       paragraph: '本研究期望所提出的架構能作為國小台語口語智慧教育與學習評量的參考，並為量子計算智慧應用於語言學習評估提供初步研究基礎。',
@@ -168,7 +168,7 @@ const projects = [
       paragraph: '野外生態調查常面臨環境限制，無法使用專業測量設備或固定參照物，且生物個體辨識困難、尺寸測量耗時。傳統影像測量方法依賴高解析度相機與已知尺寸的參照物，在野外實地調查中難以實現。',
     },
     {
-      paragraph: '本專題探索利用普通移動設備進行野外生物調查的可行性。透過整合深度學習影像辨識技術與移動設備內建感測器（如慣性測量單元），發展一套無需額外參照物的非接觸式測量方法，以克服野外環境中的測量限制。',
+      paragraph: '本專題探索利用**普通移動設備**進行野外生物調查的可行性。透過整合深度學習影像辨識技術與**移動設備內建感測器**（如慣性測量單元），發展一套無需額外參照物的非接觸式測量方法，以克服野外環境中的測量限制。',
     },
   ] },
   { id: '08', code: 'NUTN-CSIE-PRJ-116-008', group: 'sense', title: '基於多尺度時頻特徵融合深度學習模型之無袖帶血壓估測', titleEn: 'A Deep Learning Model with Multi-Scale Time-Frequency Feature Fusion for PPG-Based Cuffless Blood Pressure Estimation', members: '李祥安、蔡侑軒', studentIds: 'S11259012、S11259040', advisor: '李建樹', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
@@ -254,7 +254,7 @@ const projects = [
       paragraph: '本研究在兩個節點、每個節點配置一張異質 GPU 的實機環境中，測試不同工作佇列深度下 FCFS、Backfill 與多種學習式策略的表現。結果顯示，學習式策略的平均工作完成時間較 FCFS 與 Backfill 顯著改善約 9%～13%，且佇列越深，改善效益越明顯；但在 P99 尾端延遲方面，FCFS 與 Backfill 表現較佳，顯示學習式策略仍有改善空間。',
     },
   ] },
-  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '結合骨架序列與深度學習之健身動作品質評估架構', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '15:10 ~ 15:25', conferenceTags: ['CVGIP 2026'], summary: [
+  { id: '17', code: 'NUTN-CSIE-PRJ-116-017', group: 'decision', title: '基於深度學習技術之骨架式健身動作品質評估框架', titleEn: 'A Skeleton-Based Fitness Movement Quality Assessment Framework Using Deep Learning Techniques', members: '黃子勁', studentIds: 'S11259048', advisor: '陳宗禧', time: '15:10 ~ 15:25', conferenceTags: ['CVGIP 2026'], summary: [
     {
       paragraph: '本專題旨在建立一套智慧健身動作品質評估系統，協助使用者在居家或缺乏教練指導的環境下，獲得即時且客觀的動作回饋。系統以一般網路攝影機作為輸入，擷取使用者運動過程中的人體姿態資訊，並將連續骨架序列轉換為可供模型分析的動作特徵。',
     },
@@ -293,7 +293,7 @@ const projectTeasers = {
 
 const escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
 const tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? ' conference-tag--accent' : ''}">${escapeHTML(tag)}</span>`).join('') : '';
-const projectSummaryMarkup = (blocks = []) => blocks.map(({ paragraph, bullets = [] }) => `<p>${escapeHTML(paragraph)}</p>${bullets.length ? `<ul>${bullets.map((bullet) => `<li>${escapeHTML(bullet)}</li>`).join('')}</ul>` : ''}`).join('');
+const projectSummaryMarkup = (blocks = []) => blocks.map(({ paragraph, bullets = [] }) => `<p>${escapeHTML(paragraph).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>${bullets.length ? `<ul>${bullets.map((bullet) => `<li>${escapeHTML(bullet)}</li>`).join('')}</ul>` : ''}`).join('');
 const timePointMarkup = (time, className = '') => {
   const [start] = time.split(' ~ ');
   return `<time class="schedule-time${className ? ` ${className}` : ''}">${escapeHTML(start)}</time>`;
