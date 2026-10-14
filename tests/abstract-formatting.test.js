@@ -15,6 +15,18 @@ test('group 01 includes the supplied bilingual title and abstract', () => {
   assert.equal(summary('01'), '本專題探討單張影像經多視角擴散模型生成後，其跨視角幾何不一致對三維高斯重建品質的影響。系統以 Wonder3D++ 產生六視角彩色影像與法向量圖，經過去背與前景遮罩處理後，使用 AnySplat 快速建立三維高斯模型。為辨識潛在幾何衝突，本研究將法向量積分為相對深度，並與 AnySplat 預測深度進行對齊與比較，建立逐像素可靠度權重，降低衝突區域在高斯融合中的影響。透過基準版本與加權版本的對照實驗，分析重影、模糊、破碎及模型完整程度，並進一步評估後最佳化的改善效果，探索有限運算資源下兼顧重建品質與效率的方法。');
 });
 
+test('group 13 retains its bilingual title and the supplied speech, inference, and fall-alert details', () => {
+  const project = projects.find((item) => item.id === '13');
+  const text = summary('13');
+  assert.equal(project.title, '基於量子模糊推論之跨國語轉影像多模態評估智慧代理人');
+  assert.equal(project.titleEn, 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference');
+  assert.equal(project.summary.length, 4);
+  for (const value of ['Automatic Speech Recognition, ASR', 'Quantum Fuzzy Inference Engine, QFIE', '中文、英文、越南語、印尼語及台語五種語言', '64 條 QCI', '30 秒', 'ntfy App', '這個公共場所有人跌到受傷，請幫忙通知救護人員']) {
+    assert.ok(text.includes(value), value);
+  }
+  assert.doesNotMatch(text, /Whisper Taiwanese|Breeze ASR/);
+});
+
 test('groups 02, 07, and 17 reflect the current student-submitted text', () => {
   assert.match(summary('02'), /量子計算智慧（Quantum Computational Intelligence, QCI）評估機制之國小台語人機協同學習架構/);
   assert.match(summary('02'), /基因演算法（Genetic Algorithm, GA）/);

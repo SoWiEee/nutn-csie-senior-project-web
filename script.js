@@ -220,18 +220,18 @@ const projects = [
       paragraph: '本專題成果展示了智慧辨證、醫師審核、資料回饋及模型更新的整體架構，並透過線上推論與離線訓練分離的設計，提升系統更新與維護的便利性，展現人工智慧應用於中醫診斷輔助的發展潛力，促進傳統中醫數位化與智慧化。',
     },
   ] },
-  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
+  { id: '13', code: 'NUTN-CSIE-PRJ-116-013', group: 'decision', title: '基於量子模糊推論之跨國語轉影像多模態評估智慧代理人', titleEn: 'A Cross-Border Speech-to-Image Multimodal Assessment Agent Based on Quantum Fuzzy Inference', members: '武明乖、蕭麗麗', studentIds: 'S11259020、S11259021', advisor: '李健興', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
     {
-      paragraph: '本專題以「基於量子模糊推論之跨國語音轉影像多模態評估智慧代理人」為主題，整合自動語音辨識 (ASR)、量子模糊推論 (QCI)、AI-FML 模型及生成式人工智慧技術，開發一套結合跨國語音辨識、語意分析與圖片生成的多模態智慧應用系統，探討不同國籍使用者的台語語音辨識與語意理解能力。',
+      paragraph: '本專題以人工智慧為核心，整合自動語音辨識 (Automatic Speech Recognition, ASR)、量子模糊推論引擎 (Quantum Fuzzy Inference Engine, QFIE)、AI-FML 模型、TAIDE 語意分析及生成式人工智慧，實作一套結合多語言互動、語音辨識、語意理解、圖片生成與智慧跌倒警示的多模態應用系統。系統涵蓋中文、英文、越南語、印尼語及台語五種語言，期望提升不同語言使用者與人工智慧系統之間的溝通效率，並拓展人工智慧在智慧學習、人機互動及安全監測等領域的應用。',
     },
     {
-      paragraph: '本專題首先使用 QCI & AI-FML 學習平台建立旅遊知識模型，設定預算、旅遊天數及旅遊興趣等輸入變數，並以旅遊推薦 (Recommendation) 為輸出變數，完成 64 條 QCI 模糊推論規則建置及 AI-FML 模型微調。此外，蒐集越南籍與印尼籍使用者的台語語音，利用 KWS AI 平台及不同自動語音辨識模型進行辨識，並透過 Heatmap 與 Average Similarity 比較各模型的辨識結果。',
+      paragraph: '在多語言語音辨識方面，本專題運用 KWS AI 平台與多種自動語音辨識模型處理語音，並以越南籍與印尼籍使用者的台語語音為主要研究對象，探討不同母語背景與發音習慣對辨識結果的影響。為比較模型表現，研究以 Heatmap 呈現模型間的辨識差異，並透過 Average Similarity 分析結果相似程度，作為評估與後續優化的參考。此外，系統結合 TAIDE 進行語意分析，並利用 Speech-to-Image 技術將語音或文字所表達的語意轉換為對應圖片，呈現語音、文字與影像之間的多模態應用流程。',
     },
     {
-      paragraph: '在多模態應用方面，本專題結合 TAIDE 進行語意分析，並利用 Speech-to-Image 技術將語音內容轉換為對應圖片，同時完成模擬量子電路的建置與視覺化。實驗結果顯示，Whisper Taiwanese v0.9.7i、Whisper Taiwanese v0.9.7j 及 Breeze ASR 在不同口音的台語語音辨識實驗中具有較佳的辨識表現與語意相似度。',
+      paragraph: '在智慧推論與模型建置方面，本專題使用 QCI & AI-FML 學習平台建立旅遊知識模型，將預算、旅遊天數與旅遊興趣設為輸入變數，並以旅遊推薦 (Recommendation) 為輸出變數，完成 64 條 QCI 模糊推論規則的建置。透過模糊集合與推論規則，系統可依不同輸入條件進行推論，作為旅遊推薦應用的基礎。同時，本專題完成 AI-FML 模型微調，並建置與視覺化模擬量子電路，以呈現量子模糊推論模型的運作概念與實作流程。',
     },
     {
-      paragraph: '本專題整合語音辨識、智慧推論、模型微調、語意分析及圖片生成等技術，展現人工智慧在跨國語言學習與多模態應用上的可行性，可作為未來台語教學、跨國語言學習及智慧人機協作系統發展之參考。',
+      paragraph: '在智慧安全監測方面，本專題使用攝影機影像辨識與跌倒警示功能分析影像，判斷使用者是否發生疑似跌倒事件。偵測到疑似跌倒時，畫面會顯示確認介面，供使用者確認自身狀況。若使用者意識清楚且無需協助，可按下「我沒事」按鈕表示目前狀況正常；若系統在 30 秒內未收到回應，便透過 ntfy App 自動發送警示通知：「這個公共場所有人跌到受傷，請幫忙通知救護人員」，提醒相關人員留意並確認使用者的安全狀況。此設計可減少使用者跌倒後未能及時通報的風險，並提升智慧安全監測系統的即時性與實用性。',
     },
   ] },
   { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [] },
