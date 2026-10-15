@@ -7,9 +7,9 @@ const vm = require('node:vm');
 const source = readFileSync(resolve(__dirname, '../script.js'), 'utf8');
 const section = (start, end) => source.slice(source.indexOf(start), source.indexOf(end));
 
-test('the twelve complete projects render static lazy teaser banners', () => {
+test('the thirteen complete projects render static lazy teaser banners', () => {
   const projectList = { innerHTML: '' };
-  const ids = ['01', '02', '03', '04', '05', '07', '09', '11', '12', '15', '16', '17'];
+  const ids = ['01', '02', '03', '04', '05', '07', '09', '11', '12', '14', '15', '16', '17'];
   const projects = [...ids.map((id) => ({ id, group: 'sense', title: `專題 ${id}`, summary: ['摘要'], members: '', conferenceTags: [] })),
     { id: '18', group: 'sense', title: '未提供圖片', summary: ['摘要'], members: '', conferenceTags: [] }];
   vm.runInNewContext(section('const projectTeasers =', 'const escapeHTML =')

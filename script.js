@@ -234,7 +234,26 @@ const projects = [
       paragraph: '在智慧安全監測方面，本專題使用攝影機影像辨識與跌倒警示功能分析影像，判斷使用者是否發生疑似跌倒事件。偵測到疑似跌倒時，畫面會顯示確認介面，供使用者確認自身狀況。若使用者意識清楚且無需協助，可按下「我沒事」按鈕表示目前狀況正常；若系統在 30 秒內未收到回應，便透過 ntfy App 自動發送警示通知：「這個公共場所有人跌到受傷，請幫忙通知救護人員」，提醒相關人員留意並確認使用者的安全狀況。此設計可減少使用者跌倒後未能及時通報的風險，並提升智慧安全監測系統的即時性與實用性。',
     },
   ] },
-  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '第 14 組專題作品', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [] },
+  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '結合交通預測之即時動態導航系統', titleEn: 'A Real-Time Dynamic Navigation System Integrating Traffic Prediction', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+    {
+      paragraph: '交通情況不斷變化時，導航系統需要即時尋找最佳路徑。事故發生後，系統須判斷影響範圍並快速重新規劃：若只在固定範圍內調整成本，難以反映事故向上游擴散造成的回堵；若每次都重算整個路網，則會增加運算負擔，難以即時反應。',
+    },
+    {
+      paragraph: '本專題以 OpenStreetMap 台灣路網為基礎，整合交通部 TDX 路況與中央氣象署氣象資料，並以 A* 演算法綜合行車時間、事故風險、轉彎與號誌延遲規劃路線。為兼顧即時反應與搜尋效率，系統採取三項策略：',
+    },
+    {
+      paragraph: '（一）增量更新：依事件地點的道路特性推估影響範圍，只更新受影響的路段；再以 PageRank 殘差推送，使影響沿上游逐段衰減。衰減程度以實際國道事故的回堵資料校正，並透過直接相依索引重複利用已計算的結果。',
+    },
+    {
+      paragraph: '（二）核心節點子圖切割：以路口作為核心節點，將兩路口之間的道路收縮為子圖，以大幅減少路徑搜尋的運算量。',
+    },
+    {
+      paragraph: '（三）T-GCN 時空圖神經網路：預測未來車速，在壅塞發生前預先繞道；並以稀疏矩陣最佳化加速圖卷積運算，同時根據預測與實際車速的落差自動偵測事故。',
+    },
+    {
+      paragraph: '整體而言，本專題改善了事件反應速度、影響範圍估計、路徑搜尋效率與繞路時機。',
+    },
+  ] },
   { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:40 ~ 14:55', conferenceTags: [], summary: [
     {
       paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
@@ -286,6 +305,7 @@ const projectTeasers = {
   '11': { src: 'assets/project-teasers/project-11.webp', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
   '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
   '13': { src: 'assets/project-teasers/project-13.webp?v=2026-10-12-qci-speech-image', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
+  '14': { src: 'assets/project-teasers/project-14.webp?v=2026-10-15-dynamic-navigation', alt: '事故回堵路段、即時替代路徑與交通預測路網的專題視覺圖' },
   '15': { src: 'assets/project-teasers/project-15.webp?v=2026-10-12-flow-matching', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
   '16': { src: 'assets/project-teasers/project-16.webp?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
   '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },

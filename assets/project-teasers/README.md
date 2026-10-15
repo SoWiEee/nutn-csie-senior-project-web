@@ -19,6 +19,7 @@ Shared prompt: one landscape 16:9 flat minimal research schematic, with 5–8 ma
 - 11: Federated clients feed a neural network with strong MPC protection on shallow layers and lightweight masking on deeper layers.
 - 12: Clinician reviewing wrist-pulse signals and structured reasoning; restrained herbal context, human-reviewed diagnostic support without cure claims.
 - 13: Two Taiwanese speech streams from different speakers flow through quantum fuzzy inference and semantic analysis into a travel image.
+- 14: A real-time urban road network shows an incident's upstream queue impact, an alternate navigation route, and traffic prediction with weather context. Final artwork generated and edited with the built-in imagegen tool.
 - 15: A robot arm pushes a small puck along a continuous Flow Matching trajectory with sparse inference steps and a faint alternate path.
 - 16: Batch AI jobs pass through a scheduler and are allocated across two heterogeneous GPU nodes, with shared workload tiles and resource monitoring.
 - 17: Controlled bodyweight squat, pose-joint skeleton, sequential reference silhouettes and temporal alignment ribbons.

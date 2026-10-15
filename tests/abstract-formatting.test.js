@@ -27,6 +27,17 @@ test('group 13 retains its bilingual title and the supplied speech, inference, a
   assert.doesNotMatch(text, /Whisper Taiwanese|Breeze ASR/);
 });
 
+test('group 14 retains the submitted navigation title and technical details', () => {
+  const project = projects.find((item) => item.id === '14');
+  const text = summary('14');
+  assert.equal(project.title, '結合交通預測之即時動態導航系統');
+  assert.equal(project.titleEn, 'A Real-Time Dynamic Navigation System Integrating Traffic Prediction');
+  assert.equal(project.summary.length, 6);
+  for (const value of ['OpenStreetMap 台灣路網', '交通部 TDX 路況', '中央氣象署氣象資料', 'A* 演算法', 'PageRank 殘差推送', '實際國道事故的回堵資料', '直接相依索引', '核心節點子圖切割', 'T-GCN 時空圖神經網路', '稀疏矩陣最佳化', '預測與實際車速的落差', '路徑搜尋效率與繞路時機']) {
+    assert.ok(text.includes(value), value);
+  }
+});
+
 test('groups 02, 07, and 17 reflect the current student-submitted text', () => {
   assert.match(summary('02'), /量子計算智慧（Quantum Computational Intelligence, QCI）評估機制之國小台語人機協同學習架構/);
   assert.match(summary('02'), /基因演算法（Genetic Algorithm, GA）/);
