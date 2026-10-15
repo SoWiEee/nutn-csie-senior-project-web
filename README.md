@@ -135,5 +135,4 @@ Liquid Glass 會取樣 `images.jpg` 作為背景場景，因此部署時請透�
 - [Lenis smooth scroll](https://github.com/darkroomengineering/lenis)
 - [emilkowalski/skills](https://github.com/emilkowalski/skills)
 - [Impeccable](https://github.com/pbakaus/impeccable)
-- [jakubkrehel/better-interface](https://github.com/jakubkrehel/skills)
-- [Anti-AI-slop design](https://github.com/Nutlope/hallmark)
+- [Taste Skill](https://github.com/leonxlnx/taste-skill)
