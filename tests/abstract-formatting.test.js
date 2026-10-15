@@ -32,14 +32,14 @@ test('group 14 retains the submitted navigation title and technical details', ()
   const text = project.summary.flatMap((block) => [block.paragraph, ...(block.bullets || [])]).join('\n');
   assert.equal(project.title, '結合交通預測之即時動態導航系統');
   assert.equal(project.titleEn, 'A Real-Time Dynamic Navigation System Integrating Traffic Prediction');
-  assert.equal(project.summary.length, 4);
-  assert.equal(project.summary[2].paragraph, '本專題的三項策略如下：');
-  assert.equal(project.summary[2].bullets.length, 3);
-  assert.deepEqual(project.summary[2].bullets.map((bullet) => bullet.split('：')[0]), ['增量更新', '核心節點子圖切割', 'T-GCN 時空圖神經網路']);
+  assert.equal(project.summary.length, 3);
+  assert.match(project.summary[1].paragraph, /系統採取三項策略：$/);
+  assert.equal(project.summary[1].bullets.length, 3);
+  assert.deepEqual(project.summary[1].bullets.map((bullet) => bullet.split('：')[0]), ['增量更新', '核心節點子圖切割', 'T-GCN 時空圖神經網路']);
   for (const value of ['OpenStreetMap 台灣路網', '交通部 TDX 路況', '中央氣象署氣象資料', 'A* 演算法', 'PageRank 殘差推送', '實際國道事故的回堵資料', '直接相依索引', '核心節點子圖切割', 'T-GCN 時空圖神經網路', '稀疏矩陣最佳化', '預測與實際車速的落差', '路徑搜尋效率與繞路時機']) {
     assert.ok(text.includes(value), value);
   }
-  assert.doesNotMatch(text, /（[一二三]）/);
+  assert.doesNotMatch(text, /（[一二三]）|本專題的三項策略如下：/);
 });
 
 test('groups 02, 07, and 17 reflect the current student-submitted text', () => {
