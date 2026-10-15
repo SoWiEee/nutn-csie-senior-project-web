@@ -1,14 +1,13 @@
 國立臺南大學資訊工程學系 116 級畢業專題成果展網站
 
 部署方式：
-1. 將本資料夾內的全部檔案與 assets 資料夾上傳到網站目錄。
-2. 保持目前的資料夾結構，不要只上傳 index.html。
-3. 網站入口為 index.html。
+1. 將 release 資料夾內的所有檔案與資料夾上傳到網站根目錄，確保 index.html 位於根目錄。
+2. 保持目前的資料夾結構，尤其是 assets 與 vendor；不要只上傳 HTML、CSS 或 JavaScript 檔案。
+3. 使用支援靜態網站的 HTTP／HTTPS 網頁伺服器即可，不需要在主機上建置或執行 Node.js。
+4. 請透過網站網址預覽，不要直接雙擊 index.html 使用 file:// 開啟，否則瀏覽器可能限制字型、JavaScript 模組或 WebGL 載入。
+5. 若主機支援自訂錯誤頁面，可將 404.html 設為網站的 404 頁面。
 
-建議使用 HTTP／HTTPS 網頁伺服器開啟；請勿直接以滑鼠雙擊 index.html 預覽，
-否則部分瀏覽器可能限制 WebGL、字型或 JavaScript 的載入。
-
-內容更新：
-- 背景圖片：images.jpg
-- 校址示意圖：assets/images/campus-map-2026.png
-- 展場平面圖：assets/images/exhibition-floorplan-2026.png
+部署前可確認：
+- index.html、app.js、project-smoke.js、styles.css 與 tokens.css 均已上傳。
+- assets 資料夾包含字型、首頁背景與動畫素材、校址與展場圖，以及專題 banner。
+- vendor 資料夾及其中的授權檔案一併保留。
