@@ -38,7 +38,7 @@ if (artwork && hero && backdrop) {
     if (!isActive() || loading || artwork.classList.contains('is-ready')) return;
     loading = true;
     try {
-      await Promise.all(['assets/home-key-visual-motion-plate.png', 'assets/home-key-visual-motion-foreground.png'].map((src) => new Promise((resolve, reject) => {
+      await Promise.all(['assets/home-key-visual-motion-plate.jpg', 'assets/home-key-visual-motion-foreground.webp'].map((src) => new Promise((resolve, reject) => {
         const image = new Image();
         image.onload = resolve;
         image.onerror = reject;

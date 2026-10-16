@@ -44,7 +44,7 @@ An event-specific information hub that brings the exhibition introduction, proje
 - `README.md` documents the site's purpose, static deployment model, features, and supported-browser expectations.
 - `index.html` contains the current event introduction, date, venue, maps, and transport content.
 - `script.js` contains the current group, schedule, project, member, and confirmed conference-tag data. Some project names remain placeholders.
-- `assets/images/campus-map-2026.png` and `assets/images/exhibition-floorplan-2026.png` are the current venue graphics.
+- `assets/images/campus-map-2026.webp` and `assets/images/exhibition-floorplan-2026.webp` are the current venue graphics.
 
 ## Product Principles
 

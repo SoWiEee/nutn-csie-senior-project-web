@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./images.png" alt="國立臺南大學校園背景" width="720" />
+<img src="./images.webp" alt="國立臺南大學校園背景" width="720" />
 
 # NUTN CSIE 116 畢業專題成果展
 
@@ -81,7 +81,7 @@ Copy-Item .\app.js .\release\app.js -Force
 
 ## 📁 Project Layout
 
-網站英數字使用 Geist，繁體中文使用 LINE Seed TW。LINE Seed TW 依 SIL Open Font License 1.1 授權；授權全文隨字型放在 `assets/fonts/LINE-SEED-OFL.txt`。Lenis 1.3.26 以 MIT 授權本地打包，授權全文放在 `vendor/lenis/LICENSE`。
+網站英數字使用 Google Fonts CDN 載入的 Geist，繁體中文使用本地 LINE Seed TW。Geist 與 LINE Seed TW 均採 SIL Open Font License 1.1；LINE Seed TW 授權全文隨字型放在 `assets/fonts/LINE-SEED-OFL.txt`。Lenis 1.3.26 以 MIT 授權本地打包，授權全文放在 `vendor/lenis/LICENSE`。使用 CDN 需要訪客可連線至 Google Fonts。
 
 ```text
 .
@@ -92,8 +92,8 @@ Copy-Item .\app.js .\release\app.js -Force
 ├── hero-ripple.js                # 首頁主標題的滑鼠波紋效果
 ├── styles.css                    # 版面、元件、responsive 與 glass fallback 樣式
 ├── tokens.css                    # 顏色、字體、間距、圓角與動態 token
-├── images.jpg                    # WebGL 背景 canvas 的校園影像來源
-├── assets/fonts/                 # 本地 WOFF2 字體資源
+├── images.webp                   # README 預覽圖
+├── assets/fonts/                 # 本地 LINE Seed TW WOFF2 字體資源
 ├── assets/images/                # 校址示意圖與展場平面圖
 ├── vendor/liquidglass/index.js   # 本地 LiquidGlass WebGL renderer
 ├── vendor/lenis/                 # 本地 Lenis 原始碼、樣式與 MIT 授權

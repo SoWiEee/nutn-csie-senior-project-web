@@ -1,12 +1,4 @@
-/* Hallmark · tokens · Midnight / atmospheric · NUTN CSIE 116 / 116 級成果展 · local Geist + LINE Seed TW */
-
-@font-face {
-  font-family: "Geist Variable";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 100 900;
-  src: url("assets/fonts/geist-latin-wght-normal.woff2") format("woff2-variations");
-}
+/* Hallmark · tokens · Midnight / atmospheric · NUTN CSIE 116 / 116 級成果展 · Geist CDN + LINE Seed TW */
 
 @font-face {
   font-family: "LINE Seed TW";
@@ -101,9 +93,9 @@
   --color-border-ghost: oklch(100% 0.005 255 / 0.13);
   --color-line-shadow: oklch(100% 0.005 255 / 0.12);
 
-  --font-display: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Variable", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geist", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist", "LINE Seed TW", "NUTN LINE Seed TW Glyph Supplement", ui-sans-serif, system-ui, sans-serif;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;

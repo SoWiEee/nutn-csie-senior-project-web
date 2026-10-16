@@ -3,14 +3,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.join(__dirname, '..');
-const png = (name) => fs.readFileSync(path.join(root, 'assets', name));
-const original = png('home-key-visual.png');
-const plate = png('home-key-visual-motion-plate.png');
-const foreground = png('home-key-visual-motion-foreground.png');
+const webp = (name) => fs.readFileSync(path.join(root, 'assets', name));
+const plate = webp('home-key-visual-motion-plate.jpg');
+const foreground = webp('home-key-visual-motion-foreground.webp');
 
-assert.deepEqual(plate.subarray(16, 24), original.subarray(16, 24), 'clean plate must match the source canvas');
-assert.deepEqual(foreground.subarray(16, 24), original.subarray(16, 24), 'foreground must match the source canvas');
-assert.equal(foreground[25], 6, 'foreground must preserve an alpha channel');
+assert.equal(plate[0], 0xff, 'clean plate must start with the JPEG signature');
+assert.equal(plate[1], 0xd8, 'clean plate must start with the JPEG signature');
+assert.equal(foreground.toString('ascii', 0, 4), 'RIFF', 'foreground must be WebP');
+assert.equal(foreground.toString('ascii', 8, 12), 'WEBP', 'foreground must be WebP');
+assert.equal(foreground.toString('ascii', 12, 16), 'VP8X', 'foreground must use extended WebP for alpha');
+assert.ok(foreground[20] & 0x10, 'foreground must preserve an alpha channel');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
 assert.match(html, /home-artwork-motion\.js/);
