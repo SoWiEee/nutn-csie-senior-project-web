@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./images.webp" alt="國立臺南大學校園背景" width="720" />
+<img src="./images.jpg" alt="國立臺南大學校園背景" width="720" />
 
 # NUTN CSIE 116 畢業專題成果展
 
@@ -92,7 +92,7 @@ Copy-Item .\app.js .\release\app.js -Force
 ├── hero-ripple.js                # 首頁主標題的滑鼠波紋效果
 ├── styles.css                    # 版面、元件、responsive 與 glass fallback 樣式
 ├── tokens.css                    # 顏色、字體、間距、圓角與動態 token
-├── images.webp                   # README 預覽圖
+├── images.jpg                   # README 預覽圖
 ├── assets/fonts/                 # 本地 LINE Seed TW WOFF2 字體資源
 ├── assets/images/                # 校址示意圖與展場平面圖
 ├── vendor/liquidglass/index.js   # 本地 LiquidGlass WebGL renderer

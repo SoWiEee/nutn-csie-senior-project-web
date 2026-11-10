@@ -234,7 +234,7 @@ const projects = [
       paragraph: '在智慧安全監測方面，本專題使用攝影機影像辨識與跌倒警示功能分析影像，判斷使用者是否發生疑似跌倒事件。偵測到疑似跌倒時，畫面會顯示確認介面，供使用者確認自身狀況。若使用者意識清楚且無需協助，可按下「我沒事」按鈕表示目前狀況正常；若系統在 30 秒內未收到回應，便透過 ntfy App 自動發送警示通知：「這個公共場所有人跌到受傷，請幫忙通知救護人員」，提醒相關人員留意並確認使用者的安全狀況。此設計可減少使用者跌倒後未能及時通報的風險，並提升智慧安全監測系統的即時性與實用性。',
     },
   ] },
-  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '結合交通預測之即時動態導航系統', titleEn: 'A Real-Time Dynamic Navigation System Integrating Traffic Prediction', members: '黃奕睿、林秉達、葉芢杰', studentIds: 'S11259024、S11259027、S11259041', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
+  { id: '14', code: 'NUTN-CSIE-PRJ-116-014', group: 'decision', title: '結合交通預測之即時動態導航系統', titleEn: 'A Real-Time Dynamic Navigation System Integrating Traffic Prediction', members: '黃奕睿、林秉達', studentIds: 'S11259024、S11259027', advisor: '高啟洲', time: '14:25 ~ 14:40', conferenceTags: [], summary: [
     {
       paragraph: '交通情況不斷變化時，導航系統需要即時尋找最佳路徑。事故發生後，系統須判斷影響範圍並快速重新規劃：若只在固定範圍內調整成本，難以反映事故向上游擴散造成的回堵；若每次都重算整個路網，則會增加運算負擔，難以即時反應。',
     },
@@ -288,23 +288,23 @@ const groupMeta = {
 };
 
 const projectTeasers = {
-  '01': { src: 'assets/project-teasers/project-01.webp', alt: '單張影像經多視角生成與幾何可靠度分析後重建為三維高斯模型的專題示意圖' },
-  '02': { src: 'assets/project-teasers/project-02.webp', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
-  '03': { src: 'assets/project-teasers/project-03.webp', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
-  '04': { src: 'assets/project-teasers/project-04.webp', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
-  '05': { src: 'assets/project-teasers/project-05.webp', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
-  '06': { src: 'assets/project-teasers/project-06.webp?v=2026-10-12-wgan', alt: '以 WGAN 生成 EEG 訊號並比較多種神經退化性疾病分類模型的專題視覺圖' },
-  '07': { src: 'assets/project-teasers/project-07.webp', alt: '利用手機感測器測量野外動物的專題視覺圖' },
-  '08': { src: 'assets/project-teasers/project-08.webp?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
-  '09': { src: 'assets/project-teasers/project-09.webp', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
-  '10': { src: 'assets/project-teasers/project-10.webp?v=2026-10-12-vggt', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
-  '11': { src: 'assets/project-teasers/project-11.webp', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
-  '12': { src: 'assets/project-teasers/project-12.webp', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
-  '13': { src: 'assets/project-teasers/project-13.webp?v=2026-10-12-qci-speech-image', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
-  '14': { src: 'assets/project-teasers/project-14.webp?v=2026-10-15-dynamic-navigation', alt: '事故回堵路段、即時替代路徑與交通預測路網的專題視覺圖' },
-  '15': { src: 'assets/project-teasers/project-15.webp?v=2026-10-12-flow-matching', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
-  '16': { src: 'assets/project-teasers/project-16.webp?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
-  '17': { src: 'assets/project-teasers/project-17.webp', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
+  '01': { src: 'assets/project-teasers/project-01.jpg', alt: '單張影像經多視角生成與幾何可靠度分析後重建為三維高斯模型的專題示意圖' },
+  '02': { src: 'assets/project-teasers/project-02.jpg', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
+  '03': { src: 'assets/project-teasers/project-03.jpg', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
+  '04': { src: 'assets/project-teasers/project-04.jpg', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
+  '05': { src: 'assets/project-teasers/project-05.jpg', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
+  '06': { src: 'assets/project-teasers/project-06.jpg?v=2026-10-12-wgan', alt: '以 WGAN 生成 EEG 訊號並比較多種神經退化性疾病分類模型的專題視覺圖' },
+  '07': { src: 'assets/project-teasers/project-07.jpg', alt: '利用手機感測器測量野外動物的專題視覺圖' },
+  '08': { src: 'assets/project-teasers/project-08.jpg?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
+  '09': { src: 'assets/project-teasers/project-09.jpg', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
+  '10': { src: 'assets/project-teasers/project-10.jpg?v=2026-10-12-vggt', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
+  '11': { src: 'assets/project-teasers/project-11.jpg', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
+  '12': { src: 'assets/project-teasers/project-12.jpg', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
+  '13': { src: 'assets/project-teasers/project-13.jpg?v=2026-10-12-qci-speech-image', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
+  '14': { src: 'assets/project-teasers/project-14.jpg?v=2026-10-15-dynamic-navigation', alt: '事故回堵路段、即時替代路徑與交通預測路網的專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.jpg?v=2026-10-12-flow-matching', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
+  '16': { src: 'assets/project-teasers/project-16.jpg?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
+  '17': { src: 'assets/project-teasers/project-17.jpg', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
 
 const escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));

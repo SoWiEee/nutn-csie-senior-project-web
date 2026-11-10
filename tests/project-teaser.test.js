@@ -19,9 +19,9 @@ test('the thirteen complete projects render static lazy teaser banners', () => {
   });
   assert.equal((projectList.innerHTML.match(/<img /g) || []).length, ids.length);
   for (const id of ids) {
-    assert.match(projectList.innerHTML, new RegExp(`<img src="assets/project-teasers/project-${id}\\.webp(?:\\?[^"]*)?"`));
-    assert.ok(existsSync(resolve(__dirname, `../assets/project-teasers/project-${id}.webp`)), `project ${id} banner asset exists`);
-    assert.ok(existsSync(resolve(__dirname, `../release/assets/project-teasers/project-${id}.webp`)), `release project ${id} banner asset exists`);
+    assert.match(projectList.innerHTML, new RegExp(`<img src="assets/project-teasers/project-${id}\\.jpg(?:\\?[^"]*)?"`));
+    assert.ok(existsSync(resolve(__dirname, `../assets/project-teasers/project-${id}.jpg`)), `project ${id} banner asset exists`);
+    assert.ok(existsSync(resolve(__dirname, `../release/assets/project-teasers/project-${id}.jpg`)), `release project ${id} banner asset exists`);
   }
   assert.equal((projectList.innerHTML.match(/loading="lazy" decoding="async"/g) || []).length, ids.length);
   assert.equal((projectList.innerHTML.match(/alt="[^"]*[\u3400-\u9fff][^"]*"/g) || []).length, ids.length);
