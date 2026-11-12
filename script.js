@@ -127,7 +127,7 @@ const projects = [
       paragraph: '本研究提出 PAMFormer，用於同時預測行人未來軌跡與穿越意圖。PAMFormer-Base 以 Cross-Modal Transformer 整合歷史 bounding boxes、速度、離散位置、可選 optical flow 與 affine 特徵，並由 Enhanced SAIM 聚合 SAM3 semantic patches；PAMFormer-KG 保留相同編碼與雙 LSTM 解碼介面，新增以目標行人為中心的時空關係知識分支，將六維幾何關係、五類 relation states 及 training-only priors 透過 gated cross-attention 融入表示。',
     },
   ] },
-  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'decision', title: '時空多 token 化多視角注意力融合：提升擴散策略對感測缺失的穩定性', titleEn: 'Spatio-Temporal Tokenized Multi-View Fusion for Robust Diffusion Policies', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [], summary: [
+  { id: '04', code: 'NUTN-CSIE-PRJ-116-004', group: 'decision', title: '多視角擴散策略於感測器失效下之穩健性提升：結合模態丟棄與非對稱 Actor-Critic', titleEn: 'Improving the Robustness of Multi-View Diffusion Policies under Sensor Failures via Modality Dropout and Asymmetric Actor-Critic', members: '呂守勳、傅蜂貴', studentIds: 'S11259005、S11259007、S11259036', advisor: '朱明毅', time: '13:00 ~ 13:15', conferenceTags: [], summary: [
     {
       paragraph: '離線強化學習能利用預先收集的示範資料學習機器人控制策略，避免昂貴且危險的即時試誤。近年以擴散模型表示策略的方法，能捕捉多峰動作分布，並結合自注意力雜訊預測模型整合多視角影像與末端執行器資訊。然而，現有架構把每支相機影像壓縮成單一全域特徵，注意力只在少數幾個 token 之間運算，空間位置與時間變化資訊大量流失。此外，模型假設所有感測器都正常運作，一旦鏡頭被遮擋、影像受雜訊干擾或光照改變，策略表現可能大幅下降；各模態對決策的實際貢獻也缺乏驗證。',
     },
