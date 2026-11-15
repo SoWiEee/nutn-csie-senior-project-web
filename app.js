@@ -4557,23 +4557,23 @@ void main() {
     decision: { title: "\u667A\u6167\u63A8\u8AD6\u8207\u6C7A\u7B56\u7CFB\u7D71\u7D44", label: "INFERENCE / DECISION SYSTEMS" }
   };
   var projectTeasers = {
-    "01": { src: "assets/project-teasers/project-01.jpg", alt: "\u55AE\u5F35\u5F71\u50CF\u7D93\u591A\u8996\u89D2\u751F\u6210\u8207\u5E7E\u4F55\u53EF\u9760\u5EA6\u5206\u6790\u5F8C\u91CD\u5EFA\u70BA\u4E09\u7DAD\u9AD8\u65AF\u6A21\u578B\u7684\u5C08\u984C\u793A\u610F\u5716" },
-    "02": { src: "assets/project-teasers/project-02.jpg", alt: "\u8A9E\u97F3\u8FA8\u8B58\u3001\u53F0\u8A9E\u6559\u6750\u8207\u91CF\u5B50\u908F\u8F2F\u96FB\u8DEF\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "03": { src: "assets/project-teasers/project-03.jpg", alt: "\u878D\u5408\u8996\u89BA\u8A9E\u610F\u3001\u5149\u6D41\u8207\u6642\u7A7A\u95DC\u4FC2\u7684\u884C\u4EBA\u8ECC\u8DE1\u53CA\u7A7F\u8D8A\u610F\u5716\u9810\u6E2C\u5716" },
-    "04": { src: "assets/project-teasers/project-04.jpg", alt: "\u591A\u8996\u89D2\u76F8\u6A5F\u3001\u611F\u6E2C token \u8207\u6CE8\u610F\u529B\u7DB2\u683C\u878D\u5408\u8CC7\u8A0A\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "05": { src: "assets/project-teasers/project-05.jpg", alt: "\u8166\u96FB\u8A0A\u865F\u89E3\u8B80\u60C5\u7DD2\u4E26\u751F\u6210\u97F3\u6A02\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "06": { src: "assets/project-teasers/project-06.jpg?v=2026-10-12-wgan", alt: "\u4EE5 WGAN \u751F\u6210 EEG \u8A0A\u865F\u4E26\u6BD4\u8F03\u591A\u7A2E\u795E\u7D93\u9000\u5316\u6027\u75BE\u75C5\u5206\u985E\u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "07": { src: "assets/project-teasers/project-07.jpg", alt: "\u5229\u7528\u624B\u6A5F\u611F\u6E2C\u5668\u6E2C\u91CF\u91CE\u5916\u52D5\u7269\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "08": { src: "assets/project-teasers/project-08.jpg?v=2026-10-12-bp", alt: "\u4EE5 PPG \u591A\u5C3A\u5EA6\u6642\u983B\u7279\u5FB5\u878D\u5408\u4F30\u6E2C\u7121\u8896\u5E36\u8840\u58D3\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "09": { src: "assets/project-teasers/project-09.jpg", alt: "\u5728\u4E09\u7DAD\u5834\u666F\u4E2D\u9010\u6B65\u9A57\u8B49\u8996\u89BA\u8B49\u64DA\u4E26\u5B9A\u4F4D\u7269\u4EF6\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "10": { src: "assets/project-teasers/project-10.jpg?v=2026-10-12-vggt", alt: "\u591A\u8996\u89D2\u5F71\u50CF\u7D93\u6559\u5E2B\u521D\u59CB\u5316\u84B8\u993E\u8207\u5168\u57DF\u6295\u5F71\u5207\u7247\u58D3\u7E2E\u70BA\u53EF\u90E8\u7F72 VGGT \u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "11": { src: "assets/project-teasers/project-11.jpg", alt: "\u4EE5\u5206\u5C64\u96B1\u79C1\u4FDD\u8B77\u8207\u591A\u65B9\u5B89\u5168\u8A08\u7B97\u805A\u5408\u806F\u90A6\u5B78\u7FD2\u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "12": { src: "assets/project-teasers/project-12.jpg", alt: "\u4E2D\u91AB\u8FA8\u8B49\u8CC7\u6599\u8207\u667A\u6167\u8A3A\u65B7\u8F14\u52A9\u7CFB\u7D71\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "13": { src: "assets/project-teasers/project-13.jpg?v=2026-10-12-qci-speech-image", alt: "\u53F0\u8A9E\u8A9E\u97F3\u7D93\u91CF\u5B50\u6A21\u7CCA\u63A8\u8AD6\u8207\u8A9E\u610F\u5206\u6790\u8F49\u63DB\u70BA\u5716\u7247\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "14": { src: "assets/project-teasers/project-14.jpg?v=2026-10-15-dynamic-navigation", alt: "\u4E8B\u6545\u56DE\u5835\u8DEF\u6BB5\u3001\u5373\u6642\u66FF\u4EE3\u8DEF\u5F91\u8207\u4EA4\u901A\u9810\u6E2C\u8DEF\u7DB2\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "15": { src: "assets/project-teasers/project-15.jpg?v=2026-10-12-flow-matching", alt: "\u4EE5 Flow Matching \u52A0\u901F\u591A\u6A21\u614B\u96E2\u7DDA\u5F37\u5316\u5B78\u7FD2\u7B56\u7565\u751F\u6210\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "16": { src: "assets/project-teasers/project-16.jpg?v=2026-10-12-scheduler", alt: "\u6279\u6B21\u5DE5\u4F5C\u7D93\u6392\u7A0B\u5668\u5206\u914D\u81F3\u5171\u4EAB\u7570\u8CEA GPU \u7BC0\u9EDE\u7684\u5C08\u984C\u8996\u89BA\u5716" },
-    "17": { src: "assets/project-teasers/project-17.jpg", alt: "\u4EE5\u4EBA\u9AD4\u9AA8\u67B6\u7BC0\u9EDE\u8A55\u4F30\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u7684\u5C08\u984C\u8996\u89BA\u5716" }
+    "01": { src: "assets/project-teasers/project-01.jpg?v=abstract-2026-11-15", alt: "\u55AE\u5F35\u5F71\u50CF\u7D93\u591A\u8996\u89D2\u751F\u6210\u8207\u5E7E\u4F55\u53EF\u9760\u5EA6\u5206\u6790\u5F8C\u91CD\u5EFA\u70BA\u4E09\u7DAD\u9AD8\u65AF\u6A21\u578B\u7684\u5C08\u984C\u793A\u610F\u5716" },
+    "02": { src: "assets/project-teasers/project-02.jpg?v=abstract-2026-11-15", alt: "\u8A9E\u97F3\u8FA8\u8B58\u3001\u53F0\u8A9E\u6559\u6750\u8207\u91CF\u5B50\u908F\u8F2F\u96FB\u8DEF\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "03": { src: "assets/project-teasers/project-03.jpg?v=abstract-2026-11-15", alt: "\u878D\u5408\u8996\u89BA\u8A9E\u610F\u3001\u5149\u6D41\u8207\u6642\u7A7A\u95DC\u4FC2\u7684\u884C\u4EBA\u8ECC\u8DE1\u53CA\u7A7F\u8D8A\u610F\u5716\u9810\u6E2C\u5716" },
+    "04": { src: "assets/project-teasers/project-04.jpg?v=abstract-2026-11-15", alt: "\u591A\u8996\u89D2\u76F8\u6A5F\u3001\u611F\u6E2C token \u8207\u6CE8\u610F\u529B\u7DB2\u683C\u878D\u5408\u8CC7\u8A0A\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "05": { src: "assets/project-teasers/project-05.jpg?v=abstract-2026-11-15", alt: "\u8166\u96FB\u8A0A\u865F\u89E3\u8B80\u60C5\u7DD2\u4E26\u751F\u6210\u97F3\u6A02\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "06": { src: "assets/project-teasers/project-06.jpg?v=abstract-2026-11-15", alt: "\u4EE5 WGAN \u751F\u6210 EEG \u8A0A\u865F\u4E26\u6BD4\u8F03\u591A\u7A2E\u795E\u7D93\u9000\u5316\u6027\u75BE\u75C5\u5206\u985E\u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "07": { src: "assets/project-teasers/project-07.jpg?v=abstract-2026-11-15", alt: "\u5229\u7528\u624B\u6A5F\u611F\u6E2C\u5668\u6E2C\u91CF\u91CE\u5916\u52D5\u7269\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "08": { src: "assets/project-teasers/project-08.jpg?v=abstract-2026-11-15", alt: "\u4EE5 PPG \u591A\u5C3A\u5EA6\u6642\u983B\u7279\u5FB5\u878D\u5408\u4F30\u6E2C\u7121\u8896\u5E36\u8840\u58D3\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "09": { src: "assets/project-teasers/project-09.jpg?v=abstract-2026-11-15", alt: "\u5728\u4E09\u7DAD\u5834\u666F\u4E2D\u9010\u6B65\u9A57\u8B49\u8996\u89BA\u8B49\u64DA\u4E26\u5B9A\u4F4D\u7269\u4EF6\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "10": { src: "assets/project-teasers/project-10.jpg?v=abstract-2026-11-15", alt: "\u591A\u8996\u89D2\u5F71\u50CF\u7D93\u6559\u5E2B\u521D\u59CB\u5316\u84B8\u993E\u8207\u5168\u57DF\u6295\u5F71\u5207\u7247\u58D3\u7E2E\u70BA\u53EF\u90E8\u7F72 VGGT \u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "11": { src: "assets/project-teasers/project-11.jpg?v=abstract-2026-11-15", alt: "\u4EE5\u5206\u5C64\u96B1\u79C1\u4FDD\u8B77\u8207\u591A\u65B9\u5B89\u5168\u8A08\u7B97\u805A\u5408\u806F\u90A6\u5B78\u7FD2\u6A21\u578B\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "12": { src: "assets/project-teasers/project-12.jpg?v=abstract-2026-11-15", alt: "\u4E2D\u91AB\u8FA8\u8B49\u8CC7\u6599\u8207\u667A\u6167\u8A3A\u65B7\u8F14\u52A9\u7CFB\u7D71\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "13": { src: "assets/project-teasers/project-13.jpg?v=abstract-2026-11-15", alt: "\u53F0\u8A9E\u8A9E\u97F3\u7D93\u91CF\u5B50\u6A21\u7CCA\u63A8\u8AD6\u8207\u8A9E\u610F\u5206\u6790\u8F49\u63DB\u70BA\u5716\u7247\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "14": { src: "assets/project-teasers/project-14.jpg?v=abstract-2026-11-15", alt: "\u4E8B\u6545\u56DE\u5835\u8DEF\u6BB5\u3001\u5373\u6642\u66FF\u4EE3\u8DEF\u5F91\u8207\u4EA4\u901A\u9810\u6E2C\u8DEF\u7DB2\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "15": { src: "assets/project-teasers/project-15.jpg?v=abstract-2026-11-15", alt: "\u4EE5 Flow Matching \u52A0\u901F\u591A\u6A21\u614B\u96E2\u7DDA\u5F37\u5316\u5B78\u7FD2\u7B56\u7565\u751F\u6210\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "16": { src: "assets/project-teasers/project-16.jpg?v=abstract-2026-11-15", alt: "\u6279\u6B21\u5DE5\u4F5C\u7D93\u6392\u7A0B\u5668\u5206\u914D\u81F3\u5171\u4EAB\u7570\u8CEA GPU \u7BC0\u9EDE\u7684\u5C08\u984C\u8996\u89BA\u5716" },
+    "17": { src: "assets/project-teasers/project-17.jpg?v=abstract-2026-11-15", alt: "\u4EE5\u4EBA\u9AD4\u9AA8\u67B6\u7BC0\u9EDE\u8A55\u4F30\u5065\u8EAB\u52D5\u4F5C\u54C1\u8CEA\u7684\u5C08\u984C\u8996\u89BA\u5716" }
   };
   var escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
   var tagMarkup = (tags = []) => tags.length ? tags.map((tag, index) => `<span class="conference-tag${index === 0 ? " conference-tag--accent" : ""}">${escapeHTML(tag)}</span>`).join("") : "";
@@ -5033,9 +5033,6 @@ void main() {
     gl.uniform2f(imageSizeLocation, backdropImage.naturalWidth, backdropImage.naturalHeight);
     gl.enableVertexAttribArray(positionLocation);
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-    let frame = 0;
-    let disposed = false;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const width = Math.max(1, Math.round(backdropElement.clientWidth * dpr));
@@ -5046,26 +5043,15 @@ void main() {
       gl.viewport(0, 0, width, height);
     };
     const draw = (time = 0) => {
-      if (disposed) return;
       resize();
       gl.useProgram(program);
       gl.uniform2f(viewSizeLocation, backdropCanvas.width, backdropCanvas.height);
       gl.uniform1f(timeLocation, time * 1e-3);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
-    const render = (time) => {
-      draw(time);
-      if (!reducedMotion.matches && !document.hidden) frame = window.requestAnimationFrame(render);
-    };
-    const onResize = () => draw(0);
-    const onVisibility = () => {
-      window.cancelAnimationFrame(frame);
-      if (!document.hidden) render(performance.now());
-    };
-    window.addEventListener("resize", onResize, { passive: true });
-    document.addEventListener("visibilitychange", onVisibility, { passive: true });
+    window.addEventListener("resize", () => draw(0), { passive: true });
     backdropElement.classList.remove("is-static-fallback");
-    render(0);
+    draw(0);
     return { canvas: backdropCanvas, image: backdropImage };
   };
   var siteBackdropReady = initSiteBackdrop().catch(() => {

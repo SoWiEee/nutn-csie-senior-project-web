@@ -288,23 +288,23 @@ const groupMeta = {
 };
 
 const projectTeasers = {
-  '01': { src: 'assets/project-teasers/project-01.jpg', alt: '單張影像經多視角生成與幾何可靠度分析後重建為三維高斯模型的專題示意圖' },
-  '02': { src: 'assets/project-teasers/project-02.jpg', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
-  '03': { src: 'assets/project-teasers/project-03.jpg', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
-  '04': { src: 'assets/project-teasers/project-04.jpg', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
-  '05': { src: 'assets/project-teasers/project-05.jpg', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
-  '06': { src: 'assets/project-teasers/project-06.jpg?v=2026-10-12-wgan', alt: '以 WGAN 生成 EEG 訊號並比較多種神經退化性疾病分類模型的專題視覺圖' },
-  '07': { src: 'assets/project-teasers/project-07.jpg', alt: '利用手機感測器測量野外動物的專題視覺圖' },
-  '08': { src: 'assets/project-teasers/project-08.jpg?v=2026-10-12-bp', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
-  '09': { src: 'assets/project-teasers/project-09.jpg', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
-  '10': { src: 'assets/project-teasers/project-10.jpg?v=2026-10-12-vggt', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
-  '11': { src: 'assets/project-teasers/project-11.jpg', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
-  '12': { src: 'assets/project-teasers/project-12.jpg', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
-  '13': { src: 'assets/project-teasers/project-13.jpg?v=2026-10-12-qci-speech-image', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
-  '14': { src: 'assets/project-teasers/project-14.jpg?v=2026-10-15-dynamic-navigation', alt: '事故回堵路段、即時替代路徑與交通預測路網的專題視覺圖' },
-  '15': { src: 'assets/project-teasers/project-15.jpg?v=2026-10-12-flow-matching', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
-  '16': { src: 'assets/project-teasers/project-16.jpg?v=2026-10-12-scheduler', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
-  '17': { src: 'assets/project-teasers/project-17.jpg', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
+  '01': { src: 'assets/project-teasers/project-01.jpg?v=abstract-2026-11-15', alt: '單張影像經多視角生成與幾何可靠度分析後重建為三維高斯模型的專題示意圖' },
+  '02': { src: 'assets/project-teasers/project-02.jpg?v=abstract-2026-11-15', alt: '語音辨識、台語教材與量子邏輯電路的專題視覺圖' },
+  '03': { src: 'assets/project-teasers/project-03.jpg?v=abstract-2026-11-15', alt: '融合視覺語意、光流與時空關係的行人軌跡及穿越意圖預測圖' },
+  '04': { src: 'assets/project-teasers/project-04.jpg?v=abstract-2026-11-15', alt: '多視角相機、感測 token 與注意力網格融合資訊的專題視覺圖' },
+  '05': { src: 'assets/project-teasers/project-05.jpg?v=abstract-2026-11-15', alt: '腦電訊號解讀情緒並生成音樂的專題視覺圖' },
+  '06': { src: 'assets/project-teasers/project-06.jpg?v=abstract-2026-11-15', alt: '以 WGAN 生成 EEG 訊號並比較多種神經退化性疾病分類模型的專題視覺圖' },
+  '07': { src: 'assets/project-teasers/project-07.jpg?v=abstract-2026-11-15', alt: '利用手機感測器測量野外動物的專題視覺圖' },
+  '08': { src: 'assets/project-teasers/project-08.jpg?v=abstract-2026-11-15', alt: '以 PPG 多尺度時頻特徵融合估測無袖帶血壓的專題視覺圖' },
+  '09': { src: 'assets/project-teasers/project-09.jpg?v=abstract-2026-11-15', alt: '在三維場景中逐步驗證視覺證據並定位物件的專題視覺圖' },
+  '10': { src: 'assets/project-teasers/project-10.jpg?v=abstract-2026-11-15', alt: '多視角影像經教師初始化蒸餾與全域投影切片壓縮為可部署 VGGT 模型的專題視覺圖' },
+  '11': { src: 'assets/project-teasers/project-11.jpg?v=abstract-2026-11-15', alt: '以分層隱私保護與多方安全計算聚合聯邦學習模型的專題視覺圖' },
+  '12': { src: 'assets/project-teasers/project-12.jpg?v=abstract-2026-11-15', alt: '中醫辨證資料與智慧診斷輔助系統的專題視覺圖' },
+  '13': { src: 'assets/project-teasers/project-13.jpg?v=abstract-2026-11-15', alt: '台語語音經量子模糊推論與語意分析轉換為圖片的專題視覺圖' },
+  '14': { src: 'assets/project-teasers/project-14.jpg?v=abstract-2026-11-15', alt: '事故回堵路段、即時替代路徑與交通預測路網的專題視覺圖' },
+  '15': { src: 'assets/project-teasers/project-15.jpg?v=abstract-2026-11-15', alt: '以 Flow Matching 加速多模態離線強化學習策略生成的專題視覺圖' },
+  '16': { src: 'assets/project-teasers/project-16.jpg?v=abstract-2026-11-15', alt: '批次工作經排程器分配至共享異質 GPU 節點的專題視覺圖' },
+  '17': { src: 'assets/project-teasers/project-17.jpg?v=abstract-2026-11-15', alt: '以人體骨架節點評估健身動作品質的專題視覺圖' },
 };
 
 const escapeHTML = (value) => String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
@@ -780,9 +780,6 @@ const initSiteBackdrop = async () => {
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-  let frame = 0;
-  let disposed = false;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const width = Math.max(1, Math.round(backdropElement.clientWidth * dpr));
@@ -793,26 +790,16 @@ const initSiteBackdrop = async () => {
     gl.viewport(0, 0, width, height);
   };
   const draw = (time = 0) => {
-    if (disposed) return;
     resize();
     gl.useProgram(program);
     gl.uniform2f(viewSizeLocation, backdropCanvas.width, backdropCanvas.height);
     gl.uniform1f(timeLocation, time * 0.001);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
-  const render = (time) => {
-    draw(time);
-    if (!reducedMotion.matches && !document.hidden) frame = window.requestAnimationFrame(render);
-  };
-  const onResize = () => draw(0);
-  const onVisibility = () => {
-    window.cancelAnimationFrame(frame);
-    if (!document.hidden) render(performance.now());
-  };
-  window.addEventListener('resize', onResize, { passive: true });
-  document.addEventListener('visibilitychange', onVisibility, { passive: true });
+  // The background is static; redraw only when the viewport changes.
+  window.addEventListener('resize', () => draw(0), { passive: true });
   backdropElement.classList.remove('is-static-fallback');
-  render(0);
+  draw(0);
   return { canvas: backdropCanvas, image: backdropImage };
 };
 

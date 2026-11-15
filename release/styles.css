@@ -1398,7 +1398,7 @@ body .site-footer {
   content: "";
   background:
     linear-gradient(180deg, color-mix(in oklch, var(--color-void) 68%, transparent), color-mix(in oklch, var(--color-panel) 62%, transparent)),
-    url("assets/home-key-visual.jpg") center 54% / cover;
+    url("assets/home-key-visual.jpg?v=abstract-detail-2026-11-15") center 54% / cover;
   filter: blur(0.85rem) saturate(0.72) brightness(0.78);
   transform: scale(1.035);
 }
@@ -1540,7 +1540,7 @@ body[data-view="home"] .site-backdrop::before {
   z-index: 2;
   inset: -1.5rem;
   content: "";
-  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 48%, transparent), color-mix(in oklch, var(--color-void) 68%, transparent)), url("assets/home-key-visual.jpg") center / cover no-repeat;
+  background: linear-gradient(180deg, color-mix(in oklch, var(--color-panel-strong) 48%, transparent), color-mix(in oklch, var(--color-void) 68%, transparent)), url("assets/home-key-visual.jpg?v=abstract-detail-2026-11-15") center / cover no-repeat;
   filter: blur(0.5rem) saturate(0.78) brightness(0.68) contrast(1.08);
   opacity: clamp(0, calc(var(--home-backdrop-progress) * 1.6), 1);
   pointer-events: none;
@@ -1558,66 +1558,6 @@ body[data-view="home"] .site-backdrop__source {
   filter: none;
 }
 
-/* The three moving pieces share the plate's exact crop; the unaltered art remains the fallback. */
-.home-artwork { display: none; }
-
-@media (min-width: 48.01rem) and (prefers-reduced-motion: no-preference) {
-  /* LiquidGlass reads this image's computed opacity; hide its pixels without zeroing its sample. */
-  body[data-view="home"] .site-backdrop.has-home-artwork .site-backdrop__source {
-    opacity: 0.85;
-    visibility: hidden;
-  }
-
-  body[data-view="home"] .home-artwork {
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    display: block;
-    opacity: 0;
-  }
-
-  body[data-view="home"] .home-artwork.is-ready { opacity: 0.85; }
-
-  .home-artwork__plate,
-  .home-artwork__layer {
-    position: absolute;
-    inset: 0;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-
-  .home-artwork__plate { background-image: url("assets/home-key-visual-motion-plate.jpg"); }
-  .home-artwork__layer { background-image: url("assets/home-key-visual-motion-foreground.png"); }
-  .home-artwork.is-ready.is-active .home-artwork__layer { will-change: transform; }
-  .home-artwork__layer--people { clip-path: polygon(30% 10%, 78% 10%, 78% 57%, 30% 57%); }
-  .home-artwork__layer--signal { clip-path: polygon(23% 62%, 57% 62%, 57% 86%, 23% 86%); }
-  .home-artwork__layer--tree { clip-path: polygon(82% 27%, 100% 27%, 100% 71%, 82% 71%); }
-
-  /* A signal crosses the extracted subjects in the artwork's own diagonal direction. */
-  .home-artwork__surge {
-    position: absolute;
-    inset: 0;
-    background: url("assets/home-key-visual-motion-foreground.png") center / cover no-repeat;
-    filter: brightness(1.7) saturate(1.15);
-    -webkit-mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
-    mask-image: linear-gradient(112deg, transparent 43%, #fff 49%, #fff 51%, transparent 57%);
-    -webkit-mask-size: 280% 100%;
-    mask-size: 280% 100%;
-    opacity: 0;
-    animation: home-artwork-surge 6.4s ease-in-out infinite paused;
-  }
-
-  body[data-view="home"] .home-artwork.is-ready.is-active .home-artwork__surge { animation-play-state: running; }
-
-  @keyframes home-artwork-surge {
-    0%, 12% { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0; }
-    20% { opacity: 0.85; }
-    67% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0.85; }
-    74%, 100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 0; }
-  }
-}
-
 body[data-view="home"] .site-backdrop.is-static-fallback::after {
   display: none;
 }
@@ -1632,12 +1572,6 @@ body[data-view="home"] .site-backdrop.is-static-fallback .site-backdrop__source 
   filter: none;
 }
 
-@media (min-width: 48.01rem) and (prefers-reduced-motion: no-preference) {
-  body[data-view="home"] .site-backdrop.is-static-fallback.has-home-artwork .site-backdrop__source {
-    opacity: 0.85;
-    visibility: hidden;
-  }
-}
 
 /* Let schedule and project content sit over the same softened campus image
  * used after the homepage hero, so the background supports rather than leads. */
