@@ -111,7 +111,7 @@ const projects = [
       },
     ],
   },
-  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用Whisper 語音辨識模型與QCI評估機制於國小台語人機協同學習之研究', titleEn: 'Human-AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:00 ~ 13:15', conferenceTags: [], summary: [
+  { id: '02', code: 'NUTN-CSIE-PRJ-116-002', group: 'sense', title: '應用 Whisper 語音辨識模型與 QCI 評估機制於國小台語人機協同學習之研究', titleEn: 'Human-AI Co-Learning for Taiwanese Education in Elementary Schools Using a Whisper ASR Model and QCI Assessment', members: '陳函得、黃柏智', studentIds: 'S11259002、S11259016', advisor: '李健興', time: '13:00 ~ 13:15', conferenceTags: [], summary: [
     {
       paragraph: '台語口語學習在國小課程中，常受限於缺乏即時回饋，導致學生難以有效提升口語能力，而教師亦難以針對大量學習者的口語表現進行客觀且量化的評估。有鑑於此，本研究提出一套結合 Whisper Taiwanese 語音辨識模型與量子計算智慧（Quantum Computational Intelligence, QCI）評估機制之國小台語人機協同學習架構，並以國小台語教材語料建立測試語料庫，導入 Whisper 系列模型與 Breeze_ASR 進行語音辨識，利用語意相似度分數作為學習成效的量化指標。',
     },
@@ -204,7 +204,7 @@ const projects = [
       paragraph: '進一步的頻譜探測顯示殘差流具有高度低秩性，這促使我們在訓練之後而非之前縮減寬度：透過全域共享的正交投影搭配六個 epoch 的恢復蒸餾，將聚合器與相機頭寬度縮減至四分之一，得到 4.64 億參數的模型，同時保留教師 88% 的真值 RRA@15 與 79% 的旋轉 AUC@30。再結合 INT8 僅權重量化，序列化模型大小降至 537 MB，為 fp32 教師模型的 1/9.4，且相對教師軟標籤的旋轉誤差僅增加 0.01°。在模擬 4～8 GiB 記憶體預算下，該模型可處理 8～32 張影像，而教師模型至多僅能處理 1 張。',
     },
   ] },
-  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性MPC聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
+  { id: '11', code: 'NUTN-CSIE-PRJ-116-011', group: 'decision', title: '分層選擇性 MPC 聯邦學習機制設計', titleEn: 'Layer-wise Selective MPC-FL', members: '洪筱晴、張華庭', studentIds: 'S11259017、S11259042', advisor: '李建樹', time: '14:00 ~ 14:15', conferenceTags: [], summary: [
     {
       paragraph: '傳統聯邦學習若對整個深度學習模型進行多方安全計算 (MPC)，龐大的參數傳輸將大幅拖慢訓練速度。然而，真正需要高度保護的，往往是可能洩漏原始影像或文字資訊的淺層梯度。因此，我們提出 L2-MPC-FL，依據不同層級的隱私風險，分配不同等級的保護機制：對於高風險淺層採用 MPC，強化敏感資訊的保護；對於後續的中間層及深層，則是採用輕量化遮罩和直接傳輸的方式來降低通訊負擔。建立一個在安全性與通訊效率之間取得更好平衡的聯邦學習架構。',
     },
@@ -250,12 +250,12 @@ const projects = [
       paragraph: '整體而言，本專題改善了事件反應速度、影響範圍估計、路徑搜尋效率與繞路時機。',
     },
   ] },
-  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於Flow Matching之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:55 ~ 15:10', conferenceTags: [], summary: [
+  { id: '15', code: 'NUTN-CSIE-PRJ-116-015', group: 'decision', title: '基於 Flow Matching 之多模態離線強化學習策略生成與推論加速研究', titleEn: 'Policy Generation and Inference Acceleration for Multimodal Offline Reinforcement Learning Based on Flow Matching', members: '石皓宇、張以融', studentIds: 'S11259032', advisor: '朱明毅', time: '14:55 ~ 15:10', conferenceTags: [], summary: [
     {
       paragraph: '本研究以多模態離線強化學習之擴散策略為基礎，採用 Flow Matching 取代傳統 DDPM，降低機器人動作生成所需的推論步數。透過機器人操作任務，比較不同生成方法的任務成功率與推論速度，探討模型在維持決策效能的同時，提升動作生成效率的可行性。',
     },
   ] },
-  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於Slurm與Kubernetes架構下AI伺服器GPU工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '15:10 ~ 15:25', conferenceTags: ['TANET 2026'], summary: [
+  { id: '16', code: 'NUTN-CSIE-PRJ-116-016', group: 'decision', title: '基於 Slurm 與 Kubernetes 架構下 AI 伺服器 GPU 工作負載智慧排程', titleEn: 'Intelligent GPU Workload Scheduling Techniques for AI Servers under a Slurm-on-Kubernetes Architecture', members: '鄭珽升、蕭友翰', studentIds: 'S11259033、S11259043', advisor: '陳宗禧', time: '15:10 ~ 15:25', conferenceTags: ['TANET 2026'], summary: [
     {
       paragraph: '大型語言模型與生成式 AI 快速發展，使 GPU 成為訓練、推論與資料處理的重要運算資源；然而，一般大學實驗室的共享 GPU 主機仍常面臨資源閒置、利用率不足與批次工作管理困難。不同世代的 GPU 在運算能力與記憶體容量上各有差異，工作放置不能只看 GPU 數量；NVIDIA MPS 雖可讓多個工作共享同一張 GPU，資源配額也會影響可共置的工作數、可用容量與完成時間，使資源利用與工作管理難以同時最佳化。',
     },
